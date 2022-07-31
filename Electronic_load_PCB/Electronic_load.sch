@@ -21224,19 +21224,19 @@ Source: http://focus.ti.com/lit/ds/symlink/tlc27l2.pdf</description>
 <part name="GND46" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="J7" library="jst connectors" deviceset="B2B-XH" device="" package3d_urn="urn:adsk.eagle:package:36506925/2"/>
 <part name="VDD17" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
-<part name="Q8" library="transistors" deviceset="S9015" device=""/>
+<part name="Q8" library="transistors" deviceset="S9015" device="" override_package3d_urn="urn:adsk.eagle:package:36704401/2" override_package_urn="urn:adsk.eagle:footprint:20709/1"/>
 <part name="VDD29" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
 <part name="R37" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="1k"/>
-<part name="Q9" library="transistors" deviceset="S9015" device=""/>
+<part name="Q9" library="transistors" deviceset="S9015" device="" override_package3d_urn="urn:adsk.eagle:package:36704402/2" override_package_urn="urn:adsk.eagle:footprint:20709/1"/>
 <part name="VDD26" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
 <part name="R38" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="1k"/>
-<part name="Q10" library="transistors" deviceset="S9015" device=""/>
+<part name="Q10" library="transistors" deviceset="S9015" device="" override_package3d_urn="urn:adsk.eagle:package:36704403/2" override_package_urn="urn:adsk.eagle:footprint:20709/1"/>
 <part name="VDD27" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
 <part name="R39" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="1k"/>
-<part name="Q11" library="transistors" deviceset="S9015" device=""/>
+<part name="Q11" library="transistors" deviceset="S9015" device="" override_package3d_urn="urn:adsk.eagle:package:36704397/2" override_package_urn="urn:adsk.eagle:footprint:20709/1"/>
 <part name="VDD28" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VDD" device=""/>
 <part name="R40" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="1k"/>
-<part name="D7" library="diode" deviceset="LL4148" device=""/>
+<part name="D7" library="diode" deviceset="LL4148" device="" override_package3d_urn="urn:adsk.eagle:package:36704398/2" override_package_urn="urn:adsk.eagle:footprint:36704399/1"/>
 <part name="C28" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="22p"/>
 <part name="C29" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="22p"/>
 <part name="Q12" library="CRYSTAL_SMD_3,4x2.7mm" deviceset="CRYSTAL_3,4X2,7" device="" override_package3d_urn="urn:adsk.eagle:package:35472672/2" override_package_urn="urn:adsk.eagle:footprint:35472688/1"/>
@@ -21250,7 +21250,7 @@ Source: http://focus.ti.com/lit/ds/symlink/tlc27l2.pdf</description>
 <part name="R42" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3"/>
 <part name="R43" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3"/>
 <part name="R44" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3"/>
-<part name="U$3" library="voltage_references" deviceset="LM4140" device=""/>
+<part name="U$3" library="voltage_references" deviceset="LM4140" device="" override_package3d_urn="urn:adsk.eagle:package:36704400/2" override_package_urn="urn:adsk.eagle:footprint:16321/1"/>
 <part name="C8" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="CPOL-EU" device="CT3528" package3d_urn="urn:adsk.eagle:package:23325/2" value="10u"/>
 <part name="C9" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="CPOL-EU" device="CT3216" package3d_urn="urn:adsk.eagle:package:23327/2" value="1u"/>
 <part name="J8" library="jst connectors" deviceset="B5B-XH" device="" package3d_urn="urn:adsk.eagle:package:36690905/2"/>
