@@ -1,7 +1,7 @@
 /**
  * @file defines.hh
  * @author Dominik Workshop
- * @brief Addresses of I2C devices, addresses of calibration values in EEPROM and names of used pins
+ * @brief Addresses of I2C devices, addresses of calibration values in EEPROM and names of used pins, other constants
  * @version 0.1
  * @date 2022-07-26
  * 
@@ -21,15 +21,27 @@
 #define EEPROM_ADDRESS_ADC_I_CAL 1  //address for calibration value of ADC - current
 #define EEPROM_ADDRESS_ADC_U_CAL 2  //address for calibration value of ADC - voltage
 
-#define KP1 6   //Keypad pin
-#define KP2 7   //Keypad pin
-#define KP3 8   //Keypad pin
-#define KP4 9   //Keypad pin
-#define KP5 10  //Keypad pin
-#define KP6 11  //Keypad pin
-#define KP7 12  //Keypad pin
+#define KEYPAD_ROWS 4   //number of rows of the keypad
+#define KEYPAD_COLS 4   //number of collumns of the keypad
+#define KP1 6           //Keypad pin
+#define KP2 7           //Keypad pin
+#define KP3 8           //Keypad pin
+#define KP4 9           //Keypad pin
+#define KP5 10          //Keypad pin
+#define KP6 14          //Keypad pin
+#define KP7 15          //Keypad pin
+#define KP8 16          //Keypad pin
+#define KP9 11          //Keypad pin
 
-#define TEMPERATURE A6
+#define ENCODER_A 2 //2
+#define ENCODER_B 4 //17
+
+#define THERMISTOR A6
+#define R1 10000
+#define c1 1.009249522e-03
+#define c2 2.378405444e-04
+#define c3 2.019202697e-07
+
 #define FAN 5
 #define OUTPUT_OFF 4
 #define IN_TRIGGER 3
