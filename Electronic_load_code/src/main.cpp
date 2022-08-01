@@ -6,6 +6,7 @@
  *  - Constant power,
  *  - Constant resistance,
  *  - Transient response
+ *  - Battery capacity measurement
  * @version 0.1
  * @date 2022-07-26
  * 
@@ -23,6 +24,8 @@
 #include "defines.hh"
 #include "init.hh"
 #include "calibration.hh"
+#include "temperature.hh"
+#include "encoder.hh"
 
 void setup() {
   CalibrationValues calibrationValues;
@@ -35,6 +38,8 @@ void setup() {
   adc.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
   dac.begin(DAC_ADDRESS);
 
+  Serial.begin(9600);
+
 
   pinInit();
   calibrationValues.readFromEEPROM();
@@ -46,5 +51,10 @@ void setup() {
 }
 
 void loop(){
-
+  //Serial.println(measureTemperature());
+  digitalWrite(13, HIGH);
+  delay(100);
+  digitalWrite(13, LOW);
+  delay(100); 
+  Serial.println(EncoderValue);
 }
