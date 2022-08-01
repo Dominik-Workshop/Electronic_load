@@ -11,14 +11,20 @@
 
 #include "init.hh"
 
+void isr();
+
 /**
  * @brief initializes input and output pins
  * 
  */
 void pinInit(){
-  pinMode(TEMPERATURE, INPUT);
+  pinMode(THERMISTOR, INPUT);
   pinMode(FAN, OUTPUT);
   pinMode(OUTPUT_OFF, OUTPUT);
   pinMode(IN_TRIGGER, INPUT);
+  pinMode(ENCODER_A, INPUT_PULLUP);
+  pinMode(ENCODER_B, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(2), isr, LOW);
+  
 }
 
