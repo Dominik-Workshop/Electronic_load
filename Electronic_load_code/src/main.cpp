@@ -32,11 +32,13 @@ void setup() {
   LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
   Adafruit_ADS1115 adc;
   Adafruit_MCP4725 dac;
+  Encoder encoder;
 
   lcd.init();  
   adc.begin();
   adc.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
   dac.begin(DAC_ADDRESS);
+  encoder.begin();
 
   Serial.begin(9600);
 
@@ -48,13 +50,17 @@ void setup() {
   //lcd.backlight();
   lcd.setCursor(3,0);
   lcd.print("Hello, world!");
+
+  while(1){
+    //Serial.println(measureTemperature());
+    digitalWrite(13, HIGH);
+    delay(100);
+    digitalWrite(13, LOW);
+    delay(100); 
+    Serial.println(encoder.getCounts());
+    }
 }
 
 void loop(){
-  //Serial.println(measureTemperature());
-  digitalWrite(13, HIGH);
-  delay(100);
-  digitalWrite(13, LOW);
-  delay(100); 
-  Serial.println(EncoderValue);
+  
 }
