@@ -15,15 +15,20 @@
 Encoder * Encoder::instance;
 
 void Encoder::begin(){
-    attachInterrupt(digitalPinToInterrupt(ENCODER_A), isr, LOW);
+    attachInterrupt(digitalPinToInterrupt(ENCODER_A), isrRotation, LOW);
+    attachInterrupt(digitalPinToInterrupt(ENCODER_BUTTON), isrButton, FALLING);
     instance = this;
 }
 
-void Encoder::isr(){
-    instance->handleInterrupt();
+void Encoder::isrRotation(){
+    instance->handleInterruptRotation();
 }
 
-void Encoder::handleInterrupt(){
+void Encoder::isrButton(){
+    instance->handleInterruptButton();
+}
+
+void Encoder::handleInterruptRotation(){
   static unsigned long lastInterruptTime = 0;
   unsigned long interruptTime = millis();
 
@@ -38,6 +43,19 @@ void Encoder::handleInterrupt(){
   lastInterruptTime = interruptTime;
 }
 
+void Encoder::handleInterruptButton(){
+    buttonPressed = true;
+}
+
 int Encoder::getCounts(){
   return counter;
+}
+
+bool Encoder::wasButtonPressed(){
+    if(buttonPressed){
+        buttonPressed = false;
+        return true;
+    }
+    else
+        return false;
 }

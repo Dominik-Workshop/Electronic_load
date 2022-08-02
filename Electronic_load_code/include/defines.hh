@@ -33,8 +33,9 @@
 #define KP8 16          //Keypad pin
 #define KP9 11          //Keypad pin
 
-#define ENCODER_A 2 //2
+#define ENCODER_A 2
 #define ENCODER_B 4 //17
+#define ENCODER_BUTTON 3
 
 #define THERMISTOR A6
 #define R1 10000

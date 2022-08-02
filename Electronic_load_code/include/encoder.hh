@@ -19,13 +19,17 @@
 class Encoder{
   private:
     volatile int counter = 0;
+    volatile bool buttonPressed = false;
     static Encoder * instance;
-    static void isr();
-    void handleInterrupt ();
+    static void isrRotation();
+    static void isrButton();
+    void handleInterruptRotation ();
+    void handleInterruptButton ();
 
   public:
     void begin ();
     int getCounts();
+    bool wasButtonPressed();
 };
 
 #endif
