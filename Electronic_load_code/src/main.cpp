@@ -34,6 +34,8 @@ void setup() {
   Adafruit_MCP4725 dac;
   Encoder encoder;
 
+  int counts;
+
   lcd.init();  
   adc.begin();
   adc.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
@@ -57,7 +59,11 @@ void setup() {
     delay(100);
     digitalWrite(13, LOW);
     delay(100); 
-    Serial.println(encoder.getCounts());
+    
+    if(encoder.wasButtonPressed()) Serial.println("Button pressed");
+    
+    if(counts != encoder.getCounts()) Serial.println(encoder.getCounts());
+    counts = encoder.getCounts();
     }
 }
 
