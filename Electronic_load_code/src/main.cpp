@@ -26,17 +26,21 @@
 #include "calibration.hh"
 #include "temperature.hh"
 #include "encoder.hh"
+#include "keypad_config.hh"
 
 void setup() {
   CalibrationValues calibrationValues;
   LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
   Adafruit_ADS1115 adc;
   Adafruit_MCP4725 dac;
+  Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
   Encoder encoder;
+  
+  char customKey;
+  //int counts;
 
-  int counts;
-
-  lcd.init();  
+  lcd.init();
+  lcd.backlight();
   adc.begin();
   adc.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
   dac.begin(DAC_ADDRESS);
@@ -44,27 +48,44 @@ void setup() {
 
   Serial.begin(9600);
 
-
   pinInit();
   calibrationValues.readFromEEPROM();
 
-  // Print a message to the LCD.
-  //lcd.backlight();
   lcd.setCursor(3,0);
   lcd.print("Hello, world!");
 
   while(1){
-    //Serial.println(measureTemperature());
+    
     digitalWrite(13, HIGH);
-    delay(100);
+    delay(20);
     digitalWrite(13, LOW);
-    delay(100); 
+    delay(20); 
     
-    if(encoder.wasButtonPressed()) Serial.println("Button pressed");
-    
-    if(counts != encoder.getCounts()) Serial.println(encoder.getCounts());
-    counts = encoder.getCounts();
+    if(encoder.wasButtonPressed()) {
+      lcd.setCursor(3,1);
+      lcd.print("Button pressed");
     }
+    else{
+      lcd.setCursor(3,1);
+      lcd.print("               ");
+    }
+    
+    lcd.setCursor(3,2);
+    lcd.print(encoder.getCounts());
+    lcd.print("   ");
+
+    lcd.setCursor(3,3);
+    lcd.print("T=");
+    lcd.print(measureTemperature());
+    lcd.print("   ");
+
+    customKey = keypad.getKey();
+     
+    if (customKey) {
+      lcd.setCursor(9,4);
+      lcd.print(customKey);
+    }
+  }
 }
 
 void loop(){
