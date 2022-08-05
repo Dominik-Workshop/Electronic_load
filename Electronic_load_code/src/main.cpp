@@ -28,6 +28,7 @@
 #include "encoder.hh"
 #include "keypad_config.hh"
 #include "lcd_characters.hh"
+#include "user_input.hh"
 
 void constCurrentMode(LiquidCrystal_I2C& lcd) {
   lcd.setCursor(0,0);
@@ -45,17 +46,15 @@ void constCurrentMode(LiquidCrystal_I2C& lcd) {
 
 void setup() {
   CalibrationValues calibrationValues;
+  UserInput userInput;
   LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
   Adafruit_ADS1115 adc;
   Adafruit_MCP4725 dac;
   Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
   Encoder encoder;
   
-  char numbers[10];
-  int index, z;
-  char customKey;
-  float value = 0;
-  uint32_t time;
+  int x_pos;    //horizontal position of lcd cursor
+  
 
   lcd.init();
   lcd.backlight();
@@ -97,51 +96,49 @@ void setup() {
     lcd.write(degree);
     lcd.print("C");
 
-    customKey = keypad.getKey();
-    if(customKey == '#'){
+    userInput.key = keypad.getKey();
+    if(userInput.key == '#'){
       encoder.reset();
-      time = millis();
-      index = 0;
-      z = 0;
-      while(time + 5000 > millis()){  //exit 5s after last encoder movement
-        customKey = keypad.getKey();
-        if(customKey >= '0' && customKey <= '9'){               //check for keypad number input
-          numbers[index++] = customKey;
-          numbers[index] = '\0';
-          lcd.setCursor(z,3);                              
-          lcd.print(customKey);                              //show number input on LCD
-          z++;
-          time = millis();
+      userInput.time = millis();
+      userInput.index = 0;
+      x_pos = 0;
+      while(userInput.time + 5000 > millis()){  //exit 5s of inactivity
+        userInput.key = keypad.getKey();
+        if(userInput.key >= '0' && userInput.key <= '9'){               //check for keypad number input
+          userInput.numbers[userInput.index++] = userInput.key;
+          userInput.numbers[userInput.index] = '\0';
+          lcd.setCursor(x_pos,3);                              
+          lcd.print(userInput.key);                              //show number input on LCD
+          x_pos++;
+          userInput.time = millis();
         }
 
-        if(customKey == '*'){                                   //Decimal point
-            numbers[index++] = '.';
-            numbers[index] = '\0';
-            lcd.setCursor(z,3);
+        if(userInput.key == '*'){                                   //Decimal point
+            userInput.numbers[userInput.index++] = '.';
+            userInput.numbers[userInput.index] = '\0';
+            lcd.setCursor(x_pos,3);
             lcd.print(".");
-            z = z+1;
+            x_pos++;
         }
 
         if(encoder.rotation()){
-          value += encoder.rotation();
+          userInput.value += encoder.rotation();
           lcd.setCursor(8,2);
-          lcd.print(value, 3);
+          lcd.print(userInput.value, 3);
           lcd.print(" ");
           encoder.reset();
-          time = millis();
-        } 
-        if(customKey == '#') {
-          value = atof(numbers);
+          userInput.time = millis();
+        }
+
+        if(userInput.key == '#') {
+          userInput.value = atof(userInput.numbers);
           lcd.setCursor(8,2);
-          lcd.print(value, 3);
+          lcd.print(userInput.value, 3);
           lcd.print(" ");
-          // if(value < 10) lcd.print(" ");
-          // if(value < 100) lcd.print(" ");
-          // if(value < 1000) lcd.print(" ");
           lcd.setCursor(0,3);
           lcd.print("       ");
-          index = 0;
-          z = 0;
+          userInput.index = 0;
+          x_pos = 0;
         }
       }
     }
@@ -164,11 +161,11 @@ void setup() {
   //   lcd.print(measureTemperature());
   //   lcd.print("   ");
 
-  //   customKey = keypad.getKey();
+  //   userInput.key = keypad.getKey();
      
-  //   if (customKey) {
+  //   if (userInput.key) {
   //     lcd.setCursor(9,4);
-  //     lcd.print(customKey);
+  //     lcd.print(userInput.key);
   //   }
   }
 }
