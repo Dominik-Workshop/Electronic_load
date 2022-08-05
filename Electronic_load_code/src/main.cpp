@@ -114,11 +114,11 @@ void setup() {
         }
 
         if(userInput.key == '*'){                                   //Decimal point
-            userInput.numbers[userInput.index++] = '.';
-            userInput.numbers[userInput.index] = '\0';
-            lcd.setCursor(x_pos,3);
-            lcd.print(".");
-            x_pos++;
+          userInput.numbers[userInput.index++] = '.';
+          userInput.numbers[userInput.index] = '\0';
+          lcd.setCursor(x_pos,3);
+          lcd.print(".");
+          x_pos++;
         }
 
         if(encoder.rotation()){

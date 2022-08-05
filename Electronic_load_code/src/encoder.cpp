@@ -15,9 +15,9 @@
 Encoder * Encoder::instance;
 
 void Encoder::begin(){
-    attachInterrupt(digitalPinToInterrupt(ENCODER_A), isrRotation, LOW);
-    attachInterrupt(digitalPinToInterrupt(ENCODER_BUTTON), isrButton, FALLING);
-    instance = this;
+  attachInterrupt(digitalPinToInterrupt(ENCODER_A), isrRotation, LOW);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_BUTTON), isrButton, FALLING);
+  instance = this;
 }
 
 void Encoder::reset(){
@@ -26,11 +26,11 @@ void Encoder::reset(){
 }
 
 void Encoder::isrRotation(){
-    instance->handleInterruptRotation();
+  instance->handleInterruptRotation();
 }
 
 void Encoder::isrButton(){
-    instance->handleInterruptButton();
+  instance->handleInterruptButton();
 }
 
 void Encoder::handleInterruptRotation(){
@@ -44,12 +44,12 @@ void Encoder::handleInterruptRotation(){
     else 
       counter--;
   }
-  
+
   lastInterruptTime = interruptTime;
 }
 
 void Encoder::handleInterruptButton(){
-    buttonPressed = true;
+  buttonPressed = true;
 }
 
 /**
@@ -60,12 +60,12 @@ void Encoder::handleInterruptButton(){
  * @return false when button wasn't pressed
  */
 bool Encoder::wasButtonPressed(){
-    if(buttonPressed){
-        buttonPressed = false; //reset buttonPressed flag
-        return true;
-    }
-    else
-        return false;
+  if(buttonPressed){
+    buttonPressed = false; //reset buttonPressed flag
+    return true;
+  }
+  else
+    return false;
 }
 
 /**

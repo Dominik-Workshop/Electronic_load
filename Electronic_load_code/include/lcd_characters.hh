@@ -17,8 +17,8 @@
 #include <Arduino.h>
 
 enum Symbols{
-    degree,
-    ohm
+  degree,
+  ohm
 };
 
 extern uint8_t degreeSymbol[];
