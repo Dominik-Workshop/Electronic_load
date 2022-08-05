@@ -37,7 +37,8 @@ void setup() {
   Encoder encoder;
   
   char customKey;
-  //int counts;
+  int value = 0;
+  uint32_t time;
 
   lcd.init();
   lcd.backlight();
@@ -54,37 +55,56 @@ void setup() {
   lcd.setCursor(3,0);
   lcd.print("Hello, world!");
 
+  lcd.setCursor(3,2);
+  lcd.print(value);
+
   while(1){
     
     digitalWrite(13, HIGH);
     delay(20);
     digitalWrite(13, LOW);
     delay(20); 
-    
-    if(encoder.wasButtonPressed()) {
-      lcd.setCursor(3,1);
-      lcd.print("Button pressed");
-    }
-    else{
-      lcd.setCursor(3,1);
-      lcd.print("               ");
-    }
-    
-    lcd.setCursor(3,2);
-    lcd.print(encoder.getCounts());
-    lcd.print("   ");
-
-    lcd.setCursor(3,3);
-    lcd.print("T=");
-    lcd.print(measureTemperature());
-    lcd.print("   ");
 
     customKey = keypad.getKey();
-     
-    if (customKey) {
-      lcd.setCursor(9,4);
-      lcd.print(customKey);
+    if(customKey == '#'){
+      encoder.reset();
+      time = millis();
+      while(time + 5000 > millis()){  //exit 5s after last encoder movement
+        if(encoder.rotation()){
+          value += encoder.rotation();
+          lcd.setCursor(3,2);
+          lcd.print(value);
+          lcd.print("         ");
+          encoder.reset();
+          time = millis();
+        } 
+      }
     }
+    
+  //   if(encoder.wasButtonPressed()) {
+  //     lcd.setCursor(3,1);
+  //     lcd.print("Button pressed");
+  //   }
+  //   else{
+  //     lcd.setCursor(3,1);
+  //     lcd.print("               ");
+  //   }
+    
+  //   lcd.setCursor(3,2);
+  //   lcd.print(encoder.getCounts());
+  //   lcd.print("   ");
+
+  //   lcd.setCursor(3,3);
+  //   lcd.print("T=");
+  //   lcd.print(measureTemperature());
+  //   lcd.print("   ");
+
+  //   customKey = keypad.getKey();
+     
+  //   if (customKey) {
+  //     lcd.setCursor(9,4);
+  //     lcd.print(customKey);
+  //   }
   }
 }
 

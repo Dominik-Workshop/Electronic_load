@@ -20,6 +20,12 @@ void Encoder::begin(){
     instance = this;
 }
 
+void Encoder::reset(){
+  lastCounter = 0;
+  counter = 0;
+  buttonPressed = false;
+}
+
 void Encoder::isrRotation(){
     instance->handleInterruptRotation();
 }
@@ -47,10 +53,6 @@ void Encoder::handleInterruptButton(){
     buttonPressed = true;
 }
 
-int Encoder::getCounts(){
-  return counter;
-}
-
 bool Encoder::wasButtonPressed(){
     if(buttonPressed){
         buttonPressed = false;
@@ -58,4 +60,12 @@ bool Encoder::wasButtonPressed(){
     }
     else
         return false;
+}
+
+int Encoder::getCounts(){
+  return counter;
+}
+
+int Encoder::rotation(){
+  return counter - lastCounter;
 }

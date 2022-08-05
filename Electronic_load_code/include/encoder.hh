@@ -18,6 +18,7 @@
 
 class Encoder{
   private:
+    int lastCounter = 0;
     volatile int counter = 0;
     volatile bool buttonPressed = false;
     static Encoder * instance;
@@ -28,8 +29,10 @@ class Encoder{
 
   public:
     void begin ();
-    int getCounts();
+    void reset();
     bool wasButtonPressed();
+    int getCounts();
+    int rotation();
 };
 
 #endif
