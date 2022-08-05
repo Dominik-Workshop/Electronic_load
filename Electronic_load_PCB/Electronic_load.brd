@@ -2717,13 +2717,13 @@ design rules under a new name.</description>
 <attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/MCP4725A0T-E/CH/?ref=eda" x="81.661" y="34.798" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="78.661" y="32.798" size="1.27" layer="27" rot="R180" align="bottom-right"/>
 </element>
-<element name="R21" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="" x="77.851" y="35.814" smashed="yes">
+<element name="R21" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="15k" x="77.851" y="35.814" smashed="yes">
 <attribute name="NAME" x="76.708" y="36.703" size="1.016" layer="25"/>
 <attribute name="POPULARITY" value="70" x="77.851" y="35.814" size="1.778" layer="27" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="77.851" y="35.814" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="77.216" y="33.909" size="1.27" layer="27"/>
 </element>
-<element name="R22" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="" x="75.311" y="34.29" smashed="yes" rot="R90">
+<element name="R22" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="1k" x="75.311" y="34.29" smashed="yes" rot="R90">
 <attribute name="NAME" x="75.819" y="30.099" size="1.016" layer="25" rot="R90"/>
 <attribute name="POPULARITY" value="70" x="75.311" y="34.29" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="75.311" y="34.29" size="1.778" layer="27" rot="R90" display="off"/>
@@ -3095,7 +3095,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="20.955" y="31.115" size="1.27" layer="26" rot="MR270"/>
 <attribute name="VALUE" x="26.035" y="32.385" size="1.27" layer="28" rot="MR270"/>
 </element>
-<element name="R30" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="" x="34.925" y="29.845" smashed="yes" rot="R90">
+<element name="R30" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="470R" x="34.925" y="29.845" smashed="yes" rot="R90">
 <attribute name="NAME" x="36.83" y="28.575" size="1.016" layer="25" rot="R90"/>
 <attribute name="POPULARITY" value="70" x="34.925" y="29.845" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="34.925" y="29.845" size="1.778" layer="27" rot="R90" display="off"/>
@@ -3159,13 +3159,13 @@ design rules under a new name.</description>
 <attribute name="SPICEPREFIX" value="R" x="30.48" y="15.875" size="1.778" layer="28" rot="MR180" display="off"/>
 <attribute name="VALUE" x="29.845" y="17.78" size="1.27" layer="28" rot="MR180"/>
 </element>
-<element name="R32" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="1k" x="25.4" y="17.145" smashed="yes" rot="R90">
+<element name="R32" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="68k" x="25.4" y="17.145" smashed="yes" rot="R90">
 <attribute name="NAME" x="24.13" y="15.875" size="1.016" layer="25" rot="R90"/>
 <attribute name="POPULARITY" value="70" x="25.4" y="17.145" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="25.4" y="17.145" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="27.305" y="16.51" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="R33" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="1k" x="25.4" y="20.32" smashed="yes" rot="R90">
+<element name="R33" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="18k" x="25.4" y="20.32" smashed="yes" rot="R90">
 <attribute name="NAME" x="24.13" y="19.05" size="1.016" layer="25" rot="R90"/>
 <attribute name="POPULARITY" value="70" x="25.4" y="20.32" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="25.4" y="20.32" size="1.778" layer="27" rot="R90" display="off"/>
@@ -3227,8 +3227,8 @@ design rules under a new name.</description>
 <attribute name="DESCRIPTION" value=" Optoisolator Transistor Output 5000Vrms 1 Channel 4-SMD " x="83.82" y="6.985" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="Sharp Microelectronics" x="83.82" y="6.985" size="1.778" layer="27" display="off"/>
 <attribute name="MP" value="PC817X2NIP0F" x="83.82" y="6.985" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="81.01816875" y="10.08701875" size="1.27083125" layer="25"/>
 <attribute name="NAME" x="81.014759375" y="10.0908" size="1.27238125" layer="25"/>
+<attribute name="NAME" x="81.01816875" y="10.08701875" size="1.27083125" layer="25"/>
 <attribute name="PACKAGE" value="SMD-4 Sharp" x="83.82" y="6.985" size="1.778" layer="27" display="off"/>
 <attribute name="PRICE" value="None" x="83.82" y="6.985" size="1.778" layer="27" display="off"/>
 <attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/PC817X2NIP0F/?ref=eda" x="83.82" y="6.985" size="1.778" layer="27" display="off"/>
@@ -3326,25 +3326,25 @@ design rules under a new name.</description>
 <attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/B4B-XH-A(LF)(SN)/?ref=eda" x="114.935" y="45.085" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="118.11" y="40.005" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="R41" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="" x="62.738" y="22.86" smashed="yes" rot="R90">
+<element name="R41" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="1k" x="62.738" y="22.86" smashed="yes" rot="R90">
 <attribute name="NAME" x="63.246" y="24.384" size="1.016" layer="25" rot="R90"/>
 <attribute name="POPULARITY" value="70" x="62.738" y="22.86" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="62.738" y="22.86" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="64.643" y="22.225" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="R42" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="" x="60.706" y="22.86" smashed="yes" rot="R90">
+<element name="R42" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="1k" x="60.706" y="22.86" smashed="yes" rot="R90">
 <attribute name="NAME" x="61.214" y="24.384" size="1.016" layer="25" rot="R90"/>
 <attribute name="POPULARITY" value="70" x="60.706" y="22.86" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="60.706" y="22.86" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="62.611" y="22.225" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="R43" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="" x="58.674" y="22.86" smashed="yes" rot="R90">
+<element name="R43" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="1k" x="58.674" y="22.86" smashed="yes" rot="R90">
 <attribute name="NAME" x="59.182" y="24.384" size="1.016" layer="25" rot="R90"/>
 <attribute name="POPULARITY" value="70" x="58.674" y="22.86" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="58.674" y="22.86" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="60.579" y="22.225" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="R44" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="" x="56.642" y="22.86" smashed="yes" rot="R90">
+<element name="R44" library="rcl" library_urn="urn:adsk.eagle:library:334" package="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="1k" x="56.642" y="22.86" smashed="yes" rot="R90">
 <attribute name="NAME" x="57.15" y="24.384" size="1.016" layer="25" rot="R90"/>
 <attribute name="POPULARITY" value="70" x="56.642" y="22.86" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="56.642" y="22.86" size="1.778" layer="27" rot="R90" display="off"/>
