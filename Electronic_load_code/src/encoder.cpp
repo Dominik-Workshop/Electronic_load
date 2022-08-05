@@ -2,7 +2,7 @@
  * @file encoder.cpp
  * @author Dominik Workshop
  * @brief registers encoder's rotation and based on that increments or decrements a counter, 
- *  which value can be accessed via getCouts method
+ *  detects button press (uses interrupts for both)
  * @version 0.1
  * @date 2022-08-02
  * 
@@ -21,7 +21,6 @@ void Encoder::begin(){
 }
 
 void Encoder::reset(){
-  lastCounter = 0;
   counter = 0;
   buttonPressed = false;
 }
@@ -53,19 +52,27 @@ void Encoder::handleInterruptButton(){
     buttonPressed = true;
 }
 
+/**
+ * @brief checks if the button was pressed since last time it was checked 
+ *  or since last Encoder::reset()
+ * 
+ * @return true when button was pressed
+ * @return false when button wasn't pressed
+ */
 bool Encoder::wasButtonPressed(){
     if(buttonPressed){
-        buttonPressed = false;
+        buttonPressed = false; //reset buttonPressed flag
         return true;
     }
     else
         return false;
 }
 
-int Encoder::getCounts(){
-  return counter;
-}
-
+/**
+ * @brief checks how many steps was the encoder rotated since last Encoder::reset()
+ * 
+ * @return int number of steps, positive value if rotated clockwise, negative if anticlockwise
+ */
 int Encoder::rotation(){
-  return counter - lastCounter;
+  return counter;
 }

@@ -2,7 +2,7 @@
  * @file encoder.hh
  * @author Dominik Workshop
  * @brief registers encoder's rotation and based on that increments or decrements a counter, 
- *  which value can be accessed via getCouts method
+ *  detects button press (uses interrupts for both)
  * @version 0.1
  * @date 2022-08-01
  * 
@@ -18,7 +18,6 @@
 
 class Encoder{
   private:
-    int lastCounter = 0;
     volatile int counter = 0;
     volatile bool buttonPressed = false;
     static Encoder * instance;
@@ -31,7 +30,6 @@ class Encoder{
     void begin ();
     void reset();
     bool wasButtonPressed();
-    int getCounts();
     int rotation();
 };
 
