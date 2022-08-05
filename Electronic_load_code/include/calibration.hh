@@ -1,7 +1,7 @@
 /**
  * @file calibration.hh
  * @author Dominik Workshop
- * @brief calss containing calibration values for the DAC and ADC
+ * @brief class containing calibration values for the DAC and ADC
  * @version 0.1
  * @date 2022-07-26
  * 
