@@ -13,13 +13,20 @@
 #define MODE_SCREEN_HH
 
 #include <LiquidCrystal_I2C.h>
+#include "lcd_characters.hh"
 #include "user_input.hh"
+#include "encoder.hh"
+#include "keypad_config.hh"
+
+
 
 void welcomeScreen(LiquidCrystal_I2C& lcd);
-void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput);
-void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput);
-void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput);
-void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput);
+void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder);
+void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder);
+void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder);
+void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder);
+void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder);
+void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder);
 
 #endif
 
