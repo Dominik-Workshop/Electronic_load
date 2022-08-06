@@ -1,7 +1,7 @@
 /**
  * @file user_input.cpp
- * @author your name (you@domain.com)
- * @brief Dominik Workshop
+ * @author Dominik Workshop
+ * @brief 
  * @version 0.1
  * @date 2022-08-05
  * 
@@ -10,11 +10,3 @@
  */
 
 #include "user_input.hh"
-
-/**
- * @brief constructor, initializes encoder
- * 
- */
-UserInput::UserInput(){
-	encoder.begin();
-}
