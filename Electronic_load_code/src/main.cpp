@@ -1,7 +1,7 @@
 /**
  * @file main.cpp
  * @author Dominik Workshop
- * @brief Electronic load with 4 different modes of operation:
+ * @brief Electronic load with 5 different modes of operation:
  *  - Constant current,
  *  - Constant power,
  *  - Constant resistance,
@@ -38,7 +38,11 @@ void setup() {
   LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
   Adafruit_ADS1115 adc;
   Adafruit_MCP4725 dac;
+  Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
+  Encoder encoder;
   
+  //int x_pos;    //horizontal position of lcd cursor
+
   lcd.init();
   lcd.backlight();
   lcd.createChar(degree, degreeSymbol);
@@ -46,6 +50,7 @@ void setup() {
   adc.begin(ADC_ADDRESS);
   adc.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
   dac.begin(DAC_ADDRESS);
+  encoder.begin();
 
   Serial.begin(9600);
 
@@ -54,90 +59,7 @@ void setup() {
 
   welcomeScreen(lcd);
   delay(3000);
-
-  mainMenu(lcd, userInput);
-  //while(1){
-    
-    
-    // digitalWrite(13, HIGH);
-    // delay(20);
-    // digitalWrite(13, LOW);
-    // delay(20); 
-    // lcd.setCursor(16,3);
-    // lcd.print(measureTemperature());
-    // lcd.write(degree);
-    // lcd.print("C");
-
-    // userInput.key = keypad.getKey();
-    // if(userInput.key == '#'){
-    //   encoder.reset();
-    //   userInput.time = millis();
-    //   userInput.index = 0;
-    //   x_pos = 0;
-    //   while(userInput.time + 5000 > millis()){  //exit 5s of inactivity
-    //     userInput.key = keypad.getKey();
-    //     if(userInput.key >= '0' && userInput.key <= '9'){               //check for keypad number input
-    //       userInput.numbers[userInput.index++] = userInput.key;
-    //       userInput.numbers[userInput.index] = '\0';
-    //       lcd.setCursor(x_pos,3);                              
-    //       lcd.print(userInput.key);                              //show number input on LCD
-    //       x_pos++;
-    //       userInput.time = millis();
-    //     }
-
-    //     if(userInput.key == '*'){                                   //Decimal point
-    //       userInput.numbers[userInput.index++] = '.';
-    //       userInput.numbers[userInput.index] = '\0';
-    //       lcd.setCursor(x_pos,3);
-    //       lcd.print(".");
-    //       x_pos++;
-    //     }
-
-    //     if(encoder.rotation()){
-    //       userInput.value += encoder.rotation();
-    //       lcd.setCursor(6,2);
-    //       lcd.print(userInput.value, 3);
-    //       encoder.reset();
-    //       userInput.time = millis();
-    //     }
-
-    //     if(userInput.key == '#') {
-    //       userInput.value = atof(userInput.numbers);
-    //       lcd.setCursor(6,2);
-    //       lcd.print(userInput.value, 3);
-    //       lcd.setCursor(0,3);
-    //       lcd.print("       ");
-    //       userInput.index = 0;
-    //       x_pos = 0;
-    //     }
-    //   }
-    // }
-    
-  //   if(encoder.wasButtonPressed()) {
-  //     lcd.setCursor(3,1);
-  //     lcd.print("Button pressed");
-  //   }
-  //   else{
-  //     lcd.setCursor(3,1);
-  //     lcd.print("               ");
-  //   }
-    
-  //   lcd.setCursor(3,2);
-  //   lcd.print(encoder.getCounts());
-  //   lcd.print("   ");
-
-  //   lcd.setCursor(3,3);
-  //   lcd.print("T=");
-  //   lcd.print(measureTemperature());
-  //   lcd.print("   ");
-
-  //   userInput.key = keypad.getKey();
-     
-  //   if (userInput.key) {
-  //     lcd.setCursor(9,4);
-  //     lcd.print(userInput.key);
-  //   }
-  //}
+  mainMenu(lcd, userInput, keypad, encoder);
 }
 
 void loop(){
