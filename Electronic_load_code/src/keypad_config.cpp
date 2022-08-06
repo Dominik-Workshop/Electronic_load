@@ -13,10 +13,10 @@
 
 //define the symbols on the buttons of the keypads
 char hexaKeys[KEYPAD_ROWS][KEYPAD_COLS] = {
-  {'1','2','3','A'},
-  {'4','5','6','B'},
-  {'7','8','9','C'},
-  {'*','0','#','D'}
+  {'1','2','3', LoadOnOff},
+  {'4','5','6', Menu},
+  {'7','8','9', Enter},
+  {'.','0','#', Delete}
 };
 
 // uint8_t rowPins[KEYPAD_ROWS] = {KP1, KP2, KP3, KP4}; //connect to the row pin outs of the keypad
