@@ -10,3 +10,11 @@
  */
 
 #include "user_input.hh"
+
+/**
+ * @brief constructor, initializes encoder
+ * 
+ */
+UserInput::UserInput(){
+	encoder.begin();
+}
