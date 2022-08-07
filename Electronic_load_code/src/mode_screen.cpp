@@ -86,8 +86,14 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
 						mainMenu(lcd, userInput, keypad, encoder);
 					else if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.') 
 						inputFromKeypad(lcd, userInput, keypad, encoder, x_pos, userInput.setCurrent);
+          if(encoder.wasButtonPressed()){
+            if(userInput.decimalPlace > 0.001 )
+              userInput.decimalPlace = userInput.decimalPlace/10;
+            else 
+              userInput.decimalPlace = 1;
+          }
 					if(encoder.rotation()){
-						userInput.setCurrent += encoder.rotation()/10.0;
+						userInput.setCurrent += encoder.rotation() * userInput.decimalPlace;
 						lcd.setCursor(6,2);
 						lcd.print(userInput.setCurrent, 3);
 						encoder.reset();
@@ -127,8 +133,14 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 						mainMenu(lcd, userInput, keypad, encoder);
 					else if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.') 
 						inputFromKeypad(lcd, userInput, keypad, encoder, x_pos, userInput.setPower);
+          if(encoder.wasButtonPressed()){
+            if(userInput.decimalPlace > 0.001 )
+              userInput.decimalPlace = userInput.decimalPlace/10;
+            else 
+              userInput.decimalPlace = 1;
+          }
 					if(encoder.rotation()){
-						userInput.setPower += encoder.rotation()/10.0;
+						userInput.setPower += encoder.rotation() * userInput.decimalPlace;
 						lcd.setCursor(6,2);
 						lcd.print(userInput.setPower, 3);
 						encoder.reset();
@@ -168,8 +180,14 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 						mainMenu(lcd, userInput, keypad, encoder);
 					else if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.') 
 						inputFromKeypad(lcd, userInput, keypad, encoder, x_pos, userInput.setResistance);
+          if(encoder.wasButtonPressed()){
+            if(userInput.decimalPlace > 0.001 )
+              userInput.decimalPlace = userInput.decimalPlace/10;
+            else 
+              userInput.decimalPlace = 1;
+          }
 					if(encoder.rotation()){
-						userInput.setResistance += encoder.rotation()/10.0;
+						userInput.setResistance += encoder.rotation() * userInput.decimalPlace;
 						lcd.setCursor(6,2);
 						lcd.print(userInput.setResistance, 3);
 						encoder.reset();
