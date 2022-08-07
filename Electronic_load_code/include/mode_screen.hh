@@ -17,6 +17,7 @@
 #include "user_input.hh"
 #include "encoder.hh"
 #include "keypad_config.hh"
+#include "temperature.hh"
 
 
 
@@ -29,6 +30,8 @@ void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad&
 void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder);
 
 int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, int& x_pos, float& setValue);
+void displayTemperature(LiquidCrystal_I2C& lcd);
+void displayVal(float value, int numOfDigits, int digitsAfterDecimal, LiquidCrystal_I2C& lcd);
 
 #endif
 

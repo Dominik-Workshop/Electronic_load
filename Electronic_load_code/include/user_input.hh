@@ -23,12 +23,13 @@ class UserInput{
     float setCurrent = 0;
     float setPower = 0;
     float setResistance = 0;
-    char numbers[10];						//array of characters that will be converted to float later
-		int index = 0;							//index for array numbers[]
+    char numbers[10];						      //array of characters that will be converted to float later
+		int index = 0;							      //index for array numbers[]
     char key = ' '; 
-		bool decimalPoint = false;	//indicates if user already input a decimal point
-    float decimalPlace = 1;
-		uint32_t time;							//used to measure time from last action
+		bool decimalPointPresent = false;	//indicates if user already input a decimal point
+    float decimalPlace = 1;           //stores information where the encoder's cursor is
+    int cursorPos = 7;
+		uint32_t time;							      //used to measure time from last action
 };
 
 #endif

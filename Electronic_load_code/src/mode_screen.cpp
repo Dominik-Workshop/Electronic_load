@@ -72,6 +72,7 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
   lcd.setCursor(11,2);
   lcd.print("A");
 		while(1){
+			displayTemperature(lcd);
 			userInput.key = keypad.getKey();
 			if(userInput.key == Menu) 
 				mainMenu(lcd, userInput, keypad, encoder);	//return to menu
@@ -80,7 +81,8 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
 				userInput.time = millis();
 				userInput.index = 0;
 				x_pos = 0;
-				while(userInput.time + 5000 > millis()){  //exit 5s of inactivity
+				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
+					displayTemperature(lcd);
 					userInput.key = keypad.getKey();
 					if(userInput.key == Menu) 
 						mainMenu(lcd, userInput, keypad, encoder);
@@ -119,6 +121,7 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
   lcd.setCursor(11,2);
   lcd.print("W");
 	while(1){
+			displayTemperature(lcd);
 			userInput.key = keypad.getKey();
 			if(userInput.key == Menu) 
 				mainMenu(lcd, userInput, keypad, encoder);	//return to menu
@@ -127,7 +130,8 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 				userInput.time = millis();
 				userInput.index = 0;
 				x_pos = 0;
-				while(userInput.time + 5000 > millis()){  //exit 5s of inactivity
+				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
+					displayTemperature(lcd);
 					userInput.key = keypad.getKey();
 					if(userInput.key == Menu) 
 						mainMenu(lcd, userInput, keypad, encoder);
@@ -162,10 +166,12 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
   lcd.setCursor(0,2);
   lcd.print("Set R=");
 	lcd.setCursor(6,2);
-  lcd.print(userInput.setResistance, 3);
-  lcd.setCursor(11,2);
+  displayVal(userInput.setResistance, 10, 3, lcd);
+  lcd.setCursor(16,2);
   lcd.write(ohm);
+	userInput.cursorPos = 11;
 		while(1){
+			displayTemperature(lcd);
 			userInput.key = keypad.getKey();
 			if(userInput.key == Menu) 
 				mainMenu(lcd, userInput, keypad, encoder);	//return to menu
@@ -174,22 +180,36 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 				userInput.time = millis();
 				userInput.index = 0;
 				x_pos = 0;
-				while(userInput.time + 5000 > millis()){  //exit 5s of inactivity
+				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
+					displayTemperature(lcd);
 					userInput.key = keypad.getKey();
+					lcd.setCursor(userInput.cursorPos,2);
+					lcd.cursor();
+					delay(20);
 					if(userInput.key == Menu) 
 						mainMenu(lcd, userInput, keypad, encoder);
 					else if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.') 
 						inputFromKeypad(lcd, userInput, keypad, encoder, x_pos, userInput.setResistance);
           if(encoder.wasButtonPressed()){
-            if(userInput.decimalPlace > 0.001 )
-              userInput.decimalPlace = userInput.decimalPlace/10;
-            else 
-              userInput.decimalPlace = 1;
+						userInput.time = millis();
+            if(userInput.decimalPlace > 0.001 ){
+							userInput.decimalPlace = userInput.decimalPlace/10;
+							userInput.cursorPos++;
+						}
+            else{
+							userInput.decimalPlace = 1;
+							userInput.cursorPos = 11;
+						}
+						if(userInput.decimalPlace == 0.1){
+							userInput.cursorPos++;
+						}
           }
 					if(encoder.rotation()){
 						userInput.setResistance += encoder.rotation() * userInput.decimalPlace;
 						lcd.setCursor(6,2);
-						lcd.print(userInput.setResistance, 3);
+						displayVal(userInput.setResistance, 10, 3, lcd);
+						lcd.setCursor(userInput.cursorPos,2);
+						lcd.cursor();
 						encoder.reset();
 						userInput.time = millis();
 					}
@@ -210,6 +230,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, int& x_pos, float& setValue){
 	char numbers[] = {'\0', '0','0','0','0','0','0'};	 //array of characters that will be converted to float later
 	int index = 0;							                       //index for array numbers[]
+	lcd.noCursor();
 	while(userInput.time + 5000 > millis()){
 		if(userInput.key >= '0' && userInput.key <= '9'){               //check for keypad number input
 			numbers[index++] = userInput.key;
@@ -220,28 +241,51 @@ int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 			userInput.time = millis();
 		}
 
-		if(userInput.key == '.'){                                   //Decimal point
+		if(userInput.key == '.' && !userInput.decimalPointPresent){
 			numbers[index++] = '.';
 			numbers[index] = '\0';
 			lcd.setCursor(x_pos,3);
 			lcd.print(".");
 			x_pos++;
+			userInput.decimalPointPresent = true;
+		}
+
+		if(userInput.key == Delete){
+			lcd.setCursor(--x_pos,3);
+			lcd.print(" ");
+			numbers[--index] = '\0';
+			if(index == 0) return 1;	//if deleted all numbers exit function
 		}
 
 		if(userInput.key == Enter) {
 			setValue = atof(numbers);
 			lcd.setCursor(6,2);
-			lcd.print(setValue, 3);
+			displayVal(setValue, 10, 3, lcd);
 			lcd.setCursor(0,3);
 			lcd.print("       ");
 			x_pos = 0;
       encoder.reset();  //reset encoder in case it was turned while entering value via keypad
+			userInput.decimalPointPresent = false;
       return 0;
 		}
     userInput.key = keypad.getKey();
 	}
   encoder.reset();  //reset encoder in case it was turned while entering value via keypad
+	userInput.decimalPointPresent = false;
   lcd.setCursor(0,3);
 	lcd.print("       ");
 	return 0;
+}
+
+void displayTemperature(LiquidCrystal_I2C& lcd){
+	lcd.setCursor(16,3);
+	lcd.print(measureTemperature());
+	lcd.write(degree);
+	lcd.print("C");
+}
+
+void displayVal(float value, int numOfDigits, int digitsAfterDecimal, LiquidCrystal_I2C& lcd){
+		char displayValue[20];
+    dtostrf(value, numOfDigits, digitsAfterDecimal, displayValue);
+		lcd.print(displayValue);
 }
