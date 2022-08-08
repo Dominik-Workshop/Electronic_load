@@ -17,6 +17,8 @@
 #define LCD_ADDRESS 0x27
 #define RTC_ADDRESS 0x6f
 
+#define NUM_OF_READINGS 8 //how many readings to average out
+
 #define EEPROM_ADDRESS_DAC_CAL 0    //address for calibration value of DAC
 #define EEPROM_ADDRESS_ADC_I_CAL 1  //address for calibration value of ADC - current
 #define EEPROM_ADDRESS_ADC_U_CAL 2  //address for calibration value of ADC - voltage
