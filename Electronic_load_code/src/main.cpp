@@ -2,9 +2,9 @@
  * @file main.cpp
  * @author Dominik Workshop
  * @brief Electronic load with 5 different modes of operation:
- *  - Constant current,
- *  - Constant power,
- *  - Constant resistance,
+ *  - Constant current      0,001A - 9,999A,
+ *  - Constant power        0,01W - 200,00W,
+ *  - Constant resistance   0,1Ω - 9 999Ω,
  *  - Transient response
  *  - Battery capacity measurement
  * @version 0.1
@@ -40,8 +40,6 @@ void setup() {
   Adafruit_MCP4725 dac;
   Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
   Encoder encoder;
-  
-  //int x_pos;    //horizontal position of lcd cursor
 
   lcd.init();
   lcd.backlight();
