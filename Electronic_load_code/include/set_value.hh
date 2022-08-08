@@ -20,14 +20,14 @@
 class SetValue{
   public:
     float value;
-    float maxValue;
-    float minValue;
     void init(int digits, int decimals, float min, float max);
     void display(LiquidCrystal_I2C& lcd);
     void limit();
   private:
     int numOfDigits;
     int numOfDecimalPlaces;
+    float maxValue;
+    float minValue;
 };
 
 #endif
