@@ -13,6 +13,17 @@
 #define USER_INPUT_HH
 
 #include <Arduino.h>
+#include "set_value.hh"
+
+enum DecimalPlaces{
+  thousands,
+  hundreds,
+  tens,
+  ones,
+  tenths,
+  hundredths,
+  thousandths
+};
 
 /**
  * @brief used for storing data recieved from the user via keypad or rotary encoder
@@ -21,8 +32,8 @@
 class UserInput{
   public:
     float setCurrent = 0;
-    float setPower = 0;
-    float setResistance = 0;
+    SetValue setPower;
+    SetValue setResistance;
     char numbers[10];						      //array of characters that will be converted to float later
 		int index = 0;							      //index for array numbers[]
     char key = ' '; 
@@ -30,6 +41,7 @@ class UserInput{
     float decimalPlace = 1;           //stores information where the encoder's cursor is
     int cursorPos = 7;
 		uint32_t time;							      //used to measure time from last action
+    UserInput();
 };
 
 #endif
