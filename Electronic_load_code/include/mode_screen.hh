@@ -59,7 +59,7 @@ void displayVal(float value, int numOfDigits, int digitsAfterDecimal, LiquidCrys
   -------------------------------------------
 0 | C o n s t   P o w e r             O f f |
 1 | 0 0 . 0 0 0 V   0 . 0 0 0 A   0 . 0 0 W |
-2 | S e t   P = 0 . 0 0 0 W                 |
+2 | S e t   P = 0 0 0 . 0 0 W               |
 3 |                                 2 3 * C |
   -------------------------------------------
 
@@ -67,7 +67,7 @@ void displayVal(float value, int numOfDigits, int digitsAfterDecimal, LiquidCrys
   -------------------------------------------
 0 | C o n s t   R e s i s t a n c e   O f f |
 1 | 0 0 . 0 0 0 V   0 . 0 0 0 A   0 . 0 0 W |
-2 | S e t   R = 0 . 0 0 0 A                 |
+2 | S e t   R = 0 0 0 0 . 0 Ω               |
 3 |                                 2 3 * C |
   -------------------------------------------
 

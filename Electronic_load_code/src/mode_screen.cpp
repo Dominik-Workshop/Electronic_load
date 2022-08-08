@@ -166,10 +166,10 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
   lcd.setCursor(0,2);
   lcd.print("Set R=");
 	lcd.setCursor(6,2);
-  displayVal(userInput.setResistance, 10, 3, lcd);
-  lcd.setCursor(16,2);
+  displayVal(userInput.setResistance, 5, 1, lcd);
+  lcd.setCursor(12,2);
   lcd.write(ohm);
-	userInput.cursorPos = 11;
+	userInput.cursorPos = 9;
 		while(1){
 			displayTemperature(lcd);
 			userInput.key = keypad.getKey();
@@ -185,29 +185,33 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 					userInput.key = keypad.getKey();
 					lcd.setCursor(userInput.cursorPos,2);
 					lcd.cursor();
-					delay(20);
+					delay(100);
 					if(userInput.key == Menu) 
 						mainMenu(lcd, userInput, keypad, encoder);
 					else if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.') 
 						inputFromKeypad(lcd, userInput, keypad, encoder, x_pos, userInput.setResistance);
           if(encoder.wasButtonPressed()){
 						userInput.time = millis();
-            if(userInput.decimalPlace > 0.001 ){
+            if(userInput.decimalPlace > 0.1 ){
 							userInput.decimalPlace = userInput.decimalPlace/10;
-							userInput.cursorPos++;
+							++userInput.cursorPos;
 						}
             else{
-							userInput.decimalPlace = 1;
-							userInput.cursorPos = 11;
+							userInput.decimalPlace = 1000;
+							userInput.cursorPos = 6;
 						}
 						if(userInput.decimalPlace == 0.1){
-							userInput.cursorPos++;
+							++userInput.cursorPos;
 						}
           }
 					if(encoder.rotation()){
 						userInput.setResistance += encoder.rotation() * userInput.decimalPlace;
+						if(userInput.setResistance >= 10000)
+							userInput.setResistance = 9999.9;
+						else if(userInput.setResistance < 0) 
+							userInput.setResistance = 0;
 						lcd.setCursor(6,2);
-						displayVal(userInput.setResistance, 10, 3, lcd);
+						displayVal(userInput.setResistance, 5, 1, lcd);
 						lcd.setCursor(userInput.cursorPos,2);
 						lcd.cursor();
 						encoder.reset();
@@ -260,7 +264,7 @@ int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 		if(userInput.key == Enter) {
 			setValue = atof(numbers);
 			lcd.setCursor(6,2);
-			displayVal(setValue, 10, 3, lcd);
+			displayVal(setValue, 5, 1, lcd);
 			lcd.setCursor(0,3);
 			lcd.print("       ");
 			x_pos = 0;
@@ -286,6 +290,6 @@ void displayTemperature(LiquidCrystal_I2C& lcd){
 
 void displayVal(float value, int numOfDigits, int digitsAfterDecimal, LiquidCrystal_I2C& lcd){
 		char displayValue[20];
-    dtostrf(value, numOfDigits, digitsAfterDecimal, displayValue);
+    dtostrf(value, ++numOfDigits, digitsAfterDecimal, displayValue);
 		lcd.print(displayValue);
 }
