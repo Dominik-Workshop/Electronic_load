@@ -24,6 +24,7 @@ void welcomeScreen(LiquidCrystal_I2C& lcd){
 }
 
 void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder){
+	lcd.noCursor();
 	lcd.clear();
 	lcd.setCursor(0,0);
   lcd.print("1.Const. Current");  
@@ -78,7 +79,6 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
 			else if(userInput.key == Enter){
 				encoder.reset();
 				userInput.time = millis();
-				userInput.index = 0;
 				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
 					displayTemperature(lcd);
 					userInput.key = keypad.getKey();
@@ -100,6 +100,7 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
 						userInput.time = millis();
 					}
 				}
+				lcd.noCursor();
 			}
 			delay(10);	//wait 10ms before checking again what keypad was pressed
 		}
@@ -127,7 +128,6 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 			else if(userInput.key == Enter){
 				encoder.reset();
 				userInput.time = millis();
-				userInput.index = 0;
 				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
 					displayTemperature(lcd);
 					userInput.key = keypad.getKey();
@@ -165,6 +165,7 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 						userInput.time = millis();
 					}
 				}
+				lcd.noCursor();
 			}
 			delay(10);	//wait 10ms before checking again what keypad was pressed
 		}
@@ -192,7 +193,6 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 			else if(userInput.key == Enter){
 				encoder.reset();
 				userInput.time = millis();
-				userInput.index = 0;
 				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
 					displayTemperature(lcd);
 					userInput.key = keypad.getKey();
@@ -215,7 +215,7 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 							userInput.decimalPlace = 1000;
 							userInput.cursorPos = 6;
 						}
-						if(userInput.decimalPlace == 0.1){
+						if(userInput.decimalPlace == 0.1){	//jump across the decimal point
 							++userInput.cursorPos;
 						}
           }
@@ -230,6 +230,7 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 						userInput.time = millis();
 					}
 				}
+				lcd.noCursor();
 			}
 			delay(10);	//wait 10ms before checking again what keypad was pressed
 		}
@@ -244,51 +245,55 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 }
 
 int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setParameter){
-	char numbers[] = {'\0', '0','0','0','0','0','0'};	 //array of characters that will be converted to float later
+	char numbers[7] = {'\0', '0','0','0','0','0'};	 //array of characters that will be converted to float later
 	int index = 0;							                       //index for array numbers[]
-	int x_pos = 0;	//cursor position for entered numbers
+	bool decimalPointPresent = false;									 //indicates if user already input a decimal point
+	int x_pos = 0;																	 	 //cursor position for entered numbers
 	lcd.noCursor();
+
 	while(userInput.time + 5000 > millis()){
-		if(userInput.key >= '0' && userInput.key <= '9'){ //check for keypad number input
-			numbers[index++] = userInput.key;
-			numbers[index] = '\0';
-			lcd.setCursor(x_pos,3);                              
-			lcd.print(userInput.key);  //show number input on LCD
-			x_pos++;
-			userInput.time = millis();
-		}
+		if(index <=5){	//limit number of input characters  
+			if(userInput.key >= '0' && userInput.key <= '9'){	//is digit
+				numbers[index] = userInput.key;
+				numbers[++index] = '\0';
+				lcd.setCursor(x_pos,3);                              
+				lcd.print(userInput.key);  //show number input on LCD
+				x_pos++;
+				userInput.time = millis();
+			}
 
-		if(userInput.key == '.' && !userInput.decimalPointPresent){
-			numbers[index++] = '.';
-			numbers[index] = '\0';
-			lcd.setCursor(x_pos,3);
-			lcd.print(".");
-			x_pos++;
-			userInput.decimalPointPresent = true;
+			if(userInput.key == '.' && !decimalPointPresent){
+				numbers[index] = '.';
+				numbers[++index] = '\0';
+				lcd.setCursor(x_pos,3);
+				lcd.print(".");
+				x_pos++;
+				decimalPointPresent = true;
+			}
 		}
-
+		
 		if(userInput.key == Delete){
 			lcd.setCursor(--x_pos,3);
 			lcd.print(" ");
 			numbers[--index] = '\0';
-			if(index == 0) return 1;	//if deleted all numbers exit function
+			if(index == 0) 
+				return 1;	//if deleted all numbers exit function
 		}
 
 		if(userInput.key == Enter) {
-			setParameter.value = atof(numbers);
+			setParameter.value = atof(numbers);		//convert array of entered numbers to float and write it to SetValue variable
 			setParameter.limit();
 			lcd.setCursor(6,2);
 			setParameter.display(lcd);
 			lcd.setCursor(0,3);
-			lcd.print("       ");
-			userInput.decimalPointPresent = false;
+			lcd.print("       ");		//clear all entered numbers from the screen
+			decimalPointPresent = false;
       return 0;
 		}
     userInput.key = keypad.getKey();
 	}
-	userInput.decimalPointPresent = false;
   lcd.setCursor(0,3);
-	lcd.print("       ");
+	lcd.print("       ");		//clear all entered numbers from the screen
 	return 0;
 }
 
