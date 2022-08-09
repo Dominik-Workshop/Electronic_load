@@ -34,13 +34,10 @@ class UserInput{
     float setCurrent = 0;
     SetValue setPower;
     SetValue setResistance;
-    char numbers[10];						      //array of characters that will be converted to float later
-		int index = 0;							      //index for array numbers[]
-    char key = ' '; 
-		bool decimalPointPresent = false;	//indicates if user already input a decimal point
-    float decimalPlace = 1;           //stores information where the encoder's cursor is
+    char key = ' ';               //stores one character entered from keypad
+    float decimalPlace = 1;       //stores information where the encoder's cursor is
     int cursorPos = 7;
-		uint32_t time;							      //used to measure time from last action
+		uint32_t time;							  //used to measure time from last action
     UserInput();
 };
 
