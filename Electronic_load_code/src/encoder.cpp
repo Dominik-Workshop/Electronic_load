@@ -14,12 +14,20 @@
 
 Encoder * Encoder::instance;
 
+/**
+ * @brief initializes the Encoder, attaches interrupts to appropriate pins
+ * 
+ */
 void Encoder::begin(){
   attachInterrupt(digitalPinToInterrupt(ENCODER_A), isrRotation, LOW);
   attachInterrupt(digitalPinToInterrupt(ENCODER_BUTTON), isrButton, FALLING);
   instance = this;
 }
 
+/**
+ * @brief resets both the counter that indicates rotation and a flag that indicates that the Encoder's button was pressed
+ * 
+ */
 void Encoder::reset(){
   counter = 0;
   buttonPressed = false;
@@ -71,7 +79,7 @@ bool Encoder::wasButtonPressed(){
 /**
  * @brief checks how many steps was the encoder rotated since last Encoder::reset()
  * 
- * @return int number of steps, positive value if rotated clockwise, negative if anticlockwise
+ * @return int number of steps, the value increases if rotated clockwise, decreases if rotated anticlockwise
  */
 int Encoder::rotation(){
   return counter;
