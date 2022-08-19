@@ -19,7 +19,5 @@ char hexaKeys[KEYPAD_ROWS][KEYPAD_COLS] = {
   {'.','0','#', Delete}
 };
 
-// uint8_t rowPins[KEYPAD_ROWS] = {KP1, KP2, KP3, KP4}; //connect to the row pin outs of the keypad
-// uint8_t colPins[KEYPAD_COLS] = {KP5, KP6, KP7, KP8}; //connect to the column pin outs of the keypad
-uint8_t rowPins[KEYPAD_ROWS] = {12, 11, 10, 9}; //connect to the row pin outs of the keypad
-uint8_t colPins[KEYPAD_COLS] = {8, 7, 6, 5}; //connect to the column pin outs of the keypad
+uint8_t rowPins[KEYPAD_ROWS] = {KP1, KP2, KP3, KP4}; //connect to the row pin outs of the keypad
+uint8_t colPins[KEYPAD_COLS] = {KP5, KP6, KP7, KP8}; //connect to the column pin outs of the keypad
