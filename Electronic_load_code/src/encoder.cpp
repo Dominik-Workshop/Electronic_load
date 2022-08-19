@@ -48,9 +48,9 @@ void Encoder::handleInterruptRotation(){
   // If interrupts come faster than 5ms, assume it's a bounce and ignore
   if(interruptTime - lastInterruptTime > 5){
     if(digitalRead(ENCODER_B) == LOW) 
-      counter++;
-    else 
       counter--;
+    else 
+      counter++;
   }
 
   lastInterruptTime = interruptTime;
