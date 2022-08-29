@@ -24,16 +24,7 @@ void welcomeScreen(LiquidCrystal_I2C& lcd){
 }
 
 void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac){
-	lcd.noCursor();
-	lcd.clear();
-	lcd.setCursor(0,0);
-  lcd.print("1.Const. Current");  
-  lcd.setCursor(0,1);
-  lcd.print("2.Const. Power");
-  lcd.setCursor(0,2);
-  lcd.print("3.Const. Resistance");
-  lcd.setCursor(0,3);
-  lcd.print("4.Transient  5.Batt.");
+	displayMenu(lcd);
 
 	while(1){
 		switch (keypad.getKey()){
@@ -253,7 +244,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 }
 
 int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setParameter){
-	char numbers[7] = {'\0', '0','0','0','0','0'};	 //array of characters that will be converted to float later
+	char numbers[7] = {'\0', '0','0','0','0','0'};	 	 //array of characters that will be converted to float later
 	int index = 0;							                       //index for array numbers[]
 	bool decimalPointPresent = false;									 //indicates if user already input a decimal point
 	int x_pos = 0;																	 	 //cursor position for entered numbers
@@ -303,6 +294,19 @@ int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
   lcd.setCursor(0,3);
 	lcd.print("       ");		//clear all entered numbers from the screen
 	return 0;
+}
+
+void displayMenu(LiquidCrystal_I2C& lcd){
+	lcd.noCursor();
+	lcd.clear();
+	lcd.setCursor(0,0);
+  lcd.print("1.Const. Current");  
+  lcd.setCursor(0,1);
+  lcd.print("2.Const. Power");
+  lcd.setCursor(0,2);
+  lcd.print("3.Const. Resistance");
+  lcd.setCursor(0,3);
+  lcd.print("4.Transient  5.Batt.");
 }
 
 void displayTemperature(LiquidCrystal_I2C& lcd){
