@@ -8,5 +8,5 @@ Has 5 modes of operation:
 - battery capacity
 
 <p align="center">
-  <img src="/images/insides" />
+  <img src="/images/insides.png" />
 </p>
