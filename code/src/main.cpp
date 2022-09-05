@@ -20,11 +20,11 @@
 #include <Adafruit_MCP4725.h>
 #include <LiquidCrystal_I2C.h>
 #include <SPI.h>
+//#include <MCP79410_Timer.h>
 
 #include "defines.hh"
 #include "init.hh"
 #include "calibration.hh"
-#include "temperature.hh"
 #include "encoder.hh"
 #include "keypad_config.hh"
 #include "lcd_characters.hh"
@@ -42,7 +42,7 @@ void setup() {
   Encoder encoder;
 
   lcd.init();
-  lcd.backlight();
+  lcd.backlight();              //turn the backlight on
   lcd.createChar(degree, degreeSymbol);
   lcd.createChar(ohm, ohmSymbol);
   adc.begin(ADC_ADDRESS);
@@ -54,10 +54,11 @@ void setup() {
 
   pinInit();
   calibrationValues.readFromEEPROM();
+  digitalWrite(OUTPUT_OFF,HIGH);
 
   welcomeScreen(lcd);
   delay(3000);
-  mainMenu(lcd, userInput, keypad, encoder);
+  mainMenu(lcd, userInput, keypad, encoder, adc, dac);
 }
 
 void loop(){
