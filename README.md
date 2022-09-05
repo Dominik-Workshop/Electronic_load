@@ -1,6 +1,6 @@
 # DC Electronic load
 
-# Project Goals
+### Project Goals
 :heavy_check_mark: **300 W power dissipation**
 
 :heavy_check_mark: **up to 10 A and 60V** (obeying the 300W limit)
@@ -37,9 +37,9 @@
   - [ ] Charging State
   - [ ] Const. power regulation
   - [ ] Const. resistance regulation
-- [ ] Hardware
-  - [ ] Paint the enclosure
-  - [ ] Connect everything
+- [ ] Hardware (future version upgrades)
+  - [ ] Reverse polarity protection
+  - [ ] Better heat dissipation from shunts
 
 ### Uploading the code using USBASP
 add following code to the platformio.ini file
