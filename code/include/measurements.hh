@@ -1,7 +1,7 @@
 /**
  * @file measurements.hh
  * @author Dominik Workshop
- * @brief 
+ * @brief takes voltage and current measurements, calculates power, stores these values, can display all the measurements on the lcd
  * @version 0.1
  * @date 2022-08-29
  * 
@@ -15,6 +15,10 @@
 #include <Adafruit_ADS1X15.h>
 #include <LiquidCrystal_I2C.h>
 
+/**
+ * @brief contains measured voltage, current and calculated power
+ * 
+ */
 class Measurements{
   public:
     float voltage;
@@ -25,6 +29,7 @@ class Measurements{
     void displayMeasurements(LiquidCrystal_I2C& lcd);
   private:
     void display(LiquidCrystal_I2C& lcd, float value, int numOfDigits, int numOfDecimalPlaces);
+    void noLessThanZero(float& value);
 };
 
 #endif
