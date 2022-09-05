@@ -10,6 +10,7 @@
  */
 
 #include "mode_screen.hh"
+#include "measurements.hh"
 
 void welcomeScreen(LiquidCrystal_I2C& lcd){
 	lcd.clear();
@@ -163,6 +164,7 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 }
 
 void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac){
+	Measurements measurements;
 	lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Const Resistance");  
@@ -178,9 +180,9 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 	userInput.decimalPlace = 1;
 		while(1){
 			displayTemperature(lcd);
+			measurements.update(adc);
+			measurements.displayMeasurements(lcd);
 			dac.setVoltage(userInput.setResistance.value, false);
-			lcd.setCursor(0,3);
-			lcd.print(adc.computeVolts(adc.readADC_SingleEnded(0)));
 			userInput.key = keypad.getKey();
 			if(userInput.key == Menu) 
 				mainMenu(lcd, userInput, keypad, encoder, adc, dac);	//return to menu
@@ -189,6 +191,8 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 				userInput.time = millis();
 				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
 					displayTemperature(lcd);
+					measurements.update(adc);
+					measurements.displayMeasurements(lcd);
 					userInput.key = keypad.getKey();
 					lcd.setCursor(userInput.cursorPos,2);
 					lcd.cursor();
