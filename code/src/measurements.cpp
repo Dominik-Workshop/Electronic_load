@@ -17,10 +17,12 @@
  * @param adc 
  */
 void Measurements::update(Adafruit_ADS1115& adc){
+  adc.setGain(GAIN_EIGHT);
             //        reading_from_adc / resolution * Vmax * attenuation
-  voltage = (adc.readADC_Differential_2_3()/ 32768.0) * 0.256 * 100;
+  voltage = (adc.readADC_Differential_2_3()/ 32768.0) * 0.512 * 100;
   noLessThanZero(voltage);
             //      reading_from_adc / resolution * Vmax / R  * number of shunts
+  adc.setGain(GAIN_SIXTEEN);
   current = ((adc.readADC_SingleEnded(0) / 32768.0) * 0.256 / 0.1) * 4;
   noLessThanZero(current);
   power = voltage * current;
@@ -29,11 +31,11 @@ void Measurements::update(Adafruit_ADS1115& adc){
 void Measurements::displayMeasurements(LiquidCrystal_I2C& lcd){
   power = voltage * current;
   lcd.setCursor(0,1);
-  display(lcd, voltage, 5, 2);
+  display(lcd, voltage, 4, 2);
   lcd.print("V ");
   display(lcd, current, 4, 3);
   lcd.print("A ");
-  display(lcd, power, 3, 1);
+  display(lcd, power, 4, 1);
   lcd.print("W");
 }
 
