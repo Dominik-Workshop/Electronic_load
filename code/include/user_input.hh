@@ -16,13 +16,13 @@
 #include "set_value.hh"
 
 enum DecimalPlaces{
-  thousands,
-  hundreds,
-  tens,
-  ones,
-  tenths,
-  hundredths,
-  thousandths
+  thousandths = -3, //0.01
+  hundredths,       //0.01
+  tenths,           //0.1
+  ones,             //1
+  tens,             //10
+  hundreds,         //100
+  thousands         //1000
 };
 
 /**
@@ -31,11 +31,11 @@ enum DecimalPlaces{
  */
 class UserInput{
   public:
-    float setCurrent = 0;
+    SetValue setCurrent;
     SetValue setPower;
     SetValue setResistance;
     char key = ' ';               //stores one character entered from keypad
-    float decimalPlace = 1;       //stores information where the encoder's cursor is
+    float decimalPlace = ones;       //stores information where the encoder's cursor is
     int cursorPos = 7;
 		uint32_t time;							  //used to measure time from last action
     UserInput();
