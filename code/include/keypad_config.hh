@@ -16,7 +16,7 @@
 #include "defines.hh"
 
 enum SpecialKeys{
-    LoadOnOff,
+    LoadOnOff = -4,
     Menu,
     Enter,
     Delete
