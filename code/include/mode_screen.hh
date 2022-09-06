@@ -34,6 +34,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setValue);
 void displayMenu(LiquidCrystal_I2C& lcd);
 void displayTemperature(LiquidCrystal_I2C& lcd);
+void loadOnOffToggle(LiquidCrystal_I2C& lcd);
 
 #endif
 
