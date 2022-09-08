@@ -11,25 +11,28 @@
 
 #include "measurements.hh"
 
+Measurements::Measurements(){
+  calibration.readFromEEPROM();
+}
+
 /**
- * @brief make votage and current readings
+ * @brief make votage, current and temperature readings, calculate power and store these values
  * 
  * @param adc 
  */
 void Measurements::update(Adafruit_ADS1115& adc){
-  adc.setGain(GAIN_EIGHT);
-            //        reading_from_adc / resolution * Vmax * attenuation
-  voltage = (adc.readADC_Differential_2_3()/ 32768.0) * 0.512 * 100;
-  noLessThanZero(voltage);
-            //      reading_from_adc / resolution * Vmax / R  * number of shunts
-  adc.setGain(GAIN_SIXTEEN);
-  current = ((adc.readADC_SingleEnded(0) / 32768.0) * 0.256 / 0.1) * 4;
-  noLessThanZero(current);
+  measureVoltage(adc);
+  measureCurrent(adc);
+  measureTemperature();
   power = voltage * current;
 }
 
+/**
+ * @brief displays voltage, current, power and temperature
+ * 
+ * @param lcd 
+ */
 void Measurements::displayMeasurements(LiquidCrystal_I2C& lcd){
-  power = voltage * current;
   lcd.setCursor(0,1);
   display(lcd, voltage, 4, 2);
   lcd.print("V ");
@@ -37,6 +40,37 @@ void Measurements::displayMeasurements(LiquidCrystal_I2C& lcd){
   lcd.print("A ");
   display(lcd, power, 4, 1);
   lcd.print("W");
+  lcd.setCursor(16,3);
+	lcd.print(temperature);
+	lcd.write(degree);
+	lcd.print("C");
+}
+
+float Measurements::measureVoltage(Adafruit_ADS1115& adc){
+  adc.setGain(GAIN_EIGHT);  // 8x gain   +/- 0.512V  1 bit = 0.015625mV
+            //        reading_from_adc / resolution * Vmax * attenuation
+  voltage = ((adc.readADC_Differential_2_3()/ 32768.0) * 0.512 * 100) * (0.95 + calibration.voltage/2550.0);
+  noLessThanZero(voltage);
+  return voltage;
+}
+
+float Measurements::measureCurrent(Adafruit_ADS1115& adc){
+  adc.setGain(GAIN_SIXTEEN);  // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
+            //      reading_from_adc / resolution * Vmax / R  * number of shunts
+  current = (((adc.readADC_SingleEnded(0) / 32768.0) * 0.256 / 0.1) * 4) * (0.95 + calibration.current/2550.0);
+  noLessThanZero(current);
+  return current;
+}
+
+int Measurements::measureTemperature(){
+  int Vo;
+  float R2, logR2;
+  Vo = analogRead(THERMISTOR);
+  R2 = R1 * (1023.0 / (float)Vo - 1.0);
+  logR2 = log(R2);
+  temperature = (1.0 / (c1 + c2 * logR2 + c3 * logR2 * logR2 * logR2));
+  temperature = temperature - 273.15;
+  return temperature;
 }
 
 /**
