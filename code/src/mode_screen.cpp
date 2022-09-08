@@ -68,6 +68,10 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
   lcd.print("A");
 		while(1){
 			measurements.update(adc);
+			if(prev == 1){
+				measurements.current = 0;
+				measurements.power = 0;
+			}
 			measurements.displayMeasurements(lcd);
 			fanControll(measurements);
 			dac.setVoltage(userInput.setCurrent.value * 275, false);
@@ -83,6 +87,8 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
 					userInput.time = millis();
 					while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
 						measurements.update(adc);
+						if(prev == 1)
+							measurements.current = 0;
 						measurements.displayMeasurements(lcd);
 						fanControll(measurements);
 						userInput.key = keypad.getKey();
@@ -287,57 +293,46 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 	digitalWrite(OUTPUT_OFF, LOW);	//don't sink any current
 	lcd.setCursor(0, 2);
 	lcd.print("cal multiplier=");
-	lastCalibrationValue = measurements.calibration.voltageMultiplier;
+	lastCalibrationValue = measurements.calibration.getVoltageMultiplier();
 	encoder.reset();
 	while(keypad.getKey() != Enter){
 		measurements.update(adc);
 		measurements.displayMeasurements(lcd);
-		measurements.calibration.voltageMultiplier = lastCalibrationValue + encoder.rotation();
-		if (measurements.calibration.voltageMultiplier < 0)
-			measurements.calibration.voltageMultiplier = 0;
-		else if(measurements.calibration.voltageMultiplier > 255)
-			measurements.calibration.voltageMultiplier = 255;
+		measurements.calibration.setVoltageMultiplier(lastCalibrationValue + encoder.rotation());
 		lcd.setCursor(15,2);
-		lcd.print(measurements.calibration.voltageMultiplier);
+		lcd.print(measurements.calibration.getVoltageMultiplier());
 		lcd.print("  ");
 	}
 	lcd.setCursor(0, 0);
 	lcd.print("Calibrate current ");
 	digitalWrite(OUTPUT_OFF, HIGH);	//turn on the load
 	dac.setVoltage(4095, false);		//short the input of the load
-	lastCalibrationValue = measurements.calibration.currentMultiplier;
+	lastCalibrationValue = measurements.calibration.getCurrentMultiplier();
 	encoder.reset();
 	while(keypad.getKey() != Enter){
 		measurements.update(adc);
 		measurements.displayMeasurements(lcd);
-		measurements.calibration.currentMultiplier = lastCalibrationValue + encoder.rotation();
-		if (measurements.calibration.currentMultiplier < 0)
-			measurements.calibration.currentMultiplier = 0;
-		else if(measurements.calibration.currentMultiplier > 255)
-			measurements.calibration.currentMultiplier = 255;
+		measurements.calibration.setCurrentMultiplier(lastCalibrationValue + encoder.rotation());
 		lcd.setCursor(15,2);
-		lcd.print(measurements.calibration.currentMultiplier);
+		lcd.print(measurements.calibration.getCurrentMultiplier());
 		lcd.print("  ");
 	}
 	lcd.setCursor(0, 2);
-	lcd.print("cal offset=");
-	lastCalibrationValue = measurements.calibration.currentOffset;
+	lcd.print("cal offset    =");
+	lastCalibrationValue = measurements.calibration.getCurrentOffset();
 	encoder.reset();
 	while(keypad.getKey() != Enter){
 		measurements.update(adc);
 		measurements.displayMeasurements(lcd);
-		measurements.calibration.currentOffset = lastCalibrationValue + encoder.rotation();
-		if (measurements.calibration.currentOffset < 0)
-			measurements.calibration.currentOffset = 0;
-		else if(measurements.calibration.currentOffset > 255)
-			measurements.calibration.currentOffset = 255;
+		measurements.calibration.setCurrentOffset(lastCalibrationValue + encoder.rotation());
 		lcd.setCursor(15,2);
-		lcd.print(measurements.calibration.currentOffset);
+		lcd.print(measurements.calibration.getCurrentOffset());
 		lcd.print("  ");
 	}
 	measurements.calibration.writeToEEPROM();
 	mainMenu(lcd, userInput, keypad, encoder, adc, dac, measurements);	//return to menu
 	digitalWrite(OUTPUT_OFF, LOW); //turn the load off
+	prev = 1;
 }
 
 int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setParameter){
