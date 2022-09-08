@@ -14,6 +14,7 @@
 
 #include <Adafruit_ADS1X15.h>
 #include <LiquidCrystal_I2C.h>
+#include <math.h>
 
 #include "defines.hh"
 #include "lcd_characters.hh"

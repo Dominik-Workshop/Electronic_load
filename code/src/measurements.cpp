@@ -38,7 +38,7 @@ void Measurements::displayMeasurements(LiquidCrystal_I2C& lcd){
   lcd.print("V ");
   display(lcd, current, 4, 3);
   lcd.print("A ");
-  display(lcd, power, 4, 1);
+  display(lcd, power, 4, 2);
   lcd.print("W");
   lcd.setCursor(16,3);
 	lcd.print(temperature);
@@ -49,7 +49,7 @@ void Measurements::displayMeasurements(LiquidCrystal_I2C& lcd){
 float Measurements::measureVoltage(Adafruit_ADS1115& adc){
   adc.setGain(GAIN_EIGHT);  // 8x gain   +/- 0.512V  1 bit = 0.015625mV
             //        reading_from_adc / resolution * Vmax * attenuation
-  voltage = ((adc.readADC_Differential_2_3()/ 32768.0) * 0.512 * 100) * (0.95 + calibration.voltageMultiplier/2550.0);
+  voltage = ((adc.readADC_Differential_2_3()/ 32768.0) * 0.512 * 100) * (0.95 + calibration.getVoltageMultiplier()/2550.0);
   noLessThanZero(voltage);
   return voltage;
 }
@@ -57,7 +57,7 @@ float Measurements::measureVoltage(Adafruit_ADS1115& adc){
 float Measurements::measureCurrent(Adafruit_ADS1115& adc){
   adc.setGain(GAIN_SIXTEEN);  // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
             //      reading_from_adc / resolution * Vmax / R  * number of shunts
-  current = (((adc.readADC_SingleEnded(0) / 32768.0) * 0.256 / 0.1) * 4) * (0.95 + calibration.currentMultiplier/2550.0) + calibration.currentOffset/25500.0;
+  current = (((adc.readADC_SingleEnded(0) / 32768.0) * 0.256 / 0.1) * 4) * (0.95 + calibration.getCurrentMultiplier()/2550.0) + calibration.getCurrentOffset()/25500.0;
   noLessThanZero(current);
   return current;
 }
@@ -83,6 +83,11 @@ int Measurements::measureTemperature(){
  */
 void Measurements::display(LiquidCrystal_I2C& lcd, float value, int numOfDigits, int numOfDecimalPlaces){
   char displayValue[10];
+
+   //when value is bigger than expected decrease the resolution to fit on the display 
+  if(value >= pow(10, (numOfDigits-numOfDecimalPlaces)))
+    --numOfDecimalPlaces;
+    
   dtostrf(value, (numOfDigits + 1), numOfDecimalPlaces, displayValue);
 	lcd.print(displayValue);
 }
