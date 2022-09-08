@@ -15,16 +15,25 @@
 #include "defines.hh"
 
 /**
- * @brief contains calibration values for the DAC and ADC
+ * @brief contains calibration values for the ADC
  * 
  */
-class CalibrationValues{
+class AdcCalibration{
   public:
-    int DAC;               //set current - calibration multiplier
-    int ADC_current;       //measured current - calibration multiplier
-    int ADC_voltage;       //measured voltage - calibration multiplier
+    int current;       //measured current - calibration multiplier 0-255
+    int voltage;       //measured voltage - calibration multiplier 0-255
     void readFromEEPROM();
-    void save(int dac, int adc_i, int adc_u);
+    void writeToEEPROM();
+};
+
+/**
+ * @brief contains calibration values for the DAC
+ * 
+ */
+class DacCalibration{
+  public:
+    int dac;               //set current - calibration multiplier 0-255
+    void readFromEEPROM();
     void writeToEEPROM();
 };
 

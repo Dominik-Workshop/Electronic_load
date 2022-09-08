@@ -16,32 +16,33 @@
  * @brief reads calibration values from EEPROM
  * 
  */
-void CalibrationValues::readFromEEPROM(){
-  DAC = EEPROM.read(EEPROM_ADDRESS_DAC_CAL);
-  ADC_current = EEPROM.read(EEPROM_ADDRESS_ADC_I_CAL);
-  ADC_voltage = EEPROM.read(EEPROM_ADDRESS_ADC_U_CAL);
+void AdcCalibration::readFromEEPROM(){
+  current = EEPROM.read(EEPROM_ADDRESS_ADC_I_CAL);
+  voltage = EEPROM.read(EEPROM_ADDRESS_ADC_U_CAL);
 }
 
 /**
  * @brief saves current calibration values in EEPROM
  * 
  */
-void CalibrationValues::writeToEEPROM(){
-  EEPROM.write(EEPROM_ADDRESS_DAC_CAL, DAC);
-  EEPROM.write(EEPROM_ADDRESS_ADC_I_CAL, ADC_current);
-  EEPROM.write(EEPROM_ADDRESS_ADC_U_CAL, ADC_voltage);
+void AdcCalibration::writeToEEPROM(){
+  EEPROM.write(EEPROM_ADDRESS_ADC_I_CAL, current);
+  EEPROM.write(EEPROM_ADDRESS_ADC_U_CAL, voltage);
+}
+
+
+/**
+ * @brief reads calibration values from EEPROM
+ * 
+ */
+void DacCalibration::readFromEEPROM(){
+  dac = EEPROM.read(EEPROM_ADDRESS_DAC_CAL);
 }
 
 /**
- * @brief saves new calibration values until power down,
- * to store it permanently use "writeToEEPROM" method
+ * @brief saves current calibration values in EEPROM
  * 
- * @param dac new calibration value for the DAC
- * @param adc_i new calibration value for the ADC_current
- * @param adc_u new calibration value for the ADC_voltage
  */
-void CalibrationValues::save(int dac, int adc_i, int adc_u){
-  DAC = dac;
-  ADC_current = adc_i;
-  ADC_voltage = adc_u;
+void DacCalibration::writeToEEPROM(){
+  EEPROM.write(EEPROM_ADDRESS_DAC_CAL, dac);
 }
