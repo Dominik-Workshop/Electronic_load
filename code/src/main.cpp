@@ -24,41 +24,41 @@
 
 #include "defines.hh"
 #include "init.hh"
-#include "calibration.hh"
 #include "encoder.hh"
 #include "keypad_config.hh"
 #include "lcd_characters.hh"
 #include "mode_screen.hh"
 #include "user_input.hh"
+#include "measurements.hh"
 
 
 void setup() {
-  CalibrationValues calibrationValues;
   UserInput userInput;
   LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
   Adafruit_ADS1115 adc;
   Adafruit_MCP4725 dac;
   Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
   Encoder encoder;
+  Measurements measurements;
+
+  //TCCR0B = TCCR0B & B11111000 | B00000001; // PWM 31372.55 Hz pins 5 and 6
 
   lcd.init();
   lcd.backlight();              //turn the backlight on
   lcd.createChar(degree, degreeSymbol);
   lcd.createChar(ohm, ohmSymbol);
   adc.begin(ADC_ADDRESS);
-  adc.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
   dac.begin(DAC_ADDRESS);
   encoder.begin();
 
   Serial.begin(9600);
 
   pinInit();
-  calibrationValues.readFromEEPROM();
-  digitalWrite(OUTPUT_OFF,HIGH);
+  digitalWrite(OUTPUT_OFF, LOW);      //Load turned off on power up
 
   welcomeScreen(lcd);
   delay(3000);
-  mainMenu(lcd, userInput, keypad, encoder, adc, dac);
+  mainMenu(lcd, userInput, keypad, encoder, adc, dac, measurements);
 }
 
 void loop(){
