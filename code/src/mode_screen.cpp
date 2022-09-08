@@ -287,36 +287,52 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 	digitalWrite(OUTPUT_OFF, LOW);	//don't sink any current
 	lcd.setCursor(0, 2);
 	lcd.print("cal multiplier=");
-	lastCalibrationValue = measurements.calibration.voltage;
+	lastCalibrationValue = measurements.calibration.voltageMultiplier;
 	encoder.reset();
 	while(keypad.getKey() != Enter){
 		measurements.update(adc);
 		measurements.displayMeasurements(lcd);
-		measurements.calibration.voltage = lastCalibrationValue + encoder.rotation();
-		if (measurements.calibration.voltage < 0)
-			measurements.calibration.voltage = 0;
-		else if(measurements.calibration.voltage > 255)
-			measurements.calibration.voltage = 255;
+		measurements.calibration.voltageMultiplier = lastCalibrationValue + encoder.rotation();
+		if (measurements.calibration.voltageMultiplier < 0)
+			measurements.calibration.voltageMultiplier = 0;
+		else if(measurements.calibration.voltageMultiplier > 255)
+			measurements.calibration.voltageMultiplier = 255;
 		lcd.setCursor(15,2);
-		lcd.print(measurements.calibration.voltage);
+		lcd.print(measurements.calibration.voltageMultiplier);
 		lcd.print("  ");
 	}
 	lcd.setCursor(0, 0);
 	lcd.print("Calibrate current ");
 	digitalWrite(OUTPUT_OFF, HIGH);	//turn on the load
 	dac.setVoltage(4095, false);		//short the input of the load
-	lastCalibrationValue = measurements.calibration.current;
+	lastCalibrationValue = measurements.calibration.currentMultiplier;
 	encoder.reset();
 	while(keypad.getKey() != Enter){
 		measurements.update(adc);
 		measurements.displayMeasurements(lcd);
-		measurements.calibration.current = lastCalibrationValue + encoder.rotation();
-		if (measurements.calibration.current < 0)
-			measurements.calibration.current = 0;
-		else if(measurements.calibration.current > 255)
-			measurements.calibration.current = 255;
+		measurements.calibration.currentMultiplier = lastCalibrationValue + encoder.rotation();
+		if (measurements.calibration.currentMultiplier < 0)
+			measurements.calibration.currentMultiplier = 0;
+		else if(measurements.calibration.currentMultiplier > 255)
+			measurements.calibration.currentMultiplier = 255;
 		lcd.setCursor(15,2);
-		lcd.print(measurements.calibration.current);
+		lcd.print(measurements.calibration.currentMultiplier);
+		lcd.print("  ");
+	}
+	lcd.setCursor(0, 2);
+	lcd.print("cal offset=");
+	lastCalibrationValue = measurements.calibration.currentOffset;
+	encoder.reset();
+	while(keypad.getKey() != Enter){
+		measurements.update(adc);
+		measurements.displayMeasurements(lcd);
+		measurements.calibration.currentOffset = lastCalibrationValue + encoder.rotation();
+		if (measurements.calibration.currentOffset < 0)
+			measurements.calibration.currentOffset = 0;
+		else if(measurements.calibration.currentOffset > 255)
+			measurements.calibration.currentOffset = 255;
+		lcd.setCursor(15,2);
+		lcd.print(measurements.calibration.currentOffset);
 		lcd.print("  ");
 	}
 	measurements.calibration.writeToEEPROM();

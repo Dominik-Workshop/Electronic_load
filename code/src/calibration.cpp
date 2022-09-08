@@ -17,8 +17,9 @@
  * 
  */
 void AdcCalibration::readFromEEPROM(){
-  current = EEPROM.read(EEPROM_ADDRESS_ADC_I_CAL);
-  voltage = EEPROM.read(EEPROM_ADDRESS_ADC_U_CAL);
+  voltageMultiplier = EEPROM.read(EEPROM_ADDRESS_ADC_U_CAL);
+  currentMultiplier = EEPROM.read(EEPROM_ADDRESS_ADC_I_CAL);
+  currentOffset = EEPROM.read(EEPROM_ADDRESS_ADC_I_OFFSET_CAL);
 }
 
 /**
@@ -26,8 +27,9 @@ void AdcCalibration::readFromEEPROM(){
  * 
  */
 void AdcCalibration::writeToEEPROM(){
-  EEPROM.write(EEPROM_ADDRESS_ADC_I_CAL, current);
-  EEPROM.write(EEPROM_ADDRESS_ADC_U_CAL, voltage);
+  EEPROM.write(EEPROM_ADDRESS_ADC_U_CAL, voltageMultiplier);
+  EEPROM.write(EEPROM_ADDRESS_ADC_I_CAL, currentMultiplier);
+  EEPROM.write(EEPROM_ADDRESS_ADC_I_OFFSET_CAL, currentOffset);
 }
 
 
@@ -36,7 +38,7 @@ void AdcCalibration::writeToEEPROM(){
  * 
  */
 void DacCalibration::readFromEEPROM(){
-  dac = EEPROM.read(EEPROM_ADDRESS_DAC_CAL);
+  dacMultiplier = EEPROM.read(EEPROM_ADDRESS_DAC_CAL);
 }
 
 /**
@@ -44,5 +46,5 @@ void DacCalibration::readFromEEPROM(){
  * 
  */
 void DacCalibration::writeToEEPROM(){
-  EEPROM.write(EEPROM_ADDRESS_DAC_CAL, dac);
+  EEPROM.write(EEPROM_ADDRESS_DAC_CAL, dacMultiplier);
 }

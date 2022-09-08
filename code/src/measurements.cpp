@@ -49,7 +49,7 @@ void Measurements::displayMeasurements(LiquidCrystal_I2C& lcd){
 float Measurements::measureVoltage(Adafruit_ADS1115& adc){
   adc.setGain(GAIN_EIGHT);  // 8x gain   +/- 0.512V  1 bit = 0.015625mV
             //        reading_from_adc / resolution * Vmax * attenuation
-  voltage = ((adc.readADC_Differential_2_3()/ 32768.0) * 0.512 * 100) * (0.95 + calibration.voltage/2550.0);
+  voltage = ((adc.readADC_Differential_2_3()/ 32768.0) * 0.512 * 100) * (0.95 + calibration.voltageMultiplier/2550.0);
   noLessThanZero(voltage);
   return voltage;
 }
@@ -57,7 +57,7 @@ float Measurements::measureVoltage(Adafruit_ADS1115& adc){
 float Measurements::measureCurrent(Adafruit_ADS1115& adc){
   adc.setGain(GAIN_SIXTEEN);  // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
             //      reading_from_adc / resolution * Vmax / R  * number of shunts
-  current = (((adc.readADC_SingleEnded(0) / 32768.0) * 0.256 / 0.1) * 4) * (0.95 + calibration.current/2550.0);
+  current = (((adc.readADC_SingleEnded(0) / 32768.0) * 0.256 / 0.1) * 4) * (0.95 + calibration.currentMultiplier/2550.0) + calibration.currentOffset/25500.0;
   noLessThanZero(current);
   return current;
 }

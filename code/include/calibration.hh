@@ -20,8 +20,9 @@
  */
 class AdcCalibration{
   public:
-    int current;       //measured current - calibration multiplier 0-255
-    int voltage;       //measured voltage - calibration multiplier 0-255
+    int voltageMultiplier;       //measured voltage - calibration multiplier 0-255
+    int currentMultiplier;       //measured current - calibration multiplier 0-255
+    int currentOffset;           //measured current - calibration offset     0-255
     void readFromEEPROM();
     void writeToEEPROM();
 };
@@ -32,7 +33,7 @@ class AdcCalibration{
  */
 class DacCalibration{
   public:
-    int dac;               //set current - calibration multiplier 0-255
+    int dacMultiplier;               //set current - calibration multiplier 0-255
     void readFromEEPROM();
     void writeToEEPROM();
 };
