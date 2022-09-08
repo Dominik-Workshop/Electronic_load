@@ -12,14 +12,17 @@
 #ifndef MODE_SCREEN_HH
 #define MODE_SCREEN_HH
 
+
 #include <LiquidCrystal_I2C.h>
 #include <Adafruit_ADS1X15.h>
 #include <Adafruit_MCP4725.h>
+
 #include "lcd_characters.hh"
 #include "user_input.hh"
 #include "encoder.hh"
 #include "keypad_config.hh"
 #include "measurements.hh"
+#include "controls.hh"
 
 void welcomeScreen(LiquidCrystal_I2C& lcd);
 void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac, Measurements& measurements);
@@ -32,8 +35,6 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 
 int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setValue);
 void displayMenu(LiquidCrystal_I2C& lcd);
-void fanControll(Measurements& measurements);
-void loadOnOffToggle(LiquidCrystal_I2C& lcd);
 
 #endif
 

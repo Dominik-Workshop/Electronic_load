@@ -9,11 +9,9 @@
  * 
  */
 
-#include <math.h>
+
 #include "mode_screen.hh"
 
-
-int prev = 1;
 
 void welcomeScreen(LiquidCrystal_I2C& lcd){
 	lcd.clear();
@@ -68,10 +66,6 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
   lcd.print("A");
 		while(1){
 			measurements.update(adc);
-			if(prev == 1){
-				measurements.current = 0;
-				measurements.power = 0;
-			}
 			measurements.displayMeasurements(lcd);
 			fanControll(measurements);
 			dac.setVoltage(userInput.setCurrent.value * 275, false);
@@ -87,8 +81,6 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
 					userInput.time = millis();
 					while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
 						measurements.update(adc);
-						if(prev == 1)
-							measurements.current = 0;
 						measurements.displayMeasurements(lcd);
 						fanControll(measurements);
 						userInput.key = keypad.getKey();
@@ -332,7 +324,6 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 	measurements.calibration.writeToEEPROM();
 	mainMenu(lcd, userInput, keypad, encoder, adc, dac, measurements);	//return to menu
 	digitalWrite(OUTPUT_OFF, LOW); //turn the load off
-	prev = 1;
 }
 
 int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setParameter){
@@ -402,37 +393,4 @@ void displayMenu(LiquidCrystal_I2C& lcd){
   lcd.print("3.Const. Resistance");
   lcd.setCursor(0,3);
   lcd.print("4.Transient  5.Batt.");
-}
-
-void fanControll(Measurements& measurements){
-	int fanspeed;
-	fanspeed = map(measurements.temperature, measurements.fanLowThreshold, 45, 60, 255);
-	//hysteresis, so that fans don't turn on/off repeatedly when crossing the threshold
-  if (measurements.temperature < measurements.fanLowThreshold){
-    fanspeed = 0;
-    measurements.fanLowThreshold = 31;
-  }
-  if (measurements.temperature >= measurements.fanLowThreshold){
-     measurements.fanLowThreshold=30;
-  }
-  //if it's hot drive fans at full speed
-  if (measurements.temperature > 45){
-    fanspeed = 255;
-	}
-	analogWrite(FAN, fanspeed);
-}
-
-void loadOnOffToggle(LiquidCrystal_I2C& lcd){
-	if(prev == 0){
-		digitalWrite(OUTPUT_OFF, LOW);
-		lcd.setCursor(17, 0);
-		lcd.print("OFF");
-		prev = 1;
-	}
-	else if(prev == 1){
-		digitalWrite(OUTPUT_OFF, HIGH);
-		lcd.setCursor(17, 0);
-		lcd.print("ON ");
-		prev = 0;
-	}
 }
