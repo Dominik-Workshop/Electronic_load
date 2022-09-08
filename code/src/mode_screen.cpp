@@ -11,7 +11,7 @@
 
 #include <math.h>
 #include "mode_screen.hh"
-#include "measurements.hh"
+
 
 int prev = 1;
 
@@ -27,35 +27,36 @@ void welcomeScreen(LiquidCrystal_I2C& lcd){
   lcd.print("10A 60V 300W");
 }
 
-void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac){
+void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac, Measurements& measurements){
 	displayMenu(lcd);
-
 	while(1){
 		switch (keypad.getKey()){
-				case '1':
-					constCurrentMode(lcd, userInput, keypad, encoder, adc, dac);
-					break;
-				case '2':
-					constPowerMode(lcd, userInput, keypad, encoder, adc, dac);
-					break;
-				case '3':
-					constResistanceMode(lcd, userInput, keypad, encoder, adc, dac);
-					break;
-				case '4':
-					transientResponseMode(lcd, userInput, keypad, encoder, adc, dac);
-					break;
-				case '5':
-					batteryCapacityMode(lcd, userInput, keypad, encoder, adc, dac);
-					break;
-				default:
-					delay(10);	//wait 10ms before checking again what keypad was pressed
-					break;
+			case '1':
+				constCurrentMode(lcd, userInput, keypad, encoder, adc, dac, measurements);
+				break;
+			case '2':
+				constPowerMode(lcd, userInput, keypad, encoder, adc, dac, measurements);
+				break;
+			case '3':
+				constResistanceMode(lcd, userInput, keypad, encoder, adc, dac, measurements);
+				break;
+			case '4':
+				transientResponseMode(lcd, userInput, keypad, encoder, adc, dac, measurements);
+				break;
+			case '5':
+				batteryCapacityMode(lcd, userInput, keypad, encoder, adc, dac, measurements);
+				break;
+			case '6':
+				calibration(lcd, userInput, keypad, encoder, adc, dac, measurements);
+				break;
+			default:
+				delay(10);	//wait 10ms before checking again what keypad was pressed
+				break;
 		}
 	}
 }
 
-void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac) {
-	Measurements measurements;
+void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac, Measurements& measurements) {
 	lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Const Current    OFF");  
@@ -66,65 +67,68 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
 	userInput.decimalPlace = ones;
   lcd.print("A");
 		while(1){
-			displayTemperature(lcd);
 			measurements.update(adc);
 			measurements.displayMeasurements(lcd);
+			fanControll(measurements);
 			dac.setVoltage(userInput.setCurrent.value * 275, false);
-			userInput.key = keypad.getKey();
-			if(userInput.key == Menu) 
-				mainMenu(lcd, userInput, keypad, encoder, adc, dac);	//return to menu
-			else if(userInput.key == LoadOnOff){
-        loadOnOffToggle(lcd);
-      }
-			else if(userInput.key == Enter){
-				encoder.reset();
-				userInput.time = millis();
-				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
-					displayTemperature(lcd);
-					measurements.update(adc);
-					measurements.displayMeasurements(lcd);
-					userInput.key = keypad.getKey();
-					lcd.setCursor(userInput.cursorPos,2);
-					lcd.cursor();
-					delay(100);
-					if(userInput.key == Menu) 
-						mainMenu(lcd, userInput, keypad, encoder, adc, dac);
-					else if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
-						inputFromKeypad(lcd, userInput, keypad, userInput.setCurrent);
-						encoder.reset();  //reset encoder in case it was turned while entering value via keypad
-					} 
-          if(encoder.wasButtonPressed()){
-						userInput.time = millis();
-            if(userInput.decimalPlace > thousandths ){
- 							--userInput.decimalPlace;
-							++userInput.cursorPos;
-						}   
-            else {
-              userInput.decimalPlace = ones;
-							userInput.cursorPos = 6;
-						}
-						if(userInput.decimalPlace == tenths)	//jump across the decimal point
-              ++userInput.cursorPos;
-          }
-					if(encoder.rotation()){
-						userInput.setCurrent.value += encoder.rotation() * pow(10, userInput.decimalPlace);
-						userInput.setCurrent.limit();
-						lcd.setCursor(6,2);
-						userInput.setCurrent.display(lcd);
+			switch (keypad.getKey()){
+				case Menu:
+					mainMenu(lcd, userInput, keypad, encoder, adc, dac, measurements);	//return to menu				
+					break;
+				case LoadOnOff:
+					loadOnOffToggle(lcd);
+					break;
+				case Enter:
+					encoder.reset();
+					userInput.time = millis();
+					while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
+						measurements.update(adc);
+						measurements.displayMeasurements(lcd);
+						fanControll(measurements);
+						userInput.key = keypad.getKey();
 						lcd.setCursor(userInput.cursorPos,2);
-            lcd.cursor();
-						encoder.reset();
-						userInput.time = millis();
+						lcd.cursor();
+						delay(100);
+						if(userInput.key == Menu) 
+							mainMenu(lcd, userInput, keypad, encoder, adc, dac, measurements);
+						else if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
+							inputFromKeypad(lcd, userInput, keypad, userInput.setCurrent);
+							encoder.reset();  //reset encoder in case it was turned while entering value via keypad
+						} 
+						if(encoder.wasButtonPressed()){
+							userInput.time = millis();
+							if(userInput.decimalPlace > thousandths ){
+								--userInput.decimalPlace;
+								++userInput.cursorPos;
+							}   
+							else {
+								userInput.decimalPlace = ones;
+								userInput.cursorPos = 6;
+							}
+							if(userInput.decimalPlace == tenths)	//jump across the decimal point
+								++userInput.cursorPos;
+						}
+						if(encoder.rotation()){
+							userInput.setCurrent.value += encoder.rotation() * pow(10, userInput.decimalPlace);
+							userInput.setCurrent.limit();
+							lcd.setCursor(6,2);
+							userInput.setCurrent.display(lcd);
+							lcd.setCursor(userInput.cursorPos,2);
+							lcd.cursor();
+							encoder.reset();
+							userInput.time = millis();
+						}
 					}
-				}
-				lcd.noCursor();
+					lcd.noCursor();
+					break;
+				default:
+					delay(10);	//wait 10ms before checking again what keypad was pressed
+					break;
 			}
-			delay(10);	//wait 10ms before checking again what keypad was pressed
 		}
 }
 
-void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac){
-	Measurements measurements;
+void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac, Measurements& measurements){
 	lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Const Power      OFF");  
@@ -133,14 +137,13 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
   userInput.setPower.display(lcd);
   lcd.print("W");
 	userInput.cursorPos = 8;
-	userInput.decimalPlace = 1;
+	userInput.decimalPlace = ones;
 	while(1){
-			displayTemperature(lcd);
 			measurements.update(adc);
 			measurements.displayMeasurements(lcd);
 			userInput.key = keypad.getKey();
 			if(userInput.key == Menu) 
-				mainMenu(lcd, userInput, keypad, encoder, adc, dac);	//return to menu
+				mainMenu(lcd, userInput, keypad, encoder, adc, dac, measurements);	//return to menu
 			else if(userInput.key == LoadOnOff){
 				loadOnOffToggle(lcd);
 				userInput.key = 20;
@@ -149,7 +152,6 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 				encoder.reset();
 				userInput.time = millis();
 				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
-					displayTemperature(lcd);
 					measurements.update(adc);
 					measurements.displayMeasurements(lcd);
 					userInput.key = keypad.getKey();
@@ -157,7 +159,7 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 					lcd.cursor();
 					delay(100);
 					if(userInput.key == Menu) 
-						mainMenu(lcd, userInput, keypad, encoder, adc, dac);
+						mainMenu(lcd, userInput, keypad, encoder, adc, dac, measurements);
 					else if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
 						inputFromKeypad(lcd, userInput, keypad, userInput.setPower);
 						encoder.reset();  //reset encoder in case it was turned while entering value via keypad
@@ -193,8 +195,7 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 		}
 }
 
-void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac){
-	Measurements measurements;
+void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac, Measurements& measurements){
 	lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Const Resistance OFF");  
@@ -203,15 +204,14 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
   userInput.setResistance.display(lcd);
   lcd.write(ohm);
 	userInput.cursorPos = 9;
-	userInput.decimalPlace = 1;
+	userInput.decimalPlace = ones;
 		while(1){
-			displayTemperature(lcd);
 			measurements.update(adc);
 			measurements.displayMeasurements(lcd);
 			dac.setVoltage(userInput.setResistance.value, false);
 			userInput.key = keypad.getKey();
 			if(userInput.key == Menu) 
-				mainMenu(lcd, userInput, keypad, encoder, adc, dac);	//return to menu
+				mainMenu(lcd, userInput, keypad, encoder, adc, dac, measurements);	//return to menu
 			else if(userInput.key == LoadOnOff){
 				loadOnOffToggle(lcd);
 				userInput.key = 20;
@@ -220,7 +220,6 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 				encoder.reset();
 				userInput.time = millis();
 				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
-					displayTemperature(lcd);
 					measurements.update(adc);
 					measurements.displayMeasurements(lcd);
 					userInput.key = keypad.getKey();
@@ -228,7 +227,7 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 					lcd.cursor();
 					delay(100);
 					if(userInput.key == Menu) 
-						mainMenu(lcd, userInput, keypad, encoder, adc, dac);
+						mainMenu(lcd, userInput, keypad, encoder, adc, dac, measurements);
 					else if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
 						inputFromKeypad(lcd, userInput, keypad, userInput.setResistance);
 						encoder.reset();  //reset encoder in case it was turned while entering value via keypad
@@ -264,7 +263,7 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 		}
 }
 
-void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac){
+void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac, Measurements& measurements){
 	dac.setVoltage(0, false);
 	delay(1000);
 	for(int i = 0; i< 4096; ++i){
@@ -273,8 +272,56 @@ void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad&
 	}
 }
 
-void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac){
+void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac, Measurements& measurements){
 
+}
+
+void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac, Measurements& measurements){
+	int lastCalibrationValue;
+	lcd.clear();
+	lcd.setCursor(0, 0);
+	lcd.print("Calibration mode");
+	delay(2000);
+	lcd.setCursor(0, 0);
+	lcd.print("Calibrate voltage ");
+	digitalWrite(OUTPUT_OFF, LOW);	//don't sink any current
+	lcd.setCursor(0, 2);
+	lcd.print("cal multiplier=");
+	lastCalibrationValue = measurements.calibration.voltage;
+	encoder.reset();
+	while(keypad.getKey() != Enter){
+		measurements.update(adc);
+		measurements.displayMeasurements(lcd);
+		measurements.calibration.voltage = lastCalibrationValue + encoder.rotation();
+		if (measurements.calibration.voltage < 0)
+			measurements.calibration.voltage = 0;
+		else if(measurements.calibration.voltage > 255)
+			measurements.calibration.voltage = 255;
+		lcd.setCursor(15,2);
+		lcd.print(measurements.calibration.voltage);
+		lcd.print("  ");
+	}
+	lcd.setCursor(0, 0);
+	lcd.print("Calibrate current ");
+	digitalWrite(OUTPUT_OFF, HIGH);	//turn on the load
+	dac.setVoltage(4095, false);		//short the input of the load
+	lastCalibrationValue = measurements.calibration.current;
+	encoder.reset();
+	while(keypad.getKey() != Enter){
+		measurements.update(adc);
+		measurements.displayMeasurements(lcd);
+		measurements.calibration.current = lastCalibrationValue + encoder.rotation();
+		if (measurements.calibration.current < 0)
+			measurements.calibration.current = 0;
+		else if(measurements.calibration.current > 255)
+			measurements.calibration.current = 255;
+		lcd.setCursor(15,2);
+		lcd.print(measurements.calibration.current);
+		lcd.print("  ");
+	}
+	measurements.calibration.writeToEEPROM();
+	mainMenu(lcd, userInput, keypad, encoder, adc, dac, measurements);	//return to menu
+	digitalWrite(OUTPUT_OFF, LOW); //turn the load off
 }
 
 int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setParameter){
@@ -308,9 +355,10 @@ int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 		if(userInput.key == Delete){
 			lcd.setCursor(--x_pos,3);
 			lcd.print(" ");
+			--index;
 			if(numbers[index] == '.') //deleted decimal point
 				decimalPointPresent = false;
-			numbers[--index] = '\0';
+			numbers[index] = '\0';
 			if(index == 0) 
 				return 1;	//if deleted all numbers exit function
 		}
@@ -345,11 +393,22 @@ void displayMenu(LiquidCrystal_I2C& lcd){
   lcd.print("4.Transient  5.Batt.");
 }
 
-void displayTemperature(LiquidCrystal_I2C& lcd){
-	lcd.setCursor(16,3);
-	lcd.print(measureTemperature());
-	lcd.write(degree);
-	lcd.print("C");
+void fanControll(Measurements& measurements){
+	int fanspeed;
+	fanspeed = map(measurements.temperature, measurements.fanLowThreshold, 45, 60, 255);
+	//hysteresis, so that fans don't turn on/off repeatedly when crossing the threshold
+  if (measurements.temperature < measurements.fanLowThreshold){
+    fanspeed = 0;
+    measurements.fanLowThreshold = 31;
+  }
+  if (measurements.temperature >= measurements.fanLowThreshold){
+     measurements.fanLowThreshold=30;
+  }
+  //if it's hot drive fans at full speed
+  if (measurements.temperature > 45){
+    fanspeed = 255;
+	}
+	analogWrite(FAN, fanspeed);
 }
 
 void loadOnOffToggle(LiquidCrystal_I2C& lcd){
