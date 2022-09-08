@@ -1,8 +1,9 @@
 /**
  * @file measurements.hh
  * @author Dominik Workshop
- * @brief takes voltage and current measurements, calculates power, stores these values, can display all the measurements on the lcd
- * @version 0.1
+ * @brief takes voltage, current and temperature measurements,
+ * calculates power, stores these values, can display all the measurements on the lcd
+ * @version 1.0
  * @date 2022-08-29
  * 
  * @copyright Copyright (c) 2022
@@ -21,7 +22,7 @@
 #include "calibration.hh"
 
 /**
- * @brief contains measured voltage, current and calculated power
+ * @brief contains measured voltage, current, temperature, calculated power and calibration values
  * 
  */
 class Measurements{
@@ -30,7 +31,6 @@ class Measurements{
     float current;
     float power;
     int temperature;
-    int fanLowThreshold = 30;
     AdcCalibration calibration;
 
     Measurements();

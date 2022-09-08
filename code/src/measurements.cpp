@@ -1,8 +1,9 @@
 /**
  * @file measurements.cpp
  * @author Dominik Workshop
- * @brief takes voltage and current measurements, calculates power, stores these values, can display all the measurements on the lcd
- * @version 0.1
+ * @brief takes voltage, current and temperature measurements,
+ * calculates power, stores these values, can display all the measurements on the lcd
+ * @version 1.0
  * @date 2022-08-29
  * 
  * @copyright Copyright (c) 2022
@@ -11,12 +12,16 @@
 
 #include "measurements.hh"
 
+/**
+ * @brief reads calibration values from EEPROM when the object is created
+ * 
+ */
 Measurements::Measurements(){
   calibration.readFromEEPROM();
 }
 
 /**
- * @brief make votage, current and temperature readings, calculate power and store these values
+ * @brief make voltage, current and temperature readings, calculate power and store these values
  * 
  * @param adc 
  */
@@ -46,22 +51,39 @@ void Measurements::displayMeasurements(LiquidCrystal_I2C& lcd){
 	lcd.print("C");
 }
 
+/**
+ * @brief measures voltage treating negative readings as zero, uses calibration values to correct the measurement
+ * 
+ * @param adc 
+ * @return float voltage
+ */
 float Measurements::measureVoltage(Adafruit_ADS1115& adc){
   adc.setGain(GAIN_EIGHT);  // 8x gain   +/- 0.512V  1 bit = 0.015625mV
-            //        reading_from_adc / resolution * Vmax * attenuation
+            //        reading_from_adc / resolution * Vmax * attenuation * (0.95 to 1.05)
   voltage = ((adc.readADC_Differential_2_3()/ 32768.0) * 0.512 * 100) * (0.95 + calibration.getVoltageMultiplier()/2550.0);
   noLessThanZero(voltage);
   return voltage;
 }
 
+/**
+ * @brief measures current treating negative readings as zero, uses calibration values to correct the measurement 
+ * 
+ * @param adc 
+ * @return float current
+ */
 float Measurements::measureCurrent(Adafruit_ADS1115& adc){
   adc.setGain(GAIN_SIXTEEN);  // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
-            //      reading_from_adc / resolution * Vmax / R  * number of shunts
+            //      reading_from_adc / resolution * Vmax / R  * number of shunts * (0.95 to 1.05) + (0 to 0.01)
   current = (((adc.readADC_SingleEnded(0) / 32768.0) * 0.256 / 0.1) * 4) * (0.95 + calibration.getCurrentMultiplier()/2550.0) + calibration.getCurrentOffset()/25500.0;
   noLessThanZero(current);
   return current;
 }
 
+/**
+ * @brief measures temperature with NTC thermistor
+ * 
+ * @return int temperature
+ */
 int Measurements::measureTemperature(){
   int Vo;
   float R2, logR2;
@@ -69,7 +91,7 @@ int Measurements::measureTemperature(){
   R2 = R1 * (1023.0 / (float)Vo - 1.0);
   logR2 = log(R2);
   temperature = (1.0 / (c1 + c2 * logR2 + c3 * logR2 * logR2 * logR2));
-  temperature = temperature - 273.15;
+  temperature -= 273.15;
   return temperature;
 }
 
@@ -78,8 +100,8 @@ int Measurements::measureTemperature(){
  * 
  * @param lcd 
  * @param value to be displayed
- * @param numOfDigits 
- * @param numOfDecimalPlaces 
+ * @param numOfDigits number of all digits
+ * @param numOfDecimalPlaces number of digits after decimal place
  */
 void Measurements::display(LiquidCrystal_I2C& lcd, float value, int numOfDigits, int numOfDecimalPlaces){
   char displayValue[10];
@@ -87,7 +109,7 @@ void Measurements::display(LiquidCrystal_I2C& lcd, float value, int numOfDigits,
    //when value is bigger than expected decrease the resolution to fit on the display 
   if(value >= pow(10, (numOfDigits-numOfDecimalPlaces)))
     --numOfDecimalPlaces;
-    
+
   dtostrf(value, (numOfDigits + 1), numOfDecimalPlaces, displayValue);
 	lcd.print(displayValue);
 }
