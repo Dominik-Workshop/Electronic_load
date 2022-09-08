@@ -1,7 +1,7 @@
 /**
  * @file calibration.hh
  * @author Dominik Workshop
- * @brief class containing calibration values for the DAC and ADC
+ * @brief classes containing calibration values for the ADC and DAC
  * @version 1.1
  * @date 2022-07-26
  * 
@@ -35,7 +35,6 @@ class AdcCalibration{
     int voltageMultiplier;       //measured voltage - calibration multiplier 0-255
     int currentMultiplier;       //measured current - calibration multiplier 0-255
     int currentOffset;           //measured current - calibration offset     0-255
-    int limit(int& value);
 };
 
 /**
@@ -44,9 +43,13 @@ class AdcCalibration{
  */
 class DacCalibration{
   public:
-    int dacMultiplier;               //set current - calibration multiplier 0-255
     void readFromEEPROM();
     void writeToEEPROM();
+
+    int getSetCurrentMultiplier();
+    void setSetCurrentMultiplier(int cal);
+  private:
+    int setCurrentMultiplier;    //set current - calibration multiplier 0-255
 };
 
 #endif

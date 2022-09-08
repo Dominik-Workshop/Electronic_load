@@ -13,12 +13,27 @@
 #include "calibration.hh"
 
 /**
+ * @brief ensures that given value is in range from 0 to 255
+ * (you can't write numbers outside this range to the EEPROM)
+ * 
+ * @param value to be limited
+ * @return int 0-255
+ */
+int limit(int& value){
+  if(value < 0)
+    value = 0;
+  else if(value > 255)
+    value = 255;
+  return value;
+}
+
+/**
  * @brief reads calibration values from EEPROM
  * 
  */
 void AdcCalibration::readFromEEPROM(){
-  voltageMultiplier = EEPROM.read(EEPROM_ADDRESS_ADC_U_CAL);
-  currentMultiplier = EEPROM.read(EEPROM_ADDRESS_ADC_I_CAL);
+  voltageMultiplier = EEPROM.read(EEPROM_ADDRESS_ADC_U_MULTIPLIER_CAL);
+  currentMultiplier = EEPROM.read(EEPROM_ADDRESS_ADC_I_MULTIPLIER_CAL);
   currentOffset = EEPROM.read(EEPROM_ADDRESS_ADC_I_OFFSET_CAL);
 }
 
@@ -27,8 +42,8 @@ void AdcCalibration::readFromEEPROM(){
  * 
  */
 void AdcCalibration::writeToEEPROM(){
-  EEPROM.write(EEPROM_ADDRESS_ADC_U_CAL, voltageMultiplier);
-  EEPROM.write(EEPROM_ADDRESS_ADC_I_CAL, currentMultiplier);
+  EEPROM.write(EEPROM_ADDRESS_ADC_U_MULTIPLIER_CAL, voltageMultiplier);
+  EEPROM.write(EEPROM_ADDRESS_ADC_I_MULTIPLIER_CAL, currentMultiplier);
   EEPROM.write(EEPROM_ADDRESS_ADC_I_OFFSET_CAL, currentOffset);
 }
 
@@ -37,7 +52,7 @@ void AdcCalibration::writeToEEPROM(){
  * 
  */
 void DacCalibration::readFromEEPROM(){
-  dacMultiplier = EEPROM.read(EEPROM_ADDRESS_DAC_CAL);
+  setCurrentMultiplier = EEPROM.read(EEPROM_ADDRESS_DAC_CAL);
 }
 
 /**
@@ -45,7 +60,7 @@ void DacCalibration::readFromEEPROM(){
  * 
  */
 void DacCalibration::writeToEEPROM(){
-  EEPROM.write(EEPROM_ADDRESS_DAC_CAL, dacMultiplier);
+  EEPROM.write(EEPROM_ADDRESS_DAC_CAL, setCurrentMultiplier);
 }
 
 int AdcCalibration::getVoltageMultiplier(){return voltageMultiplier;}
@@ -62,16 +77,8 @@ void AdcCalibration::setCurrentOffset(int cal){
   currentOffset = limit(cal);
 }
 
-/**
- * @brief ensures that given value is in range from 0 to 255
- * 
- * @param value to be limited
- * @return int 0-255
- */
-int AdcCalibration::limit(int& value){
-  if(value < 0)
-    value = 0;
-  else if(value > 255)
-    value = 255;
-  return value;
+int  DacCalibration::getSetCurrentMultiplier(){return setCurrentMultiplier;}
+
+void DacCalibration::setSetCurrentMultiplier(int cal){
+  setCurrentMultiplier = limit(cal);
 }
