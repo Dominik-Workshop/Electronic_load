@@ -19,10 +19,10 @@
 
 #define NUM_OF_READINGS 8 //how many readings to average out
 
-#define EEPROM_ADDRESS_DAC_CAL 0            //address for calibration value of DAC
-#define EEPROM_ADDRESS_ADC_U_CAL 1          //address for calibration value of ADC - voltageMultiplier
-#define EEPROM_ADDRESS_ADC_I_CAL 2          //address for calibration value of ADC - currentMultiplier
-#define EEPROM_ADDRESS_ADC_I_OFFSET_CAL 3   //address for calibration value of ADC - currentOffset
+#define EEPROM_ADDRESS_DAC_CAL 0                  //address for calibration value of DAC
+#define EEPROM_ADDRESS_ADC_U_MULTIPLIER_CAL 1     //address for calibration value of ADC - voltageMultiplier
+#define EEPROM_ADDRESS_ADC_I_MULTIPLIER_CAL 2     //address for calibration value of ADC - currentMultiplier
+#define EEPROM_ADDRESS_ADC_I_OFFSET_CAL 3         //address for calibration value of ADC - currentOffset
 
 #define KEYPAD_ROWS 4   //number of rows of the keypad
 #define KEYPAD_COLS 4   //number of collumns of the keypad
