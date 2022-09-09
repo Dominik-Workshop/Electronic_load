@@ -9,9 +9,7 @@
  * 
  */
 
-
 #include "mode_screen.hh"
-
 
 void welcomeScreen(LiquidCrystal_I2C& lcd){
 	lcd.clear();
@@ -22,7 +20,7 @@ void welcomeScreen(LiquidCrystal_I2C& lcd){
   lcd.setCursor(8,2);
   lcd.print("2022");
   lcd.setCursor(4,3);
-  lcd.print("10A 60V 300W");
+  lcd.print("8,4A 60V 300W");
 }
 
 void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
@@ -176,7 +174,7 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 		switch (keypad.getKey()){
 			case Menu:
 				controls.loadOff(lcd);
-				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu				
+				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
 				break;
 			case LoadOnOff:
 				controls.loadOnOffToggle(lcd);
@@ -220,7 +218,18 @@ void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad&
 }
 
 void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
-
+	lcd.clear();
+	measurements.timer.start();
+	while(keypad.getKey() != Menu){
+		lcd.setCursor(0, 0);
+		lcd.print(measurements.timer.getTotalSeconds());
+		lcd.setCursor(0, 1);
+		lcd.print(measurements.timer.getTime());
+		delay(100);
+	}
+	measurements.timer.stop();
+	measurements.timer.reset();
+	displayMenu(lcd);
 }
 
 void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
@@ -279,16 +288,22 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 	lcd.print("cal multiplier=");
 	lastCalibrationValue = controls.calibration.getSetCurrentMultiplier();
 	encoder.reset();
-	while(keypad.getKey() != Enter){
+	while(1){
 		measurements.update();
 		measurements.displayMeasurements(lcd);
-		// if(keypad.getKey() == '#')
-		// 	inputFromKeypad(lcd, userInput, keypad, userInput.setCurrent);
+		userInput.key = keypad.getKey();
+		if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
+			userInput.time = millis();
+			inputFromKeypad(lcd, userInput, keypad, userInput.setCurrent);
+		}
+		else if(userInput.key == '#')
+			break;
 		controls.sinkCurrent(userInput.setCurrent.value);
 		controls.calibration.setSetCurrentMultiplier(lastCalibrationValue + encoder.rotation());
 		lcd.setCursor(15,2);
 		lcd.print(controls.calibration.getSetCurrentMultiplier());
 		lcd.print("  ");
+		
 	}
 	measurements.calibration.writeToEEPROM();
 	controls.calibration.writeToEEPROM();
