@@ -15,6 +15,7 @@
 
 #include <Adafruit_ADS1X15.h>
 #include <LiquidCrystal_I2C.h>
+#include <MCP79410_Timer.h>
 #include <math.h>
 
 #include "defines.hh"
@@ -33,6 +34,7 @@ class Measurements{
     int temperature;
     AdcCalibration calibration;
     Adafruit_ADS1115 adc;
+    MCP79410_Timer timer = MCP79410_Timer(RTC_ADDRESS);
 
     Measurements();
     void update();
