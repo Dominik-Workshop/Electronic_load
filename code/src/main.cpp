@@ -33,13 +33,12 @@
 
 
 void setup() {
+  Measurements measurements;
   UserInput userInput;
   LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
-  Adafruit_ADS1115 adc;
   Adafruit_MCP4725 dac;
   Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
   Encoder encoder;
-  Measurements measurements;
 
   //TCCR0B = TCCR0B & B11111000 | B00000001; // PWM 31372.55 Hz pins 5 and 6
 
@@ -47,7 +46,6 @@ void setup() {
   lcd.backlight();              //turn the backlight on
   lcd.createChar(degree, degreeSymbol);
   lcd.createChar(ohm, ohmSymbol);
-  adc.begin(ADC_ADDRESS);
   dac.begin(DAC_ADDRESS);
   encoder.begin();
 
@@ -58,7 +56,7 @@ void setup() {
 
   welcomeScreen(lcd);
   delay(3000);
-  mainMenu(lcd, userInput, keypad, encoder, adc, dac, measurements);
+  mainMenu(lcd, userInput, keypad, encoder, dac, measurements);
 }
 
 void loop(){

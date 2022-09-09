@@ -22,7 +22,7 @@
 #include "calibration.hh"
 
 /**
- * @brief contains measured voltage, current, temperature, calculated power and calibration values
+ * @brief contains measured voltage, current, temperature, calculated power, calibration values and ADC object
  * 
  */
 class Measurements{
@@ -32,12 +32,13 @@ class Measurements{
     float power;
     int temperature;
     AdcCalibration calibration;
+    Adafruit_ADS1115 adc;
 
     Measurements();
-    void update(Adafruit_ADS1115& adc);
+    void update();
     void displayMeasurements(LiquidCrystal_I2C& lcd);
-    float measureVoltage(Adafruit_ADS1115& adc);
-    float measureCurrent(Adafruit_ADS1115& adc);
+    float measureVoltage();
+    float measureCurrent();
     int measureTemperature();
   private:
     void display(LiquidCrystal_I2C& lcd, float value, int numOfDigits, int numOfDecimalPlaces);

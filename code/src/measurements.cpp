@@ -13,10 +13,11 @@
 #include "measurements.hh"
 
 /**
- * @brief reads calibration values from EEPROM when the object is created
+ * @brief initializes ADC and reads calibration values from EEPROM when the object is created
  * 
  */
 Measurements::Measurements(){
+  adc.begin(ADC_ADDRESS);
   calibration.readFromEEPROM();
 }
 
@@ -25,9 +26,9 @@ Measurements::Measurements(){
  * 
  * @param adc 
  */
-void Measurements::update(Adafruit_ADS1115& adc){
-  measureVoltage(adc);
-  measureCurrent(adc);
+void Measurements::update(){
+  measureVoltage();
+  measureCurrent();
   measureTemperature();
   power = voltage * current;
 }
@@ -57,7 +58,7 @@ void Measurements::displayMeasurements(LiquidCrystal_I2C& lcd){
  * @param adc 
  * @return float voltage
  */
-float Measurements::measureVoltage(Adafruit_ADS1115& adc){
+float Measurements::measureVoltage(){
   adc.setGain(GAIN_EIGHT);  // 8x gain   +/- 0.512V  1 bit = 0.015625mV
             //        reading_from_adc / resolution * Vmax * attenuation * (0.95 to 1.05)
   voltage = ((adc.readADC_Differential_2_3()/ 32768.0) * 0.512 * 100) * (0.95 + calibration.getVoltageMultiplier()/2550.0);
@@ -71,7 +72,7 @@ float Measurements::measureVoltage(Adafruit_ADS1115& adc){
  * @param adc 
  * @return float current
  */
-float Measurements::measureCurrent(Adafruit_ADS1115& adc){
+float Measurements::measureCurrent(){
   adc.setGain(GAIN_SIXTEEN);  // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
             //      reading_from_adc / resolution * Vmax / R  * number of shunts * (0.95 to 1.05) + (0 to 0.01)
   current = (((adc.readADC_SingleEnded(0) / 32768.0) * 0.256 / 0.1) * 4) * (0.95 + calibration.getCurrentMultiplier()/2550.0) + calibration.getCurrentOffset()/25500.0;
