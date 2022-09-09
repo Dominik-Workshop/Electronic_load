@@ -53,6 +53,8 @@ void setup() {
 
   pinInit();
 
+  controls.loadOff(lcd);
+
   welcomeScreen(lcd);
   delay(3000);
   mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
