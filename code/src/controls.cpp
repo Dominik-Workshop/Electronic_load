@@ -11,8 +11,13 @@
 
 #include "controls.hh"
 
+/**
+ * @brief initializes DAC and reads calibration values from EEPROM when the object is created
+ * 
+ */
 Controls::Controls(){
 	dac.begin(DAC_ADDRESS);
+	calibration.readFromEEPROM();
 }
 
 void Controls::fanControll(Measurements& measurements){
@@ -55,7 +60,7 @@ void Controls::loadOnOffToggle(LiquidCrystal_I2C& lcd){
 }
 
 void Controls::sinkCurrent(float setCurrent){
-	dac.setVoltage(setCurrent * 275 * 1.0335, false);
+	dac.setVoltage((setCurrent - 0.005) * 275 * (0.95 + calibration.getSetCurrentMultiplier()/2550.0), false);
 }
 
 void Controls::drawConstPower(float setPower, float voltage){

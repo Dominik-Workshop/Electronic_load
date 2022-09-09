@@ -64,7 +64,6 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
   lcd.print("A");
 	userInput.cursorPos = 6;
 	userInput.decimalPlace = ones;
-	controls.loadOff(lcd);
 	while(1){
 		measurements.update();
 		measurements.displayMeasurements(lcd);
@@ -72,6 +71,7 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
 		controls.sinkCurrent(userInput.setCurrent.value);
 		switch (keypad.getKey()){
 			case Menu:
+				controls.loadOff(lcd);
 				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu				
 				break;
 			case LoadOnOff:
@@ -116,7 +116,6 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
   lcd.print("W");
 	userInput.cursorPos = 8;
 	userInput.decimalPlace = ones;
-	controls.loadOff(lcd);
 	while(1){
 		measurements.update();
 		measurements.displayMeasurements(lcd);
@@ -124,6 +123,7 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 		controls.drawConstPower(userInput.setPower.value, measurements.voltage);
 		switch (keypad.getKey()){
 			case Menu:
+				controls.loadOff(lcd);
 				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu				
 				break;
 			case LoadOnOff:
@@ -168,7 +168,6 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
   lcd.write(ohm);
 	userInput.cursorPos = 9;
 	userInput.decimalPlace = ones;
-	controls.loadOff(lcd);
 	while(1){
 		measurements.update();
 		measurements.displayMeasurements(lcd);
@@ -176,6 +175,7 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 		controls.constResistance(userInput.setResistance.value, measurements.voltage);
 		switch (keypad.getKey()){
 			case Menu:
+				controls.loadOff(lcd);
 				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu				
 				break;
 			case LoadOnOff:
@@ -225,13 +225,14 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 
 void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
 	int lastCalibrationValue;
+
+	controls.loadOff(lcd);	//don't sink any current
 	lcd.clear();
 	lcd.setCursor(0, 0);
 	lcd.print("Calibration mode");
 	delay(2000);
 	lcd.setCursor(0, 0);
 	lcd.print("Calibrate voltage ");
-	digitalWrite(OUTPUT_OFF, LOW);	//don't sink any current
 	lcd.setCursor(0, 2);
 	lcd.print("cal multiplier=");
 	lastCalibrationValue = measurements.calibration.getVoltageMultiplier();
@@ -246,7 +247,7 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 	}
 	lcd.setCursor(0, 0);
 	lcd.print("Calibrate current ");
-	digitalWrite(OUTPUT_OFF, HIGH);	//turn on the load
+	controls.loadOn(lcd);
 	controls.dac.setVoltage(4095, false);		//short the input of the load
 	lastCalibrationValue = measurements.calibration.getCurrentMultiplier();
 	encoder.reset();
@@ -258,6 +259,7 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 		lcd.print(measurements.calibration.getCurrentMultiplier());
 		lcd.print("  ");
 	}
+
 	lcd.setCursor(0, 2);
 	lcd.print("cal offset    =");
 	lastCalibrationValue = measurements.calibration.getCurrentOffset();
@@ -270,9 +272,29 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 		lcd.print(measurements.calibration.getCurrentOffset());
 		lcd.print("  ");
 	}
+
+	lcd.setCursor(0, 0);
+	lcd.print("Calibrate setCurrent");
+	lcd.setCursor(0, 2);
+	lcd.print("cal multiplier=");
+	lastCalibrationValue = controls.calibration.getSetCurrentMultiplier();
+	encoder.reset();
+	while(keypad.getKey() != Enter){
+		measurements.update();
+		measurements.displayMeasurements(lcd);
+		// if(keypad.getKey() == '#')
+		// 	inputFromKeypad(lcd, userInput, keypad, userInput.setCurrent);
+		controls.sinkCurrent(userInput.setCurrent.value);
+		controls.calibration.setSetCurrentMultiplier(lastCalibrationValue + encoder.rotation());
+		lcd.setCursor(15,2);
+		lcd.print(controls.calibration.getSetCurrentMultiplier());
+		lcd.print("  ");
+	}
 	measurements.calibration.writeToEEPROM();
+	controls.calibration.writeToEEPROM();
+
+	controls.loadOff(lcd);
 	mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
-	digitalWrite(OUTPUT_OFF, LOW); //turn the load off
 }
 
 int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setParameter){

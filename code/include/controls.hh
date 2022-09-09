@@ -14,10 +14,12 @@
 
 #include <Adafruit_MCP4725.h>
 #include "measurements.hh"
+#include "calibration.hh"
 
 class Controls{
   public:
     Adafruit_MCP4725 dac;
+    DacCalibration calibration;
     void fanControll(Measurements& measurements);
     void loadOn(LiquidCrystal_I2C& lcd);
     void loadOff(LiquidCrystal_I2C& lcd);
