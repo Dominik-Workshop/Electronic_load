@@ -2,7 +2,7 @@
  * @file defines.hh
  * @author Dominik Workshop
  * @brief Addresses of I2C devices, addresses of calibration values in EEPROM and names of used pins, other constants
- * @version 0.1
+ * @version 1.1
  * @date 2022-07-26
  * 
  * @copyright Copyright (c) 2022
@@ -16,8 +16,6 @@
 #define DAC_ADDRESS 0x60
 #define LCD_ADDRESS 0x27
 #define RTC_ADDRESS 0x6f
-
-#define NUM_OF_READINGS 8 //how many readings to average out
 
 #define EEPROM_ADDRESS_DAC_CAL 0                  //address for calibration value of DAC
 #define EEPROM_ADDRESS_ADC_U_MULTIPLIER_CAL 1     //address for calibration value of ADC - voltageMultiplier
