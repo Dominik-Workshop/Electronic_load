@@ -2,7 +2,7 @@
  * @file calibration.cpp
  * @author Dominik Workshop
  * @brief methods for reading calibration values from EEPROM and writing them to EEPROM, getters and setters
- * @version 1.1
+ * @version 1.2
  * @date 2022-07-27
  * 
  * @copyright Copyright (c) 2022
@@ -47,22 +47,6 @@ void AdcCalibration::writeToEEPROM(){
   EEPROM.write(EEPROM_ADDRESS_ADC_I_OFFSET_CAL, currentOffset);
 }
 
-/**
- * @brief reads calibration values from EEPROM
- * 
- */
-void DacCalibration::readFromEEPROM(){
-  setCurrentMultiplier = EEPROM.read(EEPROM_ADDRESS_DAC_CAL);
-}
-
-/**
- * @brief saves current calibration values in EEPROM
- * 
- */
-void DacCalibration::writeToEEPROM(){
-  EEPROM.write(EEPROM_ADDRESS_DAC_CAL, setCurrentMultiplier);
-}
-
 int AdcCalibration::getVoltageMultiplier(){return voltageMultiplier;}
 int AdcCalibration::getCurrentMultiplier(){return currentMultiplier;}
 int AdcCalibration::getCurrentOffset(){return currentOffset;}
@@ -77,8 +61,30 @@ void AdcCalibration::setCurrentOffset(int cal){
   currentOffset = limit(cal);
 }
 
-int  DacCalibration::getSetCurrentMultiplier(){return setCurrentMultiplier;}
+/**
+ * @brief reads calibration values from EEPROM
+ * 
+ */
+void DacCalibration::readFromEEPROM(){
+  setCurrentMultiplier = EEPROM.read(EEPROM_ADDRESS_DAC_MULTIPLIER_CAL);
+  setCurrentOffset = EEPROM.read(EEPROM_ADDRESS_DAC_OFFSET_CAL);
+}
+
+/**
+ * @brief saves current calibration values in EEPROM
+ * 
+ */
+void DacCalibration::writeToEEPROM(){
+  EEPROM.write(EEPROM_ADDRESS_DAC_MULTIPLIER_CAL, setCurrentMultiplier);
+  EEPROM.write(EEPROM_ADDRESS_DAC_OFFSET_CAL, setCurrentOffset);
+}
+
+int DacCalibration::getSetCurrentMultiplier(){return setCurrentMultiplier;}
+int DacCalibration::getSetCurrentOffset(){return setCurrentOffset;}
 
 void DacCalibration::setSetCurrentMultiplier(int cal){
   setCurrentMultiplier = limit(cal);
+}
+void DacCalibration::setSetCurrentOffset(int cal){
+  setCurrentOffset = limit(cal);
 }
