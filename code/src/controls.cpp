@@ -1,3 +1,4 @@
+
 /**
  * @file controls.cpp
  * @author your name (you@domain.com)
@@ -60,7 +61,9 @@ void Controls::loadOnOffToggle(LiquidCrystal_I2C& lcd){
 }
 
 void Controls::sinkCurrent(float setCurrent){
-	dac.setVoltage((setCurrent - 0.005) * 275 * (0.95 + calibration.getSetCurrentMultiplier()/2550.0), false);
+
+								//setCurrent*resolution/Vref*attenuation/equivalent R of shunts * calibrationValue
+	dac.setVoltage(setCurrent * 4096 / 4.096 / 0.053 * 0.025 * (0.95 + calibration.getSetCurrentMultiplier()/2550.0), false);
 }
 
 void Controls::drawConstPower(float setPower, float voltage){
