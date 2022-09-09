@@ -20,8 +20,8 @@ class Controls{
   public:
     Adafruit_MCP4725 dac;
     DacCalibration calibration;
-    Measurements& measurements;
-    void fanControll(Measurements& measurements);
+    Measurements& measurements;   //copy of measurements
+    void fanControll();
     void loadOn(LiquidCrystal_I2C& lcd);
     void loadOff(LiquidCrystal_I2C& lcd);
     void loadOnOffToggle(LiquidCrystal_I2C& lcd);

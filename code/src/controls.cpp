@@ -21,7 +21,7 @@ Controls::Controls(Measurements& measurements_): measurements(measurements_){
 	calibration.readFromEEPROM();
 }
 
-void Controls::fanControll(Measurements& measurements){
+void Controls::fanControll(){
 	fanspeed = map(measurements.temperature, lowTemperatureThreshold, 45, 60, 255);
 	//hysteresis, so that fans don't turn on/off repeatedly when crossing the threshold
   if (measurements.temperature < lowTemperatureThreshold){

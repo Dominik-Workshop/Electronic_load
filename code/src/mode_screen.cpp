@@ -65,7 +65,7 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
 	while(1){
 		measurements.update();
 		measurements.displayMeasurements(lcd);
-		controls.fanControll(measurements);
+		controls.fanControll();
 		controls.sinkCurrent(userInput.setCurrent.value);
 		switch (keypad.getKey()){
 			case Menu:
@@ -81,7 +81,7 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
 				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
 					measurements.update();
 					measurements.displayMeasurements(lcd);
-					controls.fanControll(measurements);
+					controls.fanControll();
 					controls.sinkCurrent(userInput.setCurrent.value);
 					userInput.key = keypad.getKey();
 					lcd.setCursor(userInput.cursorPos,2);
@@ -117,7 +117,7 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 	while(1){
 		measurements.update();
 		measurements.displayMeasurements(lcd);
-		controls.fanControll(measurements);
+		controls.fanControll();
 		controls.drawConstPower(userInput.setPower.value);
 		switch (keypad.getKey()){
 			case Menu:
@@ -133,7 +133,7 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
 					measurements.update();
 					measurements.displayMeasurements(lcd);
-					controls.fanControll(measurements);
+					controls.fanControll();
 					controls.drawConstPower(userInput.setPower.value);
 					userInput.key = keypad.getKey();
 					lcd.setCursor(userInput.cursorPos,2);
@@ -169,7 +169,7 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 	while(1){
 		measurements.update();
 		measurements.displayMeasurements(lcd);
-		controls.fanControll(measurements);
+		controls.fanControll();
 		controls.constResistance(userInput.setResistance.value);
 		switch (keypad.getKey()){
 			case Menu:
@@ -185,7 +185,7 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
 					measurements.update();
 					measurements.displayMeasurements(lcd);
-					controls.fanControll(measurements);
+					controls.fanControll();
 					controls.constResistance(userInput.setResistance.value);
 					userInput.key = keypad.getKey();
 					lcd.setCursor(userInput.cursorPos,2);
