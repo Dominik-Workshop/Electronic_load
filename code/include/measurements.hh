@@ -38,7 +38,7 @@ class Measurements{
 
     Measurements();
     void update();
-    void displayMeasurements(LiquidCrystal_I2C& lcd);
+    void displayMeasurements(LiquidCrystal_I2C& lcd, bool loadIsOn);
     float measureVoltage();
     float measureCurrent();
     int measureTemperature();

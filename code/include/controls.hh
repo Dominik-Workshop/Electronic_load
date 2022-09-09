@@ -29,6 +29,7 @@ class Controls{
     void sinkCurrent(float setCurrent);
     void drawConstPower(float setPower);
     void constResistance(float setResistance);
+    bool isLoadOn();
 
     Controls(Measurements& measurements_);
   private:

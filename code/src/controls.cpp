@@ -77,3 +77,7 @@ void Controls::drawConstPower(float setPower){
 void Controls::constResistance(float setResistance){
 	sinkCurrent(measurements.voltage/setResistance);
 }
+
+bool Controls::isLoadOn(){
+	return loadIsOn;
+}
