@@ -2,12 +2,12 @@
  * @file main.cpp
  * @author Dominik Workshop
  * @brief Electronic load with 5 different modes of operation:
- *  - Constant current      0,001A - 9,999A,
- *  - Constant power        0,01W - 200,00W,
+ *  - Constant current      0,001A - 8,4A,
+ *  - Constant power        0,01W - 300,00W,
  *  - Constant resistance   0,1Ω - 9 999Ω,
  *  - Transient response
  *  - Battery capacity measurement
- * @version 0.1
+ * @version 1.1
  * @date 2022-07-26
  * 
  * @copyright Copyright (c) 2022
@@ -20,7 +20,6 @@
 #include <Adafruit_MCP4725.h>
 #include <LiquidCrystal_I2C.h>
 #include <SPI.h>
-//#include <MCP79410_Timer.h>
 
 #include "defines.hh"
 #include "init.hh"
