@@ -44,5 +44,9 @@ void loadOnOffToggle(LiquidCrystal_I2C& lcd){
 		lcd.setCursor(17, 0);
 		lcd.print("ON ");
 		prev = 0;
-	}
+	}	
+}
+
+void sinkCurrent(float current, Adafruit_MCP4725& dac){
+	dac.setVoltage(current * 275, false);
 }

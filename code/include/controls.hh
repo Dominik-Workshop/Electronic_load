@@ -12,9 +12,11 @@
 #ifndef CONTROLS_HH
 #define CONTROLS_HH
 
+#include <Adafruit_MCP4725.h>
 #include "measurements.hh"
 
 void fanControll(Measurements& measurements);
 void loadOnOffToggle(LiquidCrystal_I2C& lcd);
+void sinkCurrent(float current, Adafruit_MCP4725& dac);
 
 #endif

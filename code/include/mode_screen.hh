@@ -34,6 +34,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Adafruit_ADS1115& adc, Adafruit_MCP4725& dac, Measurements& measurements);
 
 int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setValue);
+void checkEncoder(LiquidCrystal_I2C& lcd, UserInput& userInput, SetValue& setValue, Encoder& encoder);
 void displayMenu(LiquidCrystal_I2C& lcd);
 
 #endif

@@ -15,16 +15,6 @@
 #include <Arduino.h>
 #include "set_value.hh"
 
-enum DecimalPlaces{
-  thousandths = -3, //0.01
-  hundredths,       //0.01
-  tenths,           //0.1
-  ones,             //1
-  tens,             //10
-  hundreds,         //100
-  thousands         //1000
-};
-
 /**
  * @brief used for storing data recieved from the user via keypad or rotary encoder
  * 
@@ -34,10 +24,10 @@ class UserInput{
     SetValue setCurrent;
     SetValue setPower;
     SetValue setResistance;
-    char key = ' ';               //stores one character entered from keypad
-    float decimalPlace = ones;       //stores information where the encoder's cursor is
-    int cursorPos = 7;
-		uint32_t time;							  //used to measure time from last action
+    char key = ' ';                     //stores one character entered from keypad
+    DecimalPlaces decimalPlace = ones;  //stores information where the encoder's cursor is in terms of decimal place of setValue  
+    int cursorPos = 7;                  //cursor's position on the lcd
+		uint32_t time;							        //used to measure time from last action
     UserInput();
 };
 
