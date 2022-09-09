@@ -34,7 +34,7 @@
 
 void setup() {
   Measurements measurements;
-  Controls controls;
+  Controls controls(measurements);
   UserInput userInput;
   LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
   Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);

@@ -20,6 +20,7 @@ class Controls{
   public:
     Adafruit_MCP4725 dac;
     DacCalibration calibration;
+    Measurements& measurements;
     void fanControll(Measurements& measurements);
     void loadOn(LiquidCrystal_I2C& lcd);
     void loadOff(LiquidCrystal_I2C& lcd);
@@ -28,7 +29,7 @@ class Controls{
     void drawConstPower(float setPower, float voltage);
     void constResistance(float setResistance, float voltage);
 
-    Controls();
+    Controls(Measurements& measurements_);
   private:
     int fanspeed;
     int lowTemperatureThreshold = 30;   //fan turns on after reaching this temperature
