@@ -15,8 +15,24 @@
 #include <Adafruit_MCP4725.h>
 #include "measurements.hh"
 
-void fanControll(Measurements& measurements);
-void loadOnOffToggle(LiquidCrystal_I2C& lcd);
-void sinkCurrent(float current, Adafruit_MCP4725& dac);
+class Controls{
+  public:
+    Adafruit_MCP4725 dac;
+    void fanControll(Measurements& measurements);
+    void loadOn(LiquidCrystal_I2C& lcd);
+    void loadOff(LiquidCrystal_I2C& lcd);
+    void loadOnOffToggle(LiquidCrystal_I2C& lcd);
+    void sinkCurrent(float setCurrent);
+    void drawConstPower(float setPower, float voltage);
+    void constResistance(float setResistance, float voltage);
+
+    Controls();
+  private:
+    int fanspeed;
+    int lowTemperatureThreshold = 30;   //fan turns on after reaching this temperature
+    int highTemperatureThreshold = 45;  //fan reaches full speed at this temperature
+    bool loadIsOn = false;
+};
+
 
 #endif

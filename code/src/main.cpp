@@ -30,13 +30,14 @@
 #include "mode_screen.hh"
 #include "user_input.hh"
 #include "measurements.hh"
+#include "controls.hh"
 
 
 void setup() {
   Measurements measurements;
+  Controls controls;
   UserInput userInput;
   LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
-  Adafruit_MCP4725 dac;
   Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
   Encoder encoder;
 
@@ -46,17 +47,15 @@ void setup() {
   lcd.backlight();              //turn the backlight on
   lcd.createChar(degree, degreeSymbol);
   lcd.createChar(ohm, ohmSymbol);
-  dac.begin(DAC_ADDRESS);
   encoder.begin();
 
   Serial.begin(9600);
 
   pinInit();
-  digitalWrite(OUTPUT_OFF, LOW);      //Load turned off on power up
 
   welcomeScreen(lcd);
   delay(3000);
-  mainMenu(lcd, userInput, keypad, encoder, dac, measurements);
+  mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
 }
 
 void loop(){
