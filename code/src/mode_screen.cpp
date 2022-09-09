@@ -118,7 +118,7 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 		measurements.update();
 		measurements.displayMeasurements(lcd);
 		controls.fanControll(measurements);
-		controls.drawConstPower(userInput.setPower.value, measurements.voltage);
+		controls.drawConstPower(userInput.setPower.value);
 		switch (keypad.getKey()){
 			case Menu:
 				controls.loadOff(lcd);
@@ -134,7 +134,7 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 					measurements.update();
 					measurements.displayMeasurements(lcd);
 					controls.fanControll(measurements);
-					controls.drawConstPower(userInput.setPower.value, measurements.voltage);
+					controls.drawConstPower(userInput.setPower.value);
 					userInput.key = keypad.getKey();
 					lcd.setCursor(userInput.cursorPos,2);
 					lcd.cursor();
@@ -170,7 +170,7 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 		measurements.update();
 		measurements.displayMeasurements(lcd);
 		controls.fanControll(measurements);
-		controls.constResistance(userInput.setResistance.value, measurements.voltage);
+		controls.constResistance(userInput.setResistance.value);
 		switch (keypad.getKey()){
 			case Menu:
 				controls.loadOff(lcd);
@@ -186,7 +186,7 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 					measurements.update();
 					measurements.displayMeasurements(lcd);
 					controls.fanControll(measurements);
-					controls.constResistance(userInput.setResistance.value, measurements.voltage);
+					controls.constResistance(userInput.setResistance.value);
 					userInput.key = keypad.getKey();
 					lcd.setCursor(userInput.cursorPos,2);
 					lcd.cursor();

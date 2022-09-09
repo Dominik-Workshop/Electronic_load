@@ -67,10 +67,10 @@ void Controls::sinkCurrent(float setCurrent){
 	dac.setVoltage(setCurrent * 4096 / 4.096 / 0.053 * 0.025 * (0.95 + calibration.getSetCurrentMultiplier()/2550.0), false);
 }
 
-void Controls::drawConstPower(float setPower, float voltage){
-	sinkCurrent(setPower/voltage);
+void Controls::drawConstPower(float setPower){
+	sinkCurrent(setPower/measurements.voltage);
 }
 
-void Controls::constResistance(float setResistance, float voltage){
-	sinkCurrent(voltage/setResistance);
+void Controls::constResistance(float setResistance){
+	sinkCurrent(measurements.voltage/setResistance);
 }
