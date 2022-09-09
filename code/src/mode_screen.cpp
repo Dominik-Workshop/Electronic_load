@@ -295,15 +295,37 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 		if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
 			userInput.time = millis();
 			inputFromKeypad(lcd, userInput, keypad, userInput.setCurrent);
+			userInput.key = ' ';
 		}
-		else if(userInput.key == '#')
+		else if(userInput.key == Enter)
 			break;
 		controls.sinkCurrent(userInput.setCurrent.value);
 		controls.calibration.setSetCurrentMultiplier(lastCalibrationValue + encoder.rotation());
 		lcd.setCursor(15,2);
 		lcd.print(controls.calibration.getSetCurrentMultiplier());
 		lcd.print("  ");
-		
+	}
+
+	lcd.setCursor(0, 2);
+	lcd.print("cal offset=");
+	lastCalibrationValue = controls.calibration.getSetCurrentOffset();
+	encoder.reset();
+	while(1){
+		measurements.update();
+		measurements.displayMeasurements(lcd);
+		userInput.key = keypad.getKey();
+		if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
+			userInput.time = millis();
+			inputFromKeypad(lcd, userInput, keypad, userInput.setCurrent);
+			userInput.key = ' ';
+		}
+		else if(userInput.key == Enter)
+			break;
+		controls.sinkCurrent(userInput.setCurrent.value);
+		controls.calibration.setSetCurrentOffset(lastCalibrationValue + encoder.rotation());
+		lcd.setCursor(15,2);
+		lcd.print(controls.calibration.getSetCurrentOffset());
+		lcd.print("  ");
 	}
 	measurements.calibration.writeToEEPROM();
 	controls.calibration.writeToEEPROM();

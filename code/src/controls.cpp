@@ -63,8 +63,11 @@ void Controls::loadOnOffToggle(LiquidCrystal_I2C& lcd){
 void Controls::sinkCurrent(float setCurrent){
 	if(setCurrent * measurements.voltage > MAX_POWER)
 		setCurrent = MAX_POWER / measurements.voltage; 
-								//setCurrent*resolution/Vref*attenuation/equivalent R of shunts * calibrationValue
-	dac.setVoltage(setCurrent * 4096 / 4.096 / 0.053 * 0.025 * (0.95 + calibration.getSetCurrentMultiplier()/2550.0), false);
+						//setCurrent*resolution/Vref*attenuation/equivalent R of shunts * calibrationValue
+	int dacControl = setCurrent * 4096 / 4.096 / 0.053 * 0.025 * (0.95 + calibration.getSetCurrentMultiplier()/2550.0) + (calibration.getSetCurrentOffset() - 128);
+	if(dacControl < 0)
+		dacControl = 0;
+	dac.setVoltage(dacControl, false);
 }
 
 void Controls::drawConstPower(float setPower){
