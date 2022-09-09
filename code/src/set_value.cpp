@@ -27,7 +27,8 @@ void SetValue::init(int digits, int decimals, float min, float max){
   numOfDecimalPlaces = decimals;
   minValue = min;
   maxValue = max;
-  
+  maxDecimalPlace = static_cast<DecimalPlaces> (digits - decimals -1);
+  minDecimalPlace = static_cast<DecimalPlaces> (-decimals);
 }
 
 void SetValue::display(LiquidCrystal_I2C& lcd){
@@ -45,4 +46,15 @@ void SetValue::limit(){
     value = minValue;
   else if(value > maxValue)
     value = maxValue;
+}
+
+/**
+ * @brief decrementation operator overload  for DecimalPlaces enum
+ * 
+ * @param dec 
+ */
+void operator--(DecimalPlaces& dec){
+  int tmp = static_cast<int>(dec);
+  --tmp;
+  dec = static_cast<DecimalPlaces>(tmp);
 }
