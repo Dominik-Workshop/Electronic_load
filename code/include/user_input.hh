@@ -14,6 +14,7 @@
 
 #include <Arduino.h>
 #include "set_value.hh"
+#include "defines.hh"
 
 /**
  * @brief used for storing data recieved from the user via keypad or rotary encoder

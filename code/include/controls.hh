@@ -15,6 +15,7 @@
 #include <Adafruit_MCP4725.h>
 #include "measurements.hh"
 #include "calibration.hh"
+#include "defines.hh"
 
 class Controls{
   public:

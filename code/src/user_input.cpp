@@ -2,7 +2,7 @@
  * @file user_input.cpp
  * @author Dominik Workshop
  * @brief 
- * @version 0.1
+ * @version 1.1
  * @date 2022-08-05
  * 
  * @copyright Copyright (c) 2022
@@ -13,9 +13,9 @@
 
 UserInput::UserInput(){
   setCurrent.value = 0.1; //initialize set current to 0,1A at power up
-  setCurrent.init(4, 3, 0.001, 9.999);
+  setCurrent.init(4, 3, 0.001, MAX_CURRENT);
   setPower.value = 1;  //initialize set power to 1W at power up
-  setPower.init(5,2, 0.01, 200.00);
+  setPower.init(5,2, 0.01, MAX_POWER);
   setResistance.value = 100;  //initialize set resitance to 100ohm at power up
-  setResistance.init(5,1, 0.1, 9000.0);
+  setResistance.init(5,1, 0.1, MAX_RESISTANCE);
 }

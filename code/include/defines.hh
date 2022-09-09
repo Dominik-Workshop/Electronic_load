@@ -12,6 +12,10 @@
 #ifndef DEFINES_HH
 #define DEFINES_HH
 
+#define MAX_CURRENT 8.4
+#define MAX_POWER 300
+#define MAX_RESISTANCE 9000
+
 #define ADC_ADDRESS 0x48
 #define DAC_ADDRESS 0x60
 #define LCD_ADDRESS 0x27
