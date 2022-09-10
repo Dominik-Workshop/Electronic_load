@@ -57,7 +57,14 @@ void Encoder::handleInterruptRotation(){
 }
 
 void Encoder::handleInterruptButton(){
-  buttonPressed = true;
+  static unsigned long lastInterruptTime = 0;
+  unsigned long interruptTime = millis();
+
+  // If interrupts come faster than 5ms, assume it's a bounce and ignore
+  if(interruptTime - lastInterruptTime > 5)
+    buttonPressed = true;
+  
+  lastInterruptTime = interruptTime;
 }
 
 /**
