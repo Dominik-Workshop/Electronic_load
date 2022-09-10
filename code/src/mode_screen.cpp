@@ -62,49 +62,7 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
   lcd.print("A");
 	userInput.cursorPos = 6;
 	userInput.decimalPlace = ones;
-	while(1){
-		measurements.update();
-		measurements.displayMeasurements(lcd, controls.isLoadOn());
-		controls.fanControll();
-		controls.sinkCurrent(userInput.setCurrent.value);
-		switch (keypad.getKey()){
-			case Menu:
-				controls.loadOff(lcd);
-				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu				
-				break;
-			case LoadOnOff:
-				controls.loadOnOffToggle(lcd);
-				break;
-			case Enter:
-				encoder.reset();
-				userInput.time = millis();
-				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
-					measurements.update();
-					measurements.displayMeasurements(lcd, controls.isLoadOn());
-					controls.fanControll();
-					controls.sinkCurrent(userInput.setCurrent.value);
-					userInput.key = keypad.getKey();
-					lcd.setCursor(userInput.cursorPos,2);
-					lcd.cursor();
-					delay(100);
-					if(userInput.key == Menu) 
-						mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
-					else if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
-						inputFromKeypad(lcd, userInput, keypad, userInput.setCurrent);
-						encoder.reset();  //reset encoder in case it was turned while entering value via keypad
-					}
-					else if(userInput.key == LoadOnOff)
-						controls.loadOnOffToggle(lcd);
-
-					checkEncoder(lcd, userInput, userInput.setCurrent, encoder);
-				}
-				lcd.noCursor();
-				break;
-			default:
-				delay(10);	//wait 10ms before checking again what keypad was pressed
-				break;
-		}
-	}
+	taskLoop(lcd, userInput, keypad, encoder, measurements, controls, userInput.setCurrent, ConstCurrent);
 }
 
 void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
@@ -117,46 +75,7 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
   lcd.print("W");
 	userInput.cursorPos = 8;
 	userInput.decimalPlace = ones;
-	while(1){
-		measurements.update();
-		measurements.displayMeasurements(lcd, controls.isLoadOn());
-		controls.fanControll();
-		controls.drawConstPower(userInput.setPower.value);
-		switch (keypad.getKey()){
-			case Menu:
-				controls.loadOff(lcd);
-				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu				
-				break;
-			case LoadOnOff:
-				controls.loadOnOffToggle(lcd);
-				break;
-			case Enter:
-				encoder.reset();
-				userInput.time = millis();
-				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
-					measurements.update();
-					measurements.displayMeasurements(lcd, controls.isLoadOn());
-					controls.fanControll();
-					controls.drawConstPower(userInput.setPower.value);
-					userInput.key = keypad.getKey();
-					lcd.setCursor(userInput.cursorPos,2);
-					lcd.cursor();
-					delay(100);
-					if(userInput.key == Menu) 
-						mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
-					else if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
-						inputFromKeypad(lcd, userInput, keypad, userInput.setPower);
-						encoder.reset();  //reset encoder in case it was turned while entering value via keypad
-					} 
-					checkEncoder(lcd, userInput, userInput.setPower, encoder);
-				}
-				lcd.noCursor();
-				break;
-			default:
-				delay(10);	//wait 10ms before checking again what keypad was pressed
-				break;
-		}
-	}
+	taskLoop(lcd, userInput, keypad, encoder, measurements, controls, userInput.setPower, ConstPower);
 }
 
 void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
@@ -169,46 +88,7 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
   lcd.write(ohm);
 	userInput.cursorPos = 9;
 	userInput.decimalPlace = ones;
-	while(1){
-		measurements.update();
-		measurements.displayMeasurements(lcd, controls.isLoadOn());
-		controls.fanControll();
-		controls.constResistance(userInput.setResistance.value);
-		switch (keypad.getKey()){
-			case Menu:
-				controls.loadOff(lcd);
-				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
-				break;
-			case LoadOnOff:
-				controls.loadOnOffToggle(lcd);
-				break;
-			case Enter:
-				encoder.reset();
-				userInput.time = millis();
-				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
-					measurements.update();
-					measurements.displayMeasurements(lcd, controls.isLoadOn());
-					controls.fanControll();
-					controls.constResistance(userInput.setResistance.value);
-					userInput.key = keypad.getKey();
-					lcd.setCursor(userInput.cursorPos,2);
-					lcd.cursor();
-					delay(100);
-					if(userInput.key == Menu) 
-						mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
-					else if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
-						inputFromKeypad(lcd, userInput, keypad, userInput.setResistance);
-						encoder.reset();  //reset encoder in case it was turned while entering value via keypad
-					} 
-					checkEncoder(lcd, userInput, userInput.setResistance, encoder);
-				}
-				lcd.noCursor();
-				break;
-			default:
-				delay(10);	//wait 10ms before checking again what keypad was pressed
-				break;
-		}
-	}
+	taskLoop(lcd, userInput, keypad, encoder, measurements, controls, userInput.setResistance, ConstResistance);
 }
 
 void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
@@ -335,6 +215,68 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 
 	controls.loadOff(lcd);
 	mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
+}
+
+void taskLoop(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls, SetValue& setValue, ModeOfOperation mode){
+	while(1){
+		measurements.update();
+		measurements.displayMeasurements(lcd, controls.isLoadOn());
+		controls.fanControll();
+		loadControl(controls, userInput, mode);
+		switch (keypad.getKey()){
+			case Menu:
+				controls.loadOff(lcd);
+				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
+				break;
+			case LoadOnOff:
+				controls.loadOnOffToggle(lcd);
+				break;
+			case Enter:
+				encoder.reset();
+				userInput.time = millis();
+				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
+					measurements.update();
+					measurements.displayMeasurements(lcd, controls.isLoadOn());
+					controls.fanControll();
+					loadControl(controls, userInput, mode);
+					userInput.key = keypad.getKey();
+					lcd.setCursor(userInput.cursorPos,2);
+					lcd.cursor();
+					delay(100);
+					if(userInput.key == Menu) 
+						mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
+					else if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
+						inputFromKeypad(lcd, userInput, keypad, setValue);
+						encoder.reset();  //reset encoder in case it was turned while entering value via keypad
+					} 
+					else if(userInput.key == LoadOnOff)
+						controls.loadOnOffToggle(lcd);
+
+					checkEncoder(lcd, userInput, setValue, encoder);
+				}
+				lcd.noCursor();
+				break;
+			default:
+				delay(10);	//wait 10ms before checking again what keypad was pressed
+				break;
+		}
+	}
+}
+
+void loadControl(Controls& controls, UserInput& userInput, ModeOfOperation mode){
+	switch (mode){
+	case ConstCurrent:
+		controls.sinkCurrent(userInput.setCurrent.value);
+		break;
+	case ConstPower:
+		controls.drawConstPower(userInput.setPower.value);
+		break;
+	case ConstResistance:
+		controls.constResistance(userInput.setResistance.value);
+		break;
+	default:
+		break;
+	}
 }
 
 int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setParameter){

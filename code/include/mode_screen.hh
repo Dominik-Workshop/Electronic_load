@@ -24,6 +24,12 @@
 #include "measurements.hh"
 #include "controls.hh"
 
+enum ModeOfOperation{
+  ConstCurrent,
+  ConstPower,
+  ConstResistance
+};
+
 void welcomeScreen(LiquidCrystal_I2C& lcd);
 void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
@@ -33,6 +39,8 @@ void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad&
 void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 
+void taskLoop(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls, SetValue& setValue, ModeOfOperation mode);
+void loadControl(Controls& controls, UserInput& userInput, ModeOfOperation mode);
 int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setValue);
 void checkEncoder(LiquidCrystal_I2C& lcd, UserInput& userInput, SetValue& setValue, Encoder& encoder);
 void displayMenu(LiquidCrystal_I2C& lcd);
