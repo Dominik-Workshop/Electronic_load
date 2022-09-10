@@ -3,7 +3,7 @@
 ### Project Goals
 :heavy_check_mark: **300 W power dissipation**
 
-:heavy_check_mark: **up to 10 A and 60V** (obeying the 300W limit)
+:heavy_check_mark: **up to 8A and 60V** (obeying the 300W limit)
 
 :heavy_check_mark: **Remote voltage sensing option**
 
@@ -15,9 +15,9 @@
 
 :heavy_check_mark: **Constant resistance mode**
 
-:heavy_check_mark: **Transient response mode**
+  **Transient response mode**
 
-:heavy_check_mark: **Battery testing mode**
+  **Battery testing mode**
 
 :heavy_check_mark: **Nice to look at:** doesn't look like a poor DIY build
 
@@ -30,14 +30,17 @@
 ### To-Do:
 
 - [ ] Software
-  - [ ] Voltage / Current measurement
+  - [X] Voltage / Current measurement
   - [ ] Transient response mode
   - [ ] Battery measurement mode
-  - [ ] Calibration mode
-  - [ ] Charging State
-  - [ ] Const. power regulation
-  - [ ] Const. resistance regulation
+  - [X] Calibration mode
+  - [X] Const. power regulation
+  - [X] Const. resistance regulation
+  - [ ] Clean the code up
 - [ ] Hardware (future version upgrades)
+  - [ ] Move fan speed control pin to different timer than TCCR0B
+
+### Next version:
   - [ ] Reverse polarity protection
   - [ ] Better heat dissipation from shunts
 
