@@ -15,9 +15,9 @@
 
 :heavy_check_mark: **Constant resistance mode**
 
-  **Transient response mode**
+**Transient response mode**
 
-  **Battery testing mode**
+**Battery testing mode**
 
 :heavy_check_mark: **Nice to look at:** doesn't look like a poor DIY build
 
@@ -37,12 +37,13 @@
   - [X] Const. power regulation
   - [X] Const. resistance regulation
   - [ ] Clean the code up
-- [ ] Hardware (future version upgrades)
+- [ ] Hardware
   - [ ] Move fan speed control pin to different timer than TCCR0B
 
 ### Next version:
   - [ ] Reverse polarity protection
   - [ ] Better heat dissipation from shunts
+  - [ ] Higher resolution DAC
 
 ### Uploading the code using USBASP
 add following code to the platformio.ini file
