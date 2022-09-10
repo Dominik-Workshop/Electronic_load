@@ -34,9 +34,12 @@ void Measurements::update(){
 }
 
 /**
- * @brief displays voltage, current, power and temperature
+ * @brief displays voltage, current, power and temperature.
+ * If load is off then sets current and power to zero to cancel out the current flowing through shunts
+ * casued by turning on of Q8-Q11 transistors
  * 
  * @param lcd 
+ * @param loadIsOn boolean value
  */
 void Measurements::displayMeasurements(LiquidCrystal_I2C& lcd, bool loadIsOn){
   if(!loadIsOn){

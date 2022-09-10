@@ -2,7 +2,7 @@
  * @file mode_screen.hh
  * @author Dominik Workshop
  * @brief 
- * @version 0.1
+ * @version 2.1
  * @date 2022-07-31
  * 
  * @copyright Copyright (c) 2022
@@ -14,8 +14,6 @@
 
 
 #include <LiquidCrystal_I2C.h>
-#include <Adafruit_ADS1X15.h>
-#include <Adafruit_MCP4725.h>
 
 #include "lcd_characters.hh"
 #include "user_input.hh"
@@ -30,20 +28,22 @@ enum ModeOfOperation{
   ConstResistance
 };
 
-void welcomeScreen(LiquidCrystal_I2C& lcd);
+void displayWelcomeScreen(LiquidCrystal_I2C& lcd);
+
 void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
-void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 
-void taskLoop(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls, SetValue& setValue, ModeOfOperation mode);
+void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 void loadControl(Controls& controls, UserInput& userInput, ModeOfOperation mode);
-int inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setValue);
+void inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setValue);
 void checkEncoder(LiquidCrystal_I2C& lcd, UserInput& userInput, SetValue& setValue, Encoder& encoder);
 void displayMenu(LiquidCrystal_I2C& lcd);
+
+void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 
 #endif
 
@@ -61,24 +61,24 @@ void displayMenu(LiquidCrystal_I2C& lcd);
 
     0 1 2 3 4 5 6 7 8 9 A B C D E F G H I J
   -------------------------------------------
-0 | C o n s t   C u r r e n t         O f f |
-1 | 0 0 . 0 0 0 V   0 . 0 0 0 A   0 . 0 0 W |
+0 | C o n s t   C u r r e n t         O F F |
+1 | 0 0 . 0 0 V   0 . 0 0 0 A     0 . 0 0 W |
 2 | S e t   I = 0 . 0 0 0 A                 |
 3 |                                 2 3 * C |
   -------------------------------------------
 
     0 1 2 3 4 5 6 7 8 9 A B C D E F G H I J
   -------------------------------------------
-0 | C o n s t   P o w e r             O f f |
-1 | 0 0 . 0 0 0 V   0 . 0 0 0 A   0 . 0 0 W |
+0 | C o n s t   P o w e r             O F F |
+1 | 0 0 . 0 0 V   0 . 0 0 0 A     0 . 0 0 W |
 2 | S e t   P = 0 0 0 . 0 0 W               |
 3 |                                 2 3 * C |
   -------------------------------------------
 
     0 1 2 3 4 5 6 7 8 9 A B C D E F G H I J
   -------------------------------------------
-0 | C o n s t   R e s i s t a n c e   O f f |
-1 | 0 0 . 0 0 0 V   0 . 0 0 0 A   0 . 0 0 W |
+0 | C o n s t   R e s i s t a n c e   O F F |
+1 | 0 0 . 0 0 V   0 . 0 0 0 A     0 . 0 0 W |
 2 | S e t   R = 0 0 0 0 . 0 Ω               |
 3 |                                 2 3 * C |
   -------------------------------------------

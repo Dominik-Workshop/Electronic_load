@@ -2,7 +2,7 @@
  * @file main.cpp
  * @author Dominik Workshop
  * @brief Electronic load with 5 different modes of operation:
- *  - Constant current      0,001A - 8,4A,
+ *  - Constant current      0,004A - 8,4A,
  *  - Constant power        0,01W - 300,00W,
  *  - Constant resistance   0,1Ω - 9 999Ω,
  *  - Transient response
@@ -16,20 +16,19 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include <Adafruit_ADS1X15.h>
-#include <Adafruit_MCP4725.h>
-#include <LiquidCrystal_I2C.h>
 #include <SPI.h>
+#include <LiquidCrystal_I2C.h>
 
 #include "defines.hh"
-#include "init.hh"
-#include "encoder.hh"
-#include "keypad_config.hh"
-#include "lcd_characters.hh"
-#include "mode_screen.hh"
-#include "user_input.hh"
 #include "measurements.hh"
 #include "controls.hh"
+#include "user_input.hh"
+#include "lcd_characters.hh"
+#include "keypad_config.hh"
+#include "encoder.hh"
+#include "init.hh"
+#include "mode_screen.hh"
+
 
 
 void setup() {
@@ -54,8 +53,8 @@ void setup() {
 
   controls.loadOff(lcd);
 
-  welcomeScreen(lcd);
-  delay(3000);
+  displayWelcomeScreen(lcd);
+  delay(2000);
   mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
 }
 
