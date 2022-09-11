@@ -1,8 +1,8 @@
 /**
  * @file controls.hh
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
+ * @author Dominik Workshop
+ * @brief fan, load on/off, current/power/resitance regulation controlls
+ * @version 1.1
  * @date 2022-09-08
  * 
  * @copyright Copyright (c) 2022
@@ -17,6 +17,10 @@
 #include "calibration.hh"
 #include "defines.hh"
 
+/**
+ * @brief contains DAC object and calibration values, has acces to measurements, has methods for controlling the load
+ * 
+ */
 class Controls{
   public:
     Adafruit_MCP4725 dac;
