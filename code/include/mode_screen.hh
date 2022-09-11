@@ -42,6 +42,7 @@ void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& l
 void loadControl(Controls& controls, UserInput& userInput, ModeOfOperation mode);
 void inputFromKeypad(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, SetValue& setValue, Measurements& measurements, Controls& controls, ModeOfOperation mode);
 void checkEncoder(LiquidCrystal_I2C& lcd, UserInput& userInput, SetValue& setParameter, Encoder& encoder);
+
 void displayMenu(LiquidCrystal_I2C& lcd);
 
 void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
