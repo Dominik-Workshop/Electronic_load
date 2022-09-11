@@ -36,7 +36,7 @@
   - [X] Calibration mode
   - [X] Const. power regulation
   - [X] Const. resistance regulation
-  - [ ] Clean the code up
+  - [X] Clean the code up
 - [ ] Hardware
   - [ ] Move fan speed control pin to different timer than TCCR0B
 
