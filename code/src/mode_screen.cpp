@@ -186,13 +186,13 @@ void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& l
 void loadControl(Controls& controls, UserInput& userInput, ModeOfOperation mode){
 	switch (mode){
 	case ConstCurrent:
-		controls.sinkCurrent(userInput.setCurrent.value);
+		controls.regulateCurrent(userInput.setCurrent.value);
 		break;
 	case ConstPower:
-		controls.drawConstPower(userInput.setPower.value);
+		controls.regulatePower(userInput.setPower.value);
 		break;
 	case ConstResistance:
-		controls.constResistance(userInput.setResistance.value);
+		controls.regulateResistance(userInput.setResistance.value);
 		break;
 	default:
 		break;
@@ -386,7 +386,7 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 		}
 		else if(userInput.key == Enter)
 			break;
-		controls.sinkCurrent(userInput.setCurrent.value);
+		controls.regulateCurrent(userInput.setCurrent.value);
 		controls.calibration.setSetCurrentMultiplier(lastCalibrationValue + encoder.rotation());
 		lcd.setCursor(15,2);
 		lcd.print(controls.calibration.getSetCurrentMultiplier());
@@ -410,7 +410,7 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 		}
 		else if(userInput.key == Enter)
 			break;
-		controls.sinkCurrent(userInput.setCurrent.value);
+		controls.regulateCurrent(userInput.setCurrent.value);
 		controls.calibration.setSetCurrentOffset(lastCalibrationValue + encoder.rotation());
 		lcd.setCursor(15,2);
 		lcd.print(controls.calibration.getSetCurrentOffset());

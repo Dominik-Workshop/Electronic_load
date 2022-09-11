@@ -26,9 +26,9 @@ class Controls{
     void loadOn(LiquidCrystal_I2C& lcd);
     void loadOff(LiquidCrystal_I2C& lcd);
     void loadOnOffToggle(LiquidCrystal_I2C& lcd);
-    void sinkCurrent(float setCurrent);
-    void drawConstPower(float setPower);
-    void constResistance(float setResistance);
+    void regulateCurrent(float setCurrent);
+    void regulatePower(float setPower);
+    void regulateResistance(float setResistance);
     bool isLoadOn();
 
     Controls(Measurements& measurements_);
