@@ -47,7 +47,7 @@ void Measurements::displayMeasurements(LiquidCrystal_I2C& lcd, bool loadIsOn){
     power = 0;
   }
   lcd.setCursor(0,1);
-  display(lcd, voltage, 4, 2);
+  display(lcd, voltage, 4, 3);
   lcd.print("V ");
   display(lcd, current, 4, 3);
   lcd.print("A ");
