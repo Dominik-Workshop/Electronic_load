@@ -21,6 +21,7 @@
 #include "keypad_config.hh"
 #include "measurements.hh"
 #include "controls.hh"
+#include "battery.hh"
 
 enum ModeOfOperation{
   ConstCurrent,

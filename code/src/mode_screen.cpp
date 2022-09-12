@@ -101,7 +101,17 @@ void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad&
 }
 
 void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
+	Battery battery;
 	lcd.clear();
+	lcd.setCursor(0 ,0);
+	lcd.print("  Battery capacity  ");
+  lcd.setCursor(0, 1);
+	lcd.print("  measurement mode  ");
+	lcd.setCursor(0, 2);
+  lcd.print("enter cutoff voltage");
+	lcd.setCursor(0, 3);
+	
+
 	measurements.timer.start();
 	while(keypad.getKey() != Menu){
 		lcd.setCursor(0, 0);
