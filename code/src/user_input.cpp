@@ -19,3 +19,72 @@ UserInput::UserInput(){
   setResistance.value = 100;  //initialize set resitance to 100ohm at power up
   setResistance.init(5,1, 0.1, MAX_RESISTANCE);
 }
+
+/**
+ * @brief manages input from keypad, displays entered digit or decimal point in the bottom left corner of the lcd
+ * 
+ * @param lcd 
+ * @param keypad 
+ * @param setParameter 
+ */
+void UserInput::inputFromKeypad(LiquidCrystal_I2C& lcd, Keypad& keypad, SetValue& setParameter){
+	if(key >= '0' && key <= '9'){	//is digit
+		if(index <=5){	//limit number of input characters
+			numbers[index] = key;
+			numbers[++index] = '\0';
+			lcd.setCursor(x_pos,3);                              
+			lcd.print(key);  //show input number on the LCD
+			x_pos++;
+			time = millis();
+		}
+	}
+
+	else if(key == '.' && !decimalPointPresent){
+		if(index <=5){	//limit number of input characters
+			numbers[index] = '.';
+			numbers[++index] = '\0';
+			lcd.setCursor(x_pos,3);
+			lcd.print(".");
+			x_pos++;
+			decimalPointPresent = true;
+			time = millis();
+		}
+	}
+	
+	else if(key == Delete){
+		lcd.setCursor(--x_pos,3);
+		lcd.print(" ");
+		--index;
+		if(numbers[index] == '.')		//deleted decimal point
+			decimalPointPresent = false;
+		numbers[index] = '\0';
+		time = millis();
+	}
+
+	else if(key == Enter && index > 0) {
+		setParameter.value = atof(numbers);		//convert array of entered numbers to float and write it to SetValue variable
+		setParameter.limit();
+		lcd.setCursor(6,2);
+		setParameter.display(lcd);
+		lcd.setCursor(0,3);
+		lcd.print("       ");		//clear all entered numbers from the screen
+    resetKeypadInput();
+	}
+
+  // lcd.setCursor(0,3);
+	// lcd.print("       ");		//clear all entered numbers from the screen
+}
+
+void UserInput::resetKeypadInput(){
+  for(int i = 0; i < 7; ++i)
+    numbers[i] = '\0';
+  decimalPointPresent = false;
+  index = 0;
+  x_pos = 0;
+}
+
+/*
+to do:
+  create a copy of encoder and keypad in this class
+	//remove if statement i  modeScreen checking if is digit or decimal
+*/

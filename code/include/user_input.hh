@@ -13,8 +13,10 @@
 #define USER_INPUT_HH
 
 #include <Arduino.h>
+
 #include "set_value.hh"
 #include "defines.hh"
+#include "keypad_config.hh"
 
 /**
  * @brief used for storing data recieved from the user via keypad or rotary encoder
@@ -25,11 +27,22 @@ class UserInput{
     SetValue setCurrent;
     SetValue setPower;
     SetValue setResistance;
-    char key = ' ';                     //stores one character entered from keypad
-    DecimalPlaces decimalPlace = ones;  //stores information where the encoder's cursor is in terms of decimal place of setValue  
-    int cursorPos = 7;                  //cursor's position on the lcd
+
+    char key = ' ';                                 //stores one character entered from keypad
+    void inputFromKeypad(LiquidCrystal_I2C& lcd, Keypad& keypad, SetValue& setParameter);
+    void resetKeypadInput();
+
+    DecimalPlaces decimalPlace = ones;  //encoder's cursor position is in terms of decimal place of setValue  
+    int cursorPos = 7;                  //encoder's cursor position on the lcd
+
 		uint32_t time;							        //used to measure time from last action
+
     UserInput();
+  private:
+    char numbers[7] = {'\0', '0','0','0','0','0'};	//array of characters that will be converted to float later
+    bool decimalPointPresent = false;								//indicates if user already input a decimal point
+    int index = 0;							                    //index for array numbers[]
+	  int x_pos = 0;																	//cursor position for numbers entered via keypad
 };
 
 #endif
