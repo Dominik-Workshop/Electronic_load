@@ -24,10 +24,9 @@ UserInput::UserInput(){
  * @brief manages input from keypad, displays entered digit or decimal point in the bottom left corner of the lcd
  * 
  * @param lcd 
- * @param keypad 
  * @param setParameter 
  */
-void UserInput::inputFromKeypad(LiquidCrystal_I2C& lcd, Keypad& keypad, SetValue& setParameter){
+void UserInput::inputFromKeypad(LiquidCrystal_I2C& lcd, SetValue& setParameter){
 	if(key >= '0' && key <= '9'){	//is digit
 		if(index <=5){	//limit number of input characters
 			numbers[index] = key;
@@ -70,9 +69,6 @@ void UserInput::inputFromKeypad(LiquidCrystal_I2C& lcd, Keypad& keypad, SetValue
 		lcd.print("       ");		//clear all entered numbers from the screen
     resetKeypadInput();
 	}
-
-  // lcd.setCursor(0,3);
-	// lcd.print("       ");		//clear all entered numbers from the screen
 }
 
 void UserInput::resetKeypadInput(){
@@ -83,8 +79,27 @@ void UserInput::resetKeypadInput(){
   x_pos = 0;
 }
 
-/*
-to do:
-  create a copy of encoder and keypad in this class
-	//remove if statement i  modeScreen checking if is digit or decimal
-*/
+void UserInput::checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder){
+	if(encoder.wasButtonPressed()){
+		time = millis();
+		if(decimalPlace > setParameter.minDecimalPlace){	//if did't reach the last digit of setParameter
+			--decimalPlace;																	//move cursor to the left
+			++cursorPos;
+		}   
+		else{
+			decimalPlace = setParameter.maxDecimalPlace;		//move the cursor back to the first digit of setParameter
+			cursorPos = 6;
+		}
+		if(decimalPlace == tenths)	//jump across the decimal point
+			++cursorPos;
+	}
+
+	if(encoder.rotation()){
+		setParameter.value += encoder.rotation() * pow(10, decimalPlace);
+		setParameter.limit();
+		lcd.setCursor(6,2);
+		setParameter.display(lcd);
+		encoder.reset();
+		time = millis();
+	}
+}

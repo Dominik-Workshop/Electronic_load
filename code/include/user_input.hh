@@ -17,6 +17,7 @@
 #include "set_value.hh"
 #include "defines.hh"
 #include "keypad_config.hh"
+#include "encoder.hh"
 
 /**
  * @brief used for storing data recieved from the user via keypad or rotary encoder
@@ -28,9 +29,11 @@ class UserInput{
     SetValue setPower;
     SetValue setResistance;
 
-    char key = ' ';                                 //stores one character entered from keypad
-    void inputFromKeypad(LiquidCrystal_I2C& lcd, Keypad& keypad, SetValue& setParameter);
+    char key = ' ';       //stores one character entered from keypad
+    void inputFromKeypad(LiquidCrystal_I2C& lcd, SetValue& setParameter);
     void resetKeypadInput();
+    
+    void checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder);
 
     DecimalPlaces decimalPlace = ones;  //encoder's cursor position is in terms of decimal place of setValue  
     int cursorPos = 7;                  //encoder's cursor position on the lcd

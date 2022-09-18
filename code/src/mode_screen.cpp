@@ -168,9 +168,8 @@ void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& l
 					else if(userInput.key == LoadOnOff)
 						controls.loadOnOffToggle(lcd);
 
-					userInput.inputFromKeypad(lcd, keypad, setParameter);
-					
-					checkEncoder(lcd, userInput, setParameter, encoder);
+					userInput.inputFromKeypad(lcd, setParameter);
+					userInput.checkEncoder(lcd, setParameter, encoder);
 				}
 				lcd.noCursor();
 				break;
@@ -202,31 +201,6 @@ void loadControl(Controls& controls, UserInput& userInput, ModeOfOperation mode)
 		break;
 	default:
 		break;
-	}
-}
-
-void checkEncoder(LiquidCrystal_I2C& lcd, UserInput& userInput, SetValue& setParameter, Encoder& encoder){
-	if(encoder.wasButtonPressed()){
-		userInput.time = millis();
-		if(userInput.decimalPlace > setParameter.minDecimalPlace){	//if did't reach the last digit of setParameter
-			--userInput.decimalPlace;																	//move cursor to the left
-			++userInput.cursorPos;
-		}   
-		else {
-			userInput.decimalPlace = setParameter.maxDecimalPlace;		//move the cursor back to the first digit of setParameter
-			userInput.cursorPos = 6;
-		}
-		if(userInput.decimalPlace == tenths)	//jump across the decimal point
-			++userInput.cursorPos;
-	}
-
-	if(encoder.rotation()){
-		setParameter.value += encoder.rotation() * pow(10, userInput.decimalPlace);
-		setParameter.limit();
-		lcd.setCursor(6,2);
-		setParameter.display(lcd);
-		encoder.reset();
-		userInput.time = millis();
 	}
 }
 
@@ -344,7 +318,7 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 		userInput.key = keypad.getKey();
 		if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
 			userInput.time = millis();
-			userInput.inputFromKeypad(lcd, keypad, userInput.setCurrent);
+			userInput.inputFromKeypad(lcd, userInput.setCurrent);
 			lcd.setCursor(0, 2);
 			lcd.print("cal multiplier=");
 			userInput.key = ' ';
@@ -373,7 +347,7 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 		userInput.key = keypad.getKey();
 		if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
 			userInput.time = millis();
-			userInput.inputFromKeypad(lcd, keypad, userInput.setCurrent);
+			userInput.inputFromKeypad(lcd, userInput.setCurrent);
 			userInput.key = ' ';
 			lcd.setCursor(0, 2);
 			lcd.print("cal offset=");

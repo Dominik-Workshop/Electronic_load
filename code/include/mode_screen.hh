@@ -31,6 +31,7 @@ enum ModeOfOperation{
 };
 
 void displayWelcomeScreen(LiquidCrystal_I2C& lcd);
+void displayMenu(LiquidCrystal_I2C& lcd);
 
 void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
@@ -41,9 +42,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 
 void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 void loadControl(Controls& controls, UserInput& userInput, ModeOfOperation mode);
-void checkEncoder(LiquidCrystal_I2C& lcd, UserInput& userInput, SetValue& setParameter, Encoder& encoder);
 
-void displayMenu(LiquidCrystal_I2C& lcd);
 
 void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls);
 
