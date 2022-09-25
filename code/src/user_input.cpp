@@ -79,7 +79,16 @@ void UserInput::resetKeypadInput(){
   x_pos = 0;
 }
 
-void UserInput::checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder){
+/**
+ * @brief manages input from rotary encoder
+ * 
+ * @param lcd 
+ * @param setParameter 
+ * @param encoder 
+ * @return true if encoder was rotated
+ * @return false if wasn't
+ */
+bool UserInput::checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder){
 	if(encoder.wasButtonPressed()){
 		time = millis();
 		if(decimalPlace > setParameter.minDecimalPlace){	//if did't reach the last digit of setParameter
@@ -97,9 +106,9 @@ void UserInput::checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Enc
 	if(encoder.rotation()){
 		setParameter.value += encoder.rotation() * pow(10, decimalPlace);
 		setParameter.limit();
-		lcd.setCursor(6,2);
-		setParameter.display(lcd);
 		encoder.reset();
 		time = millis();
+		return true;
 	}
+	return false;
 }

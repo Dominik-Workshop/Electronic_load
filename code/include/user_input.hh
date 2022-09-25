@@ -33,7 +33,7 @@ class UserInput{
     void inputFromKeypad(LiquidCrystal_I2C& lcd, SetValue& setParameter);
     void resetKeypadInput();
     
-    void checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder);
+    bool checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder);
 
     DecimalPlaces decimalPlace = ones;  //encoder's cursor position is in terms of decimal place of setValue  
     int cursorPos = 7;                  //encoder's cursor position on the lcd
