@@ -122,7 +122,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 
 	do{
 		userInput.key = keypad.getKey();
-		userInput.inputFromKeypad(lcd, battery.cutoffVoltage);
+		userInput.inputFromKeypad(lcd, battery.cutoffVoltage, 14);
 	} while (userInput.key != Enter);
   
 	lcd.clear();
@@ -149,6 +149,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 		switch (keypad.getKey()){
 			case Menu:
 				controls.loadOff(lcd);
+				measurements.timer.stop();
 				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
 				break;
 			case LoadOnOff:
@@ -175,13 +176,16 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 						controls.loadOff(lcd);
 						mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
 					}
-					else if(userInput.key == LoadOnOff)
+					else if(userInput.key == LoadOnOff){
 						controls.loadOnOffToggle(lcd);
-
-					if(userInput.checkEncoder(lcd, battery.dischargeCurrent, encoder, 2)){	//if encoder was rotated
-						lcd.setCursor(2, 2);					//display new setValue if it was changed
-						battery.dischargeCurrent.display(lcd);
+						if(controls.isLoadOn())
+							measurements.timer.start();
+						else
+							measurements.timer.stop();
 					}
+
+					userInput.inputFromKeypad(lcd, battery.dischargeCurrent, 2);
+					userInput.checkEncoder(lcd, battery.dischargeCurrent, encoder, 2);
 				}
 				lcd.noCursor();
 				break;
@@ -251,11 +255,8 @@ void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& l
 					else if(userInput.key == LoadOnOff)
 						controls.loadOnOffToggle(lcd);
 
-					userInput.inputFromKeypad(lcd, setParameter);
-					if(userInput.checkEncoder(lcd, setParameter, encoder, 6)){	//if encoder was rotated
-						lcd.setCursor(6, 2);					//display new setValue if it was changed
-						setParameter.display(lcd);
-					}
+					userInput.inputFromKeypad(lcd, setParameter, 6);
+					userInput.checkEncoder(lcd, setParameter, encoder, 6);
 				}
 				lcd.noCursor();
 				break;
@@ -408,7 +409,7 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 		userInput.key = keypad.getKey();
 		if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
 			userInput.time = millis();
-			userInput.inputFromKeypad(lcd, userInput.setCurrent);
+			userInput.inputFromKeypad(lcd, userInput.setCurrent, 15);
 			lcd.setCursor(0, 2);
 			lcd.print("cal multiplier=");
 			userInput.key = ' ';
@@ -437,7 +438,7 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 		userInput.key = keypad.getKey();
 		if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
 			userInput.time = millis();
-			userInput.inputFromKeypad(lcd, userInput.setCurrent);
+			userInput.inputFromKeypad(lcd, userInput.setCurrent, 11);
 			userInput.key = ' ';
 			lcd.setCursor(0, 2);
 			lcd.print("cal offset=");

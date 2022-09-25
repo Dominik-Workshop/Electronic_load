@@ -30,10 +30,10 @@ class UserInput{
     SetValue setResistance;
 
     char key = ' ';       //stores one character entered from keypad
-    void inputFromKeypad(LiquidCrystal_I2C& lcd, SetValue& setParameter);
+    void inputFromKeypad(LiquidCrystal_I2C& lcd, SetValue& setParameter, int xPositon);
     void resetKeypadInput();
     
-    bool checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder, int x_pos);
+    void checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder, int xPositon);
 
     DecimalPlaces decimalPlace = ones;  //encoder's cursor position is in terms of decimal place of setValue  
     int cursorPos = 7;                  //encoder's cursor position on the lcd
@@ -45,7 +45,7 @@ class UserInput{
     char numbers[7] = {'\0', '0','0','0','0','0'};	//array of characters that will be converted to float later
     bool decimalPointPresent = false;								//indicates if user already input a decimal point
     int index = 0;							                    //index for array numbers[]
-	  int x_pos = 0;																	//cursor position for numbers entered via keypad
+	  int x_pos = 0;                                  //cursor position for numbers entered via keypad
 };
 
 #endif
