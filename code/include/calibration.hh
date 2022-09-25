@@ -2,6 +2,7 @@
  * @file calibration.hh
  * @author Dominik Workshop
  * @brief classes containing calibration values for the ADC and DAC
+ *  current calibration values: 128, 100, 71, 127, 200, 127
  * @version 1.2
  * @date 2022-07-26
  * 
@@ -24,17 +25,20 @@ class AdcCalibration{
     void writeToEEPROM();
 
     int getVoltageMultiplier();
+    int getVoltageOffset();
     int getCurrentMultiplier();
     int getCurrentOffset();
 
     void setVoltageMultiplier(int cal);
+    void setVoltageOffset(int cal);
     void setCurrentMultiplier(int cal);
     void setCurrentOffset(int cal);
 
   private:
-    int voltageMultiplier;       //measured voltage - calibration multiplier 0-255
-    int currentMultiplier;       //measured current - calibration multiplier 0-255
-    int currentOffset;           //measured current - calibration offset     0-255
+    int voltageMultiplier;       //measured voltage - calibration multiplier 0-255 (128)
+    int voltageOffset;           //measured voltage - calibration offset     0-255 (100)
+    int currentMultiplier;       //measured current - calibration multiplier 0-255 (71)
+    int currentOffset;           //measured current - calibration offset     0-255 (127)
 };
 
 /**
@@ -53,8 +57,8 @@ class DacCalibration{
     void setSetCurrentOffset(int cal);
 
   private:
-    int setCurrentMultiplier;    //set current - calibration multiplier 0-255
-    int setCurrentOffset;        //set current - calibration offset     0-255
+    int setCurrentMultiplier;    //set current - calibration multiplier 0-255 (200)
+    int setCurrentOffset;        //set current - calibration offset     0-255 (127)
 };
 
 #endif

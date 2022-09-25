@@ -328,6 +328,23 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 	}
 
 	//////////////////////////////////////////////
+	//   measured voltage offset calibration	  //
+	//////////////////////////////////////////////
+	lcd.setCursor(0, 2);
+	lcd.print("cal offset=");
+	lastCalibrationValue = measurements.calibration.getVoltageOffset();
+	encoder.reset();
+	while(keypad.getKey() != Enter){
+		measurements.update();
+		measurements.displayMeasurements(lcd, controls.isLoadOn());
+		measurements.calibration.setVoltageOffset(lastCalibrationValue + encoder.rotation());
+		lcd.setCursor(11,2);
+		lcd.print(measurements.calibration.getVoltageOffset());
+		lcd.print("      ");
+		delay(100);
+	}
+
+	//////////////////////////////////////////////
 	// measured current multiplier calibration	//
 	//////////////////////////////////////////////
 	lcd.clear();

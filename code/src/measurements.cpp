@@ -67,8 +67,8 @@ void Measurements::displayMeasurements(LiquidCrystal_I2C& lcd, bool loadIsOn){
  */
 float Measurements::measureVoltage(){
   adc.setGain(GAIN_EIGHT);  // 8x gain   +/- 0.512V  1 bit = 0.015625mV
-            //        reading_from_adc / resolution * Vmax * attenuation * (0.95 to 1.05)
-  voltage = ((adc.readADC_Differential_2_3()/ 32768.0) * 0.512 * 100) * (0.95 + calibration.getVoltageMultiplier()/2550.0);
+            //        reading_from_adc / resolution * Vmax * attenuation * (0.95 to 1.05) + (-0.005 to 0.005)
+  voltage = ((adc.readADC_Differential_2_3()/ 32768.0) * 0.512 * 100) * (0.95 + calibration.getVoltageMultiplier()/2550.0) + (-0.005 + calibration.getVoltageOffset()/25500.0);
   noLessThanZero(voltage);
   return voltage;
 }

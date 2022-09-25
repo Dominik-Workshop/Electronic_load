@@ -33,6 +33,7 @@ int limit(int& value){
  */
 void AdcCalibration::readFromEEPROM(){
   voltageMultiplier = EEPROM.read(EEPROM_ADDRESS_ADC_U_MULTIPLIER_CAL);
+  voltageOffset = EEPROM.read(EEPROM_ADDRESS_ADC_U_OFFSET_CAL);
   currentMultiplier = EEPROM.read(EEPROM_ADDRESS_ADC_I_MULTIPLIER_CAL);
   currentOffset = EEPROM.read(EEPROM_ADDRESS_ADC_I_OFFSET_CAL);
 }
@@ -43,16 +44,21 @@ void AdcCalibration::readFromEEPROM(){
  */
 void AdcCalibration::writeToEEPROM(){
   EEPROM.write(EEPROM_ADDRESS_ADC_U_MULTIPLIER_CAL, voltageMultiplier);
+  EEPROM.write(EEPROM_ADDRESS_ADC_U_OFFSET_CAL, voltageOffset);
   EEPROM.write(EEPROM_ADDRESS_ADC_I_MULTIPLIER_CAL, currentMultiplier);
   EEPROM.write(EEPROM_ADDRESS_ADC_I_OFFSET_CAL, currentOffset);
 }
 
 int AdcCalibration::getVoltageMultiplier(){return voltageMultiplier;}
+int AdcCalibration::getVoltageOffset(){return voltageOffset;}
 int AdcCalibration::getCurrentMultiplier(){return currentMultiplier;}
 int AdcCalibration::getCurrentOffset(){return currentOffset;}
 
 void AdcCalibration::setVoltageMultiplier(int cal){
   voltageMultiplier = limit(cal);
+}
+void AdcCalibration::setVoltageOffset(int cal){
+  voltageOffset = limit(cal);
 }
 void AdcCalibration::setCurrentMultiplier(int cal){
   currentMultiplier = limit(cal);
