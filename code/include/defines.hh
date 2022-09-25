@@ -14,7 +14,7 @@
 
 #define MAX_CURRENT 8.4
 #define MAX_POWER 300
-#define MAX_RESISTANCE 9000
+#define MAX_RESISTANCE 9999.9
 
 #define ADC_ADDRESS 0x48
 #define DAC_ADDRESS 0x60
@@ -24,7 +24,7 @@
 #define EEPROM_ADDRESS_DAC_MULTIPLIER_CAL 0       //address for calibration value of DAC - setCurrentMultiplier
 #define EEPROM_ADDRESS_DAC_OFFSET_CAL 1           //address for calibration value of DAC - setCurrentOffset
 #define EEPROM_ADDRESS_ADC_U_MULTIPLIER_CAL 2     //address for calibration value of ADC - voltageMultiplier
-#define EEPROM_ADDRESS_ADC_U_OFFSET_CAL 5     //address for calibration value of ADC - voltageOffset
+#define EEPROM_ADDRESS_ADC_U_OFFSET_CAL 5         //address for calibration value of ADC - voltageOffset
 #define EEPROM_ADDRESS_ADC_I_MULTIPLIER_CAL 3     //address for calibration value of ADC - currentMultiplier
 #define EEPROM_ADDRESS_ADC_I_OFFSET_CAL 4         //address for calibration value of ADC - currentOffset
 

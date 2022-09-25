@@ -2,9 +2,9 @@
  * @file main.cpp
  * @author Dominik Workshop
  * @brief Electronic load with 5 different modes of operation:
- *  - Constant current      0,004A - 8,4A,
+ *  - Constant current      0,004A - 8,400A,
  *  - Constant power        0,01W - 300,00W,
- *  - Constant resistance   0,1Ω - 9 999Ω,
+ *  - Constant resistance   0,1Ω - 9 999,9Ω,
  *  - Transient response
  *  - Battery capacity measurement
  * @version 1.1
@@ -29,8 +29,6 @@
 #include "init.hh"
 #include "mode_screen.hh"
 
-
-
 void setup() {
   Measurements measurements;
   Controls controls(measurements);
@@ -38,8 +36,6 @@ void setup() {
   LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
   Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
   Encoder encoder;
-
-  //TCCR0B = TCCR0B & B11111000 | B00000001; // PWM 31372.55 Hz pins 5 and 6
 
   lcd.init();
   lcd.backlight();              //turn the backlight on
