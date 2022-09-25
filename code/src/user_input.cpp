@@ -85,6 +85,7 @@ void UserInput::resetKeypadInput(){
  * @param lcd 
  * @param setParameter 
  * @param encoder 
+ * @param x_pos horizontal positon on the lcd to display the most significant digit of setParameter
  * @return true if encoder was rotated
  * @return false if wasn't
  */
