@@ -12,9 +12,8 @@
 #include "battery.hh"
 
 Battery::Battery(){
-  cutoffVoltage.init(3, 2, 0, 50);
-}
-
-void Battery::displaycutoffVoltage(LiquidCrystal_I2C& lcd){
-  lcd.print(cutoffVoltage.value, 2);
+  cutoffVoltage.value = 0;
+  cutoffVoltage.init(4, 2, 0, 50);
+  dischargeCurrent.value = 0.01;
+  dischargeCurrent.init(4, 3, 0.004, 2);
 }

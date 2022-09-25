@@ -88,7 +88,7 @@ void UserInput::resetKeypadInput(){
  * @return true if encoder was rotated
  * @return false if wasn't
  */
-bool UserInput::checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder){
+bool UserInput::checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder, int x_pos){
 	if(encoder.wasButtonPressed()){
 		time = millis();
 		if(decimalPlace > setParameter.minDecimalPlace){	//if did't reach the last digit of setParameter
@@ -97,7 +97,7 @@ bool UserInput::checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Enc
 		}   
 		else{
 			decimalPlace = setParameter.maxDecimalPlace;		//move the cursor back to the first digit of setParameter
-			cursorPos = 6;
+			cursorPos = x_pos;
 		}
 		if(decimalPlace == tenths)	//jump across the decimal point
 			++cursorPos;

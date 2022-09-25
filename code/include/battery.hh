@@ -15,14 +15,15 @@
 #include <LiquidCrystal_I2C.h>
 
 #include "set_value.hh"
+#include "defines.hh"
 
 class Battery{
   public:
     SetValue cutoffVoltage; //in Volts
+    SetValue dischargeCurrent;
     int capacity = 0;       //in mAh
     
     Battery();
-    void displaycutoffVoltage(LiquidCrystal_I2C& lcd);
   private:
     
 };

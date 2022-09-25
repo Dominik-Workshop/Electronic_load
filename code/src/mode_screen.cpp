@@ -23,6 +23,19 @@ void displayWelcomeScreen(LiquidCrystal_I2C& lcd){
   lcd.print("8,4A 50V 300W");
 }
 
+void displayMenu(LiquidCrystal_I2C& lcd){
+	lcd.noCursor();
+	lcd.clear();
+	lcd.setCursor(0,0);
+  lcd.print("1.Const. Current");  
+  lcd.setCursor(0,1);
+  lcd.print("2.Const. Power");
+  lcd.setCursor(0,2);
+  lcd.print("3.Const. Resistance");
+  lcd.setCursor(0,3);
+  lcd.print("4.Transient  5.Batt.");
+}
+
 void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
 	displayMenu(lcd);
 	while(1){
@@ -103,21 +116,91 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
   lcd.setCursor(0, 1);
 	lcd.print("  measurement mode  ");
 	lcd.setCursor(0, 2);
-  lcd.print("enter cutoff voltage");
-	lcd.setCursor(0, 3);
+  lcd.print("Enter cutoff voltage");
+	userInput.cursorPos = 2;
+	userInput.decimalPlace = ones;
 
+	do{
+		userInput.key = keypad.getKey();
+		userInput.inputFromKeypad(lcd, battery.cutoffVoltage);
+	} while (userInput.key != Enter);
+  
+	lcd.clear();
+	lcd.setCursor(0, 0);
+	lcd.print(battery.capacity);
+  lcd.print("mAh");
+  lcd.setCursor(0, 2);
+  lcd.print("I=");
+	battery.dischargeCurrent.display(lcd);
+	lcd.print("A  Off=");
+	battery.cutoffVoltage.display(lcd);
+	lcd.print("V");
 
-	measurements.timer.start();
-	while(keypad.getKey() != Menu){
-		lcd.setCursor(0, 0);
-		lcd.print(measurements.timer.getTotalSeconds());
-		lcd.setCursor(0, 1);
+	controls.loadOff(lcd);
+	controls.regulateCurrent(battery.dischargeCurrent.value);
+
+	while(1){
+		measurements.update();
+		measurements.displayMeasurements(lcd, controls.isLoadOn());
+		controls.fanControll();
+		lcd.setCursor(7, 3);
 		lcd.print(measurements.timer.getTime());
-		delay(100);
+
+		switch (keypad.getKey()){
+			case Menu:
+				controls.loadOff(lcd);
+				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
+				break;
+			case LoadOnOff:
+				controls.loadOnOffToggle(lcd);
+				if(controls.isLoadOn())
+					measurements.timer.start();
+				else
+					measurements.timer.stop();
+				break;
+			case Enter:
+				encoder.reset();
+				userInput.time = millis();
+				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
+					measurements.update();
+					measurements.displayMeasurements(lcd, controls.isLoadOn());
+					controls.fanControll();
+					controls.regulateCurrent(battery.dischargeCurrent.value);
+
+					userInput.key = keypad.getKey();
+					lcd.cursor();
+					lcd.setCursor(userInput.cursorPos,2);
+					delay(100);
+					if(userInput.key == Menu){
+						controls.loadOff(lcd);
+						mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
+					}
+					else if(userInput.key == LoadOnOff)
+						controls.loadOnOffToggle(lcd);
+
+					if(userInput.checkEncoder(lcd, battery.dischargeCurrent, encoder, 2)){	//if encoder was rotated
+						lcd.setCursor(2, 2);					//display new setValue if it was changed
+						battery.dischargeCurrent.display(lcd);
+					}
+				}
+				lcd.noCursor();
+				break;
+			default:
+				delay(10);	//wait 10ms before checking again what keypad was pressed
+				break;
+		}
 	}
-	measurements.timer.stop();
-	measurements.timer.reset();
-	displayMenu(lcd);
+	// measurements.timer.start();
+	// while(keypad.getKey() != Menu){
+	// 	lcd.setCursor(0, 0);
+	// 	lcd.print(measurements.timer.getTotalSeconds());
+	// 	lcd.setCursor(0, 1);
+	// 	lcd.print(measurements.timer.getTime());
+	// 	delay(100);
+	// }
+	// measurements.timer.stop();
+	// measurements.timer.reset();
+	// displayMenu(lcd);
 }
 
 /**
@@ -169,7 +252,10 @@ void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& l
 						controls.loadOnOffToggle(lcd);
 
 					userInput.inputFromKeypad(lcd, setParameter);
-					userInput.checkEncoder(lcd, setParameter, encoder);
+					if(userInput.checkEncoder(lcd, setParameter, encoder, 6)){	//if encoder was rotated
+						lcd.setCursor(6, 2);					//display new setValue if it was changed
+						setParameter.display(lcd);
+					}
 				}
 				lcd.noCursor();
 				break;
@@ -202,19 +288,6 @@ void loadControl(Controls& controls, UserInput& userInput, ModeOfOperation mode)
 	default:
 		break;
 	}
-}
-
-void displayMenu(LiquidCrystal_I2C& lcd){
-	lcd.noCursor();
-	lcd.clear();
-	lcd.setCursor(0,0);
-  lcd.print("1.Const. Current");  
-  lcd.setCursor(0,1);
-  lcd.print("2.Const. Power");
-  lcd.setCursor(0,2);
-  lcd.print("3.Const. Resistance");
-  lcd.setCursor(0,3);
-  lcd.print("4.Transient  5.Batt.");
 }
 
 /**

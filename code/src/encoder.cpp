@@ -42,29 +42,29 @@ void Encoder::isrButton(){
 }
 
 void Encoder::handleInterruptRotation(){
-  static unsigned long lastInterruptTime = 0;
+  static unsigned long lastInterruptTimeRotation = 0;
   unsigned long interruptTime = millis();
 
   // If interrupts come faster than 5ms, assume it's a bounce and ignore
-  if(interruptTime - lastInterruptTime > 5){
+  if(interruptTime - lastInterruptTimeRotation > 5){
     if(digitalRead(ENCODER_B) == LOW) 
       counter--;
     else 
       counter++;
   }
 
-  lastInterruptTime = interruptTime;
+  lastInterruptTimeRotation = interruptTime;
 }
 
 void Encoder::handleInterruptButton(){
-  static unsigned long lastInterruptTime = 0;
+  static unsigned long lastInterruptTimeButton = 0;
   unsigned long interruptTime = millis();
 
-  // If interrupts come faster than 5ms, assume it's a bounce and ignore
-  if(interruptTime - lastInterruptTime > 5)
+  // If interrupts come faster than 100ms, assume it's a bounce and ignore
+  if(interruptTime - lastInterruptTimeButton > 100)
     buttonPressed = true;
   
-  lastInterruptTime = interruptTime;
+  lastInterruptTimeButton = interruptTime;
 }
 
 /**
