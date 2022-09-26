@@ -15,5 +15,13 @@ Battery::Battery(){
   cutoffVoltage.value = 0;
   cutoffVoltage.init(4, 2, 0, 50);
   dischargeCurrent.value = 0.01;
-  dischargeCurrent.init(4, 3, 0.004, 2);
+  dischargeCurrent.init(4, 3, 0.004, MAX_CURRENT);
+}
+
+void Battery::displayCapacity(LiquidCrystal_I2C& lcd){
+  char displayValue[20];
+  dtostrf(capacity, 5, 0, displayValue);
+  lcd.setCursor(0, 0);
+	lcd.print(displayValue);
+  lcd.print("mAh");
 }

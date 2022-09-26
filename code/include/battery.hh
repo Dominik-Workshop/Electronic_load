@@ -17,6 +17,11 @@
 #include "set_value.hh"
 #include "defines.hh"
 
+enum ChangedVariable{
+  DischargeCurrent,
+  CutoffVoltage
+};
+
 class Battery{
   public:
     SetValue cutoffVoltage; //in Volts
@@ -25,6 +30,7 @@ class Battery{
     uint32_t dischargeTime = 0;
     
     Battery();
+    void displayCapacity(LiquidCrystal_I2C& lcd);
   private:
     
 };

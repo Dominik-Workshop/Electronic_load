@@ -111,7 +111,7 @@ void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad&
 }
 
 void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
-	
+	ChangedVariable changedVariable;
 	lcd.clear();
 	lcd.setCursor(0 ,0);
 	lcd.print("  Battery capacity  ");
@@ -121,6 +121,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
   lcd.print("Enter cutoff voltage");
 	userInput.cursorPos = 2;
 	userInput.decimalPlace = ones;
+	changedVariable = DischargeCurrent;
 
 	do{
 		userInput.key = keypad.getKey();
@@ -128,9 +129,6 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 	} while (userInput.key != Enter);
   
 	lcd.clear();
-	lcd.setCursor(0, 0);
-	lcd.print(battery.capacity);
-  lcd.print("mAh");
   lcd.setCursor(0, 2);
   lcd.print("I=");
 	battery.dischargeCurrent.display(lcd);
@@ -141,18 +139,16 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 	controls.loadOff(lcd);
 	controls.regulateCurrent(battery.dischargeCurrent.value);
 
-	while(measurements.measureVoltage() > battery.cutoffVoltage.value){
+	while(1){
 		measurements.update();
 		measurements.displayMeasurements(lcd, controls.isLoadOn());
 		controls.fanControll();
 		lcd.setCursor(7, 3);
 		lcd.print(measurements.timer.getTime());
-		if (measurements.timer.status() != 2){     //if timer is not halted
+		if (controls.isLoadOn()){
       battery.capacity = (measurements.current * 1000.0) * (measurements.timer.getTotalSeconds() / 3600.0);
     }
-		lcd.setCursor(0, 0);
-		lcd.print(battery.capacity);
-		lcd.print("mAh");
+		battery.displayCapacity(lcd);
 
 		switch (keypad.getKey()){
 			case Menu:
@@ -170,7 +166,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 			case Enter:
 				encoder.reset();
 				userInput.time = millis();
-				while((userInput.time + 5000 > millis()) && (measurements.measureVoltage() > battery.cutoffVoltage.value)){
+				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
 					measurements.update();
 					measurements.displayMeasurements(lcd, controls.isLoadOn());
 					controls.fanControll();
@@ -192,8 +188,28 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 							measurements.timer.stop();
 					}
 
-					userInput.inputFromKeypad(lcd, battery.dischargeCurrent, 2);
-					userInput.checkEncoder(lcd, battery.dischargeCurrent, encoder, 2);
+					if(changedVariable ==  DischargeCurrent){
+						userInput.inputFromKeypad(lcd, battery.dischargeCurrent, 2);
+						userInput.checkEncoder(lcd, battery.dischargeCurrent, encoder, 2);
+					}
+					else{
+						userInput.inputFromKeypad(lcd, battery.cutoffVoltage, 14);
+						userInput.checkEncoder(lcd, battery.cutoffVoltage, encoder, 14);
+					}
+
+					if(userInput.key == '#'){	//toggle changed variable between dischargeCurrent and cutoffVoltage
+						if(changedVariable ==  DischargeCurrent){
+							userInput.cursorPos = 15;
+							userInput.decimalPlace = ones;
+							changedVariable = CutoffVoltage;
+						}
+						else{
+							userInput.cursorPos = 2;
+							userInput.decimalPlace = ones;
+							changedVariable = DischargeCurrent;
+						}
+					}
+	
 				}
 				lcd.noCursor();
 				break;
