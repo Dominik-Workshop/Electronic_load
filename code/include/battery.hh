@@ -21,7 +21,8 @@ class Battery{
   public:
     SetValue cutoffVoltage; //in Volts
     SetValue dischargeCurrent;
-    int capacity = 0;       //in mAh
+    float capacity = 0;       //in mAh
+    uint32_t dischargeTime = 0;
     
     Battery();
   private:

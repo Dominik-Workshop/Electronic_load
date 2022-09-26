@@ -11,6 +11,8 @@
 
 #include "mode_screen.hh"
 
+Battery battery;
+
 void displayWelcomeScreen(LiquidCrystal_I2C& lcd){
 	lcd.clear();
 	lcd.setCursor(1,0);
@@ -109,7 +111,7 @@ void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad&
 }
 
 void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
-	Battery battery;
+	
 	lcd.clear();
 	lcd.setCursor(0 ,0);
 	lcd.print("  Battery capacity  ");
@@ -139,12 +141,18 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 	controls.loadOff(lcd);
 	controls.regulateCurrent(battery.dischargeCurrent.value);
 
-	while(1){
+	while(measurements.measureVoltage() > battery.cutoffVoltage.value){
 		measurements.update();
 		measurements.displayMeasurements(lcd, controls.isLoadOn());
 		controls.fanControll();
 		lcd.setCursor(7, 3);
 		lcd.print(measurements.timer.getTime());
+		if (measurements.timer.status() != 2){     //if timer is not halted
+      battery.capacity = (measurements.current * 1000.0) * (measurements.timer.getTotalSeconds() / 3600.0);
+    }
+		lcd.setCursor(0, 0);
+		lcd.print(battery.capacity);
+		lcd.print("mAh");
 
 		switch (keypad.getKey()){
 			case Menu:
@@ -162,7 +170,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 			case Enter:
 				encoder.reset();
 				userInput.time = millis();
-				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
+				while((userInput.time + 5000 > millis()) && (measurements.measureVoltage() > battery.cutoffVoltage.value)){
 					measurements.update();
 					measurements.displayMeasurements(lcd, controls.isLoadOn());
 					controls.fanControll();
@@ -194,17 +202,6 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 				break;
 		}
 	}
-	// measurements.timer.start();
-	// while(keypad.getKey() != Menu){
-	// 	lcd.setCursor(0, 0);
-	// 	lcd.print(measurements.timer.getTotalSeconds());
-	// 	lcd.setCursor(0, 1);
-	// 	lcd.print(measurements.timer.getTime());
-	// 	delay(100);
-	// }
-	// measurements.timer.stop();
-	// measurements.timer.reset();
-	// displayMenu(lcd);
 }
 
 /**
