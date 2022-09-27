@@ -146,9 +146,13 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 		lcd.setCursor(7, 3);
 		lcd.print(measurements.timer.getTime());
 		if (controls.isLoadOn()){
-      battery.capacity = (measurements.current * 1000.0) * (measurements.timer.getTotalSeconds() / 3600.0);
+      battery.capacity = (measurements.current * 1000) * (measurements.timer.getTotalSeconds() / 3600.0);
     }
 		battery.displayCapacity(lcd);
+		if(measurements.voltage < battery.cutoffVoltage.value){
+			controls.loadOff(lcd);
+			measurements.timer.stop();
+		}
 
 		switch (keypad.getKey()){
 			case Menu:
@@ -170,6 +174,16 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 					measurements.update();
 					measurements.displayMeasurements(lcd, controls.isLoadOn());
 					controls.fanControll();
+					lcd.setCursor(7, 3);
+					lcd.print(measurements.timer.getTime());
+					if (controls.isLoadOn()){
+						battery.capacity = (measurements.current * 1000) * (measurements.timer.getTotalSeconds() / 3600.0);
+					}
+					battery.displayCapacity(lcd);
+					if(measurements.voltage < battery.cutoffVoltage.value){
+						controls.loadOff(lcd);
+						measurements.timer.stop();
+					}
 					controls.regulateCurrent(battery.dischargeCurrent.value);
 
 					userInput.key = keypad.getKey();
