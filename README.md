@@ -30,6 +30,7 @@
 ### To-Do:
 
 - [ ] Software
+  - [ ] !!!Fix memory leak!!!
   - [X] Voltage / Current measurement
   - [ ] Transient response mode
   - [ ] Battery measurement mode
