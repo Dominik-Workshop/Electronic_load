@@ -18,7 +18,6 @@
 #include <Wire.h>
 #include <SPI.h>
 #include <LiquidCrystal_I2C.h>
-#include "MemoryFree.h"
 
 #include "defines.hh"
 #include "measurements.hh"
@@ -31,11 +30,12 @@
 #include "mode_screen.hh"
 
 int main(void){
+/////////Arduino stuff//////////
   init();
-
   #if defined(USBCON)
     USBDevice.attach();
   #endif
+////////////////////////////////
 
   Measurements measurements;
   Controls controls(measurements);
@@ -60,9 +60,7 @@ int main(void){
   delay(2000);
   displayMenu(lcd);
 
-  for (;;) {
-		Serial.print("memory loop()=");
-    Serial.println(freeMemory());
+  for (;;) {  //void loop() equivalent
 		switch (keypad.getKey()){
 			case '1':
 				constCurrentMode(lcd, userInput, keypad, encoder, measurements, controls);
@@ -92,7 +90,10 @@ int main(void){
 				delay(10);	//wait 10ms before checking again what keypad was pressed
 				break;
 		}
+
+    ////////////Arduino stuff/////////////
 	  if (serialEventRun) serialEventRun();
+    //////////////////////////////////////
 	}
   return 0;
 }

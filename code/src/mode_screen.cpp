@@ -10,7 +10,6 @@
  */
 
 #include "mode_screen.hh"
-#include "MemoryFree.h"
 
 Battery battery;
 
@@ -38,7 +37,6 @@ void displayMenu(LiquidCrystal_I2C& lcd){
   lcd.setCursor(0,3);
   lcd.print("4.Transient  5.Batt.");
 }
-
 
 void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls) {
 	lcd.clear();
@@ -134,7 +132,7 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 			case Menu:
 				controls.loadOff(lcd);
 				measurements.timer.stop();
-				return 0; //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
+				return 0; //exit this loop, go back to menu
 				break;
 			case LoadOnOff:
 				controls.loadOnOffToggle(lcd);
@@ -177,7 +175,7 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 					delay(100);
 					if(userInput.key == Menu){
 						controls.loadOff(lcd);
-						return 0; //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
+						return 0; //exit this loop, go back to menu
 					}
 					else if(userInput.key == LoadOnOff){
 						controls.loadOnOffToggle(lcd);
@@ -245,7 +243,7 @@ int taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& lc
 			case Menu:
 				controls.loadOff(lcd);
 				userInput.resetKeypadInput();
-				return 0; //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
+				return 0; //exit this loop, go back to menu
 				break;
 			case LoadOnOff:
 				controls.loadOnOffToggle(lcd);
@@ -266,7 +264,7 @@ int taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& lc
 					if(userInput.key == Menu){
 						controls.loadOff(lcd);
 						userInput.resetKeypadInput();
-						return 0; //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
+						return 0; //exit this loop, go back to menu
 					}
 					else if(userInput.key == LoadOnOff)
 						controls.loadOnOffToggle(lcd);
