@@ -39,37 +39,6 @@ void displayMenu(LiquidCrystal_I2C& lcd){
   lcd.print(("4.Transient  5.Batt."));
 }
 
-void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
-	Serial.print(F("memory Menu()="));
-  Serial.println(freeMemory());
-	displayMenu(lcd);
-	while(1){
-		switch (keypad.getKey()){
-			case '1':
-				constCurrentMode(lcd, userInput, keypad, encoder, measurements, controls);
-				break;
-			case '2':
-				constPowerMode(lcd, userInput, keypad, encoder, measurements, controls);
-				break;
-			case '3':
-				constResistanceMode(lcd, userInput, keypad, encoder, measurements, controls);
-				break;
-			case '4':
-				transientResponseMode(lcd, userInput, keypad, encoder, measurements, controls);
-				break;
-			case '5':
-				batteryCapacityMode(lcd, userInput, keypad, encoder, measurements, controls);
-				break;
-			case '6':
-				calibration(lcd, userInput, keypad, encoder, measurements, controls);
-				break;
-			default:
-				delay(10);	//wait 10ms before checking again what keypad was pressed
-				break;
-		}
-	}
-}
-
 void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls) {
 	Serial.print(F("memory CC()="));
   Serial.println(freeMemory());
@@ -115,7 +84,7 @@ void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad&
 
 }
 
-void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
+int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
 	ChangedVariable changedVariable;
 	float prevSetCurrent = battery.dischargeCurrent.value;
 	float prevCapacity = 0;
@@ -166,7 +135,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 			case Menu:
 				controls.loadOff(lcd);
 				measurements.timer.stop();
-				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
+				return 1; //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
 				break;
 			case LoadOnOff:
 				controls.loadOnOffToggle(lcd);
@@ -209,7 +178,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 					delay(100);
 					if(userInput.key == Menu){
 						controls.loadOff(lcd);
-						mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
+						return 1; //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
 					}
 					else if(userInput.key == LoadOnOff){
 						controls.loadOnOffToggle(lcd);
@@ -338,192 +307,4 @@ void loadControl(Controls& controls, UserInput& userInput, ModeOfOperation mode)
 	default:
 		break;
 	}
-}
-
-/**
- * @brief calibrate ADC and DAC (measured voltage and current, set current)
- * 
- * @param lcd 
- * @param userInput 
- * @param keypad 
- * @param encoder 
- * @param measurements 
- * @param controls 
- */
-void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
-	int lastCalibrationValue;
-
-	controls.loadOff(lcd);	//don't sink any current
-	lcd.clear();
-	lcd.setCursor(0, 0);
-	lcd.print("Calibration mode");
-	delay(1500);
-	//////////////////////////////////////////////
-	// measured voltage multiplier calibration	//
-	//////////////////////////////////////////////
-	lcd.setCursor(0, 0);
-	lcd.print("Calibrate voltage   ");
-	lcd.setCursor(0, 2);
-	lcd.print("cal multiplier=");
-	lastCalibrationValue = measurements.calibration.getVoltageMultiplier();
-	encoder.reset();
-	while(keypad.getKey() != Enter){
-		measurements.update();
-		measurements.displayMeasurements(lcd, controls.isLoadOn());
-		measurements.calibration.setVoltageMultiplier(lastCalibrationValue + encoder.rotation());
-		lcd.setCursor(15,2);
-		lcd.print(measurements.calibration.getVoltageMultiplier());
-		lcd.print("  ");
-		delay(100);
-	}
-
-	//////////////////////////////////////////////
-	//   measured voltage offset calibration	  //
-	//////////////////////////////////////////////
-	lcd.setCursor(0, 2);
-	lcd.print("cal offset=");
-	lastCalibrationValue = measurements.calibration.getVoltageOffset();
-	encoder.reset();
-	while(keypad.getKey() != Enter){
-		measurements.update();
-		measurements.displayMeasurements(lcd, controls.isLoadOn());
-		measurements.calibration.setVoltageOffset(lastCalibrationValue + encoder.rotation());
-		lcd.setCursor(11,2);
-		lcd.print(measurements.calibration.getVoltageOffset());
-		lcd.print("      ");
-		delay(100);
-	}
-
-	//////////////////////////////////////////////
-	// measured current multiplier calibration	//
-	//////////////////////////////////////////////
-	lcd.clear();
-	lcd.setCursor(0, 0);
-	lcd.print("   !!!WARNING!!!    ");
-	lcd.setCursor(0, 1);
-	lcd.print(" Load's input will  ");
-	lcd.setCursor(0, 2);
-	lcd.print("  be shorted now!   ");
-	delay(3000);
-
-	controls.loadOn(lcd);
-	controls.dac.setVoltage(4095, false);		//short the input of the load
-
-	lcd.setCursor(0, 0);
-	lcd.print("Calibrate current   ");
-	lcd.setCursor(0, 2);
-	lcd.print("cal multiplier=");
-
-	lastCalibrationValue = measurements.calibration.getCurrentMultiplier();
-	encoder.reset();
-	while(keypad.getKey() != Enter){
-		measurements.update();
-		measurements.displayMeasurements(lcd, controls.isLoadOn());
-		measurements.calibration.setCurrentMultiplier(lastCalibrationValue + encoder.rotation());
-		lcd.setCursor(15, 2);
-		lcd.print(measurements.calibration.getCurrentMultiplier());
-		lcd.print("  ");
-		delay(100);
-	}
-
-	//////////////////////////////////////////////
-	// 		measured current offset calibration		//
-	//////////////////////////////////////////////
-	lcd.setCursor(0, 2);
-	lcd.print("cal offset=");
-	lastCalibrationValue = measurements.calibration.getCurrentOffset();
-	encoder.reset();
-	while(keypad.getKey() != Enter){
-		measurements.update();
-		measurements.displayMeasurements(lcd, controls.isLoadOn());
-		measurements.calibration.setCurrentOffset(lastCalibrationValue + encoder.rotation());
-		lcd.setCursor(11, 2);
-		lcd.print(measurements.calibration.getCurrentOffset());
-		lcd.print("      ");
-		delay(100);
-	}
-
-	//////////////////////////////////////////////
-	// 		set current multiplier calibration		//
-	//////////////////////////////////////////////
-	lcd.setCursor(0, 0);
-	lcd.print("Calibrate setCurrent");
-	lcd.setCursor(0, 2);
-	lcd.print("cal multiplier=");
-	lastCalibrationValue = controls.calibration.getSetCurrentMultiplier();
-	encoder.reset();
-	while(1){
-		measurements.update();
-		measurements.displayMeasurements(lcd, controls.isLoadOn());
-		userInput.key = keypad.getKey();
-		if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
-			userInput.time = millis();
-			userInput.inputFromKeypad(lcd, userInput.setCurrent, 15);
-			lcd.setCursor(0, 2);
-			lcd.print("cal multiplier=");
-			userInput.key = ' ';
-		}
-		else if(userInput.key == Enter)
-			break;
-
-		controls.regulateCurrent(userInput.setCurrent.value);
-		controls.calibration.setSetCurrentMultiplier(lastCalibrationValue + encoder.rotation());
-		lcd.setCursor(15, 2);
-		lcd.print(controls.calibration.getSetCurrentMultiplier());
-		lcd.print("  ");
-		delay(100);
-	}
-
-	//////////////////////////////////////////////
-	// 			set current offset calibration			//
-	//////////////////////////////////////////////
-	lcd.setCursor(0, 2);
-	lcd.print("cal offset=");
-	lastCalibrationValue = controls.calibration.getSetCurrentOffset();
-	encoder.reset();
-	while(1){
-		measurements.update();
-		measurements.displayMeasurements(lcd, controls.isLoadOn());
-		userInput.key = keypad.getKey();
-		if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
-			userInput.time = millis();
-			userInput.inputFromKeypad(lcd, userInput.setCurrent, 11);
-			userInput.key = ' ';
-			lcd.setCursor(0, 2);
-			lcd.print("cal offset=");
-		}
-		else if(userInput.key == Enter)
-			break;
-
-		controls.regulateCurrent(userInput.setCurrent.value);
-		controls.calibration.setSetCurrentOffset(lastCalibrationValue + encoder.rotation());
-		lcd.setCursor(11, 2);
-		lcd.print(controls.calibration.getSetCurrentOffset());
-		lcd.print("      ");
-		delay(100);
-	}
-
-	lcd.clear();
-	lcd.setCursor(0, 0);
-	lcd.print("Save new calibration");
-	lcd.setCursor(0, 1);
-	lcd.print(" values to EEPROM?  ");
-	lcd.setCursor(0, 2);
-	lcd.print("   Yes = Enter");
-	lcd.setCursor(0, 3);
-	lcd.print("   No  = Delete");
-
-	userInput.key = keypad.getKey();
-	while(userInput.key != Delete){
-		if(userInput.key == Enter){
-			measurements.calibration.writeToEEPROM();
-			controls.calibration.writeToEEPROM();
-			break;
-		}
-		delay(100);
-		userInput.key = keypad.getKey();
-	}
-
-	controls.loadOff(lcd);
-	mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
 }
