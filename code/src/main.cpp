@@ -30,15 +30,19 @@
 #include "init.hh"
 #include "mode_screen.hh"
 
-
+  Measurements measurements;
+  Controls controls(measurements);
+  UserInput userInput;
   LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
   Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
+  Encoder encoder;
 void setup() {
 
   lcd.init();
   lcd.backlight();              //turn the backlight on
   lcd.createChar(degree, degreeSymbol);
   lcd.createChar(ohm, ohmSymbol);
+  encoder.begin();
 
   Serial.begin(9600);
 
@@ -46,6 +50,8 @@ void setup() {
   Serial.println(freeMemory());
 
   pinInit();
+
+  controls.loadOff(lcd);
 
   displayWelcomeScreen(lcd);
   delay(2000);
