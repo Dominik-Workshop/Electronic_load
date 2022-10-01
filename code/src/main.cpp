@@ -30,13 +30,20 @@
 #include "init.hh"
 #include "mode_screen.hh"
 
+int main(){
+
+  init();
+
+#if defined(USBCON)
+	USBDevice.attach();
+#endif
+
   Measurements measurements;
   Controls controls(measurements);
   UserInput userInput;
   LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
   Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
   Encoder encoder;
-void setup() {
 
   lcd.init();
   lcd.backlight();              //turn the backlight on
@@ -56,19 +63,21 @@ void setup() {
   displayWelcomeScreen(lcd);
   delay(2000);
   //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
-}
 
-void loop(){
-  Serial.print("memory loop()=");
-  Serial.println(freeMemory());
-	switch (keypad.getKey()){
-    case '1':
-      
-      displayMenu(lcd);
-      break;
-  
-    default:
-      delay(10);	//wait 10ms before checking again what keypad was pressed
-      break;
+  for (;;) {
+		Serial.print("memory loop()=");
+    Serial.println(freeMemory());
+    switch (keypad.getKey()){
+      case '1':
+        
+        displayMenu(lcd);
+        break;
+    
+      default:
+        delay(10);	//wait 10ms before checking again what keypad was pressed
+        break;
+    }
+		if (serialEventRun) serialEventRun();
 	}
+  return 0;
 }
