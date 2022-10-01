@@ -17,7 +17,7 @@
 
 **Transient response mode**
 
-**Battery testing mode**
+:heavy_check_mark: **Battery testing mode**
 
 :heavy_check_mark: **Nice to look at:** doesn't look like a poor DIY build
 
@@ -33,7 +33,7 @@
   - [X] !!!Fix memory leak!!!
   - [X] Voltage / Current measurement
   - [ ] Transient response mode
-  - [ ] Battery measurement mode
+  - [X] Battery measurement mode
   - [X] Calibration mode
   - [X] Const. power regulation
   - [X] Const. resistance regulation
