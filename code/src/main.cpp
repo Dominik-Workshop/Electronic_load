@@ -18,6 +18,7 @@
 #include <Wire.h>
 #include <SPI.h>
 #include <LiquidCrystal_I2C.h>
+#include "MemoryFree.h"
 
 #include "defines.hh"
 #include "measurements.hh"
@@ -60,8 +61,8 @@ int main(void){
   displayMenu(lcd);
 
   for (;;) {
-		// Serial.print("memory loop()=");
-    // Serial.println(freeMemory());
+		Serial.print("memory loop()=");
+    Serial.println(freeMemory());
 		switch (keypad.getKey()){
 			case '1':
 				constCurrentMode(lcd, userInput, keypad, encoder, measurements, controls);

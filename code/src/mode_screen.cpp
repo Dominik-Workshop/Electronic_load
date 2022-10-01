@@ -10,6 +10,7 @@
  */
 
 #include "mode_screen.hh"
+#include "MemoryFree.h"
 
 Battery battery;
 
@@ -38,34 +39,6 @@ void displayMenu(LiquidCrystal_I2C& lcd){
   lcd.print("4.Transient  5.Batt.");
 }
 
-void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
-	displayMenu(lcd);
-	while(1){
-		switch (keypad.getKey()){
-			case '1':
-				constCurrentMode(lcd, userInput, keypad, encoder, measurements, controls);
-				break;
-			case '2':
-				constPowerMode(lcd, userInput, keypad, encoder, measurements, controls);
-				break;
-			case '3':
-				constResistanceMode(lcd, userInput, keypad, encoder, measurements, controls);
-				break;
-			case '4':
-				transientResponseMode(lcd, userInput, keypad, encoder, measurements, controls);
-				break;
-			case '5':
-				batteryCapacityMode(lcd, userInput, keypad, encoder, measurements, controls);
-				break;
-			case '6':
-				calibration(lcd, userInput, keypad, encoder, measurements, controls);
-				break;
-			default:
-				delay(10);	//wait 10ms before checking again what keypad was pressed
-				break;
-		}
-	}
-}
 
 void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls) {
 	lcd.clear();
@@ -110,7 +83,7 @@ void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad&
 
 }
 
-void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
+int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
 	ChangedVariable changedVariable;
 	float prevSetCurrent = battery.dischargeCurrent.value;
 	float prevCapacity = 0;
@@ -161,7 +134,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 			case Menu:
 				controls.loadOff(lcd);
 				measurements.timer.stop();
-				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
+				return 0; //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
 				break;
 			case LoadOnOff:
 				controls.loadOnOffToggle(lcd);
@@ -204,7 +177,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 					delay(100);
 					if(userInput.key == Menu){
 						controls.loadOff(lcd);
-						mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
+						return 0; //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
 					}
 					else if(userInput.key == LoadOnOff){
 						controls.loadOnOffToggle(lcd);
@@ -262,7 +235,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
  * @param measurements 
  * @param controls 
  */
-void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
+int taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
 	while(1){
 		measurements.update();
 		measurements.displayMeasurements(lcd, controls.isLoadOn());
@@ -272,7 +245,7 @@ void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& l
 			case Menu:
 				controls.loadOff(lcd);
 				userInput.resetKeypadInput();
-				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
+				return 0; //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
 				break;
 			case LoadOnOff:
 				controls.loadOnOffToggle(lcd);
@@ -293,7 +266,7 @@ void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& l
 					if(userInput.key == Menu){
 						controls.loadOff(lcd);
 						userInput.resetKeypadInput();
-						mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
+						return 0; //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
 					}
 					else if(userInput.key == LoadOnOff)
 						controls.loadOnOffToggle(lcd);
@@ -519,5 +492,4 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 	}
 
 	controls.loadOff(lcd);
-	mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
 }
