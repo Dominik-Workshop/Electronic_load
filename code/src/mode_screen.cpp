@@ -30,17 +30,17 @@ void displayMenu(LiquidCrystal_I2C& lcd){
 	lcd.noCursor();
 	lcd.clear();
 	lcd.setCursor(0,0);
-  lcd.print("1.Const. Current");  
+  lcd.print(F("1.Const. Current"));  
   lcd.setCursor(0,1);
-  lcd.print("2.Const. Power");
+  lcd.print(F("2.Const. Power"));
   lcd.setCursor(0,2);
-  lcd.print("3.Const. Resistance");
+  lcd.print(F("3.Const. Resistance"));
   lcd.setCursor(0,3);
-  lcd.print("4.Transient  5.Batt.");
+  lcd.print(("4.Transient  5.Batt."));
 }
 
 void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
-	Serial.print("memory Menu()=");
+	Serial.print(F("memory Menu()="));
   Serial.println(freeMemory());
 	displayMenu(lcd);
 	while(1){
@@ -71,15 +71,15 @@ void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Enco
 }
 
 void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls) {
-	Serial.print("memory CC()=");
+	Serial.print(F("memory CC()="));
   Serial.println(freeMemory());
 	lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Const Current    OFF");  
+  lcd.print(F("Const Current    OFF"));  
   lcd.setCursor(0,2);
-  lcd.print("Set I=");
+  lcd.print(F("Set I="));
   userInput.setCurrent.display(lcd);
-  lcd.print("A");
+  lcd.print(F("A"));
 	userInput.cursorPos = 6;
 	userInput.decimalPlace = ones;
 	taskLoop(ConstCurrent, userInput.setCurrent, lcd, userInput, keypad, encoder, measurements, controls);
@@ -88,11 +88,11 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
 void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
 	lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Const Power      OFF");  
+  lcd.print(F("Const Power      OFF"));  
   lcd.setCursor(0,2);
-  lcd.print("Set P=");
+  lcd.print(F("Set P="));
   userInput.setPower.display(lcd);
-  lcd.print("W");
+  lcd.print(F("W"));
 	userInput.cursorPos = 8;
 	userInput.decimalPlace = ones;
 	taskLoop(ConstPower, userInput.setPower, lcd, userInput, keypad, encoder, measurements, controls);
@@ -101,9 +101,9 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
 void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
 	lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Const Resistance OFF");  
+  lcd.print(F("Const Resistance OFF"));  
   lcd.setCursor(0,2);
-  lcd.print("Set R=");
+  lcd.print(F("Set R="));
   userInput.setResistance.display(lcd);
   lcd.write(ohm);
 	userInput.cursorPos = 9;
@@ -122,11 +122,11 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 	uint32_t prevTime = 0;
 	lcd.clear();
 	lcd.setCursor(0 ,0);
-	lcd.print("  Battery capacity  ");
+	lcd.print(F("  Battery capacity  "));
   lcd.setCursor(0, 1);
-	lcd.print("  measurement mode  ");
+	lcd.print(F("  measurement mode  "));
 	lcd.setCursor(0, 2);
-  lcd.print("Enter cutoff voltage");
+  lcd.print(F("Enter cutoff voltage"));
 	userInput.cursorPos = 2;
 	userInput.decimalPlace = ones;
 	changedVariable = DischargeCurrent;
@@ -138,11 +138,11 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
   
 	lcd.clear();
   lcd.setCursor(0, 2);
-  lcd.print("I=");
+  lcd.print(F("I="));
 	battery.dischargeCurrent.display(lcd);
-	lcd.print("A  Off=");
+	lcd.print(F("A  Off="));
 	battery.cutoffVoltage.display(lcd);
-	lcd.print("V");
+	lcd.print(F("V"));
 
 	controls.loadOff(lcd);
 	controls.regulateCurrent(battery.dischargeCurrent.value);
