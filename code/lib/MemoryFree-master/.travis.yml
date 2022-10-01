@@ -1,0 +1,31 @@
+language: c
+sudo: false
+before_install:
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
+  - sleep 3
+  - export DISPLAY=:1.0
+  - wget http://downloads.arduino.cc/arduino-1.6.9-linux64.tar.xz
+  - tar xf arduino-1.6.9-linux64.tar.xz
+  - mv arduino-1.6.9 $HOME/arduino_ide
+install:
+  - ln -s $PWD $HOME/arduino_ide/libraries/MemoryFree
+  - export PATH="$HOME/arduino_ide:$PATH"
+  - arduino --pref "boardsmanager.additional.urls=https://adafruit.github.io/arduino-board-index/package_adafruit_index.json,http://arduino.esp8266.com/stable/package_esp8266com_index.json" --save-prefs 2>&1
+  - arduino --install-boards arduino:sam 2>&1 /dev/null
+  - arduino --install-boards arduino:samd 2>&1 /dev/null
+  - arduino --install-boards esp8266:esp8266 2>&1 /dev/null
+  - arduino --install-boards adafruit:avr 2>&1 /dev/null
+  - arduino --install-library TinyWireM 2>&1
+  - arduino --pref "compiler.warning_level=all" --save-prefs
+script:
+  - arduino --verify --board arduino:avr:uno $PWD/examples/FreeMemory/FreeMemory.ino
+  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/FreeMemory/FreeMemory.ino
+  - arduino --verify --board arduino:samd:zero $PWD/examples/FreeMemory/FreeMemory.ino
+  - arduino --verify --board esp8266:esp8266:huzzah $PWD/examples/FreeMemory/FreeMemory.ino
+  - arduino --verify --board arduino:avr:leonardo $PWD/examples/FreeMemory/FreeMemory.ino
+  - arduino --verify --board adafruit:avr:trinket5 $PWD/examples/FreeMemory/FreeMemory.ino
+  - arduino --verify --board arduino:avr:gemma $PWD/examples/FreeMemory/FreeMemory.ino
+notifications:
+  email:
+    on_success: change
+    on_failure: change

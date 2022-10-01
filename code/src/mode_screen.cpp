@@ -10,6 +10,7 @@
  */
 
 #include "mode_screen.hh"
+#include <MemoryFree.h>
 
 Battery battery;
 
@@ -39,6 +40,8 @@ void displayMenu(LiquidCrystal_I2C& lcd){
 }
 
 void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
+	Serial.print("memory Menu()=");
+  Serial.println(freeMemory());
 	displayMenu(lcd);
 	while(1){
 		switch (keypad.getKey()){
@@ -68,6 +71,8 @@ void mainMenu(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Enco
 }
 
 void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls) {
+	Serial.print("memory CC()=");
+  Serial.println(freeMemory());
 	lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Const Current    OFF");  
@@ -262,7 +267,7 @@ void batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
  * @param measurements 
  * @param controls 
  */
-void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
+int taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
 	while(1){
 		measurements.update();
 		measurements.displayMeasurements(lcd, controls.isLoadOn());
@@ -272,7 +277,7 @@ void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& l
 			case Menu:
 				controls.loadOff(lcd);
 				userInput.resetKeypadInput();
-				mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
+				return 1; //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);	//return to menu
 				break;
 			case LoadOnOff:
 				controls.loadOnOffToggle(lcd);
@@ -293,7 +298,7 @@ void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& l
 					if(userInput.key == Menu){
 						controls.loadOff(lcd);
 						userInput.resetKeypadInput();
-						mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
+						return 1; //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
 					}
 					else if(userInput.key == LoadOnOff)
 						controls.loadOnOffToggle(lcd);
@@ -308,6 +313,7 @@ void taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& l
 				break;
 		}
 	}
+	return 1; //
 }
 
 /**

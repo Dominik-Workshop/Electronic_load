@@ -18,6 +18,7 @@
 #include <Wire.h>
 #include <SPI.h>
 #include <LiquidCrystal_I2C.h>
+#include <MemoryFree.h>
 
 #include "defines.hh"
 #include "measurements.hh"
@@ -29,13 +30,13 @@
 #include "init.hh"
 #include "mode_screen.hh"
 
-void setup() {
   Measurements measurements;
   Controls controls(measurements);
   UserInput userInput;
   LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
   Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
   Encoder encoder;
+void setup() {
 
   lcd.init();
   lcd.backlight();              //turn the backlight on
@@ -45,15 +46,45 @@ void setup() {
 
   Serial.begin(9600);
 
+  Serial.print("Initial memory()=");
+  Serial.println(freeMemory());
+
   pinInit();
 
   controls.loadOff(lcd);
 
   displayWelcomeScreen(lcd);
   delay(2000);
-  mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
+  //mainMenu(lcd, userInput, keypad, encoder, measurements, controls);
 }
 
 void loop(){
-  
+  Serial.print("memory loop()=");
+  Serial.println(freeMemory());
+	displayMenu(lcd);
+	while(1){
+		switch (keypad.getKey()){
+			case '1':
+				constCurrentMode(lcd, userInput, keypad, encoder, measurements, controls);
+				break;
+			case '2':
+				constPowerMode(lcd, userInput, keypad, encoder, measurements, controls);
+				break;
+			case '3':
+				constResistanceMode(lcd, userInput, keypad, encoder, measurements, controls);
+				break;
+			case '4':
+				transientResponseMode(lcd, userInput, keypad, encoder, measurements, controls);
+				break;
+			case '5':
+				batteryCapacityMode(lcd, userInput, keypad, encoder, measurements, controls);
+				break;
+			case '6':
+				calibration(lcd, userInput, keypad, encoder, measurements, controls);
+				break;
+			default:
+				delay(10);	//wait 10ms before checking again what keypad was pressed
+				break;
+		}
+	}
 }
