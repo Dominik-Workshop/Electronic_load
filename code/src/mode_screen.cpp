@@ -163,6 +163,7 @@ int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& 
 							}
 
 							if(userInput.key == '#'){	//toggle changed variable between LowCurrent, HighCurrent and PulseTime
+								userInput.time = millis();
 								switch (changedVariable){
 								case LowCurrent:
 									userInput.cursorPosX = 14;
@@ -323,6 +324,7 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 						prevSetCurrent = battery.dischargeCurrent.value;
 					}
 					if(userInput.key == '#'){	//toggle changed variable between dischargeCurrent and cutoffVoltage
+						userInput.time = millis();
 						if(changedVariable ==  DischargeCurrent){
 							userInput.cursorPosX = 15;
 							userInput.decimalPlace = ones;
