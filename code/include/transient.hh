@@ -16,6 +16,12 @@
 #include "set_value.hh"
 #include "controls.hh"
 
+enum TransientChangedVariable{
+  LowCurrent,
+  HighCurrent,
+  PulseTime
+};
+
 class Transient{
   public:
     SetValue lowCurrent;

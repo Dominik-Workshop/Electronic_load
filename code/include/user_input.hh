@@ -30,13 +30,14 @@ class UserInput{
     SetValue setResistance;
 
     char key = ' ';       //stores one character entered from keypad
-    void inputFromKeypad(LiquidCrystal_I2C& lcd, SetValue& setParameter, int xPositon);
+    void inputFromKeypad(LiquidCrystal_I2C& lcd, SetValue& setParameter, int xPositon, int yPosition);
     void resetKeypadInput();
     
-    void checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder, int xPositon);
+    void checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder, int xPositon, int yPosition);
 
     DecimalPlaces decimalPlace = ones;  //encoder's cursor position is in terms of decimal place of setValue  
-    int cursorPos = 7;                  //encoder's cursor position on the lcd
+    int cursorPosX = 7;                  //encoder's cursor position horizontally on the lcd
+    int cursorPosY = 2;                 //encoder's cursor position vertically on the lcd
 
 		uint32_t time;							        //used to measure time from last action
 

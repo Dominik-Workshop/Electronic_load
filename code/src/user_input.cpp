@@ -27,7 +27,17 @@ UserInput::UserInput(){
  * @param setParameter 
  * @param xPositon horizontal positon on the lcd to display the most significant digit of setParameter
  */
-void UserInput::inputFromKeypad(LiquidCrystal_I2C& lcd, SetValue& setParameter, int xPositon){
+
+/**
+ * @brief manages input from keypad, displays entered digit or decimal point in the bottom left corner of the lcd,
+ * when Enter pressed displays new value of setParameter on the lcd in position given by xPosiotion and yPosition
+ * 
+ * @param lcd 
+ * @param setParameter 
+ * @param xPositon horizontal positon on the lcd to display the most significant digit of setParameter
+ * @param yPosition vertical positon on the lcd to display the setParameter
+ */
+void UserInput::inputFromKeypad(LiquidCrystal_I2C& lcd, SetValue& setParameter, int xPositon, int yPosition){
 	if(key >= '0' && key <= '9'){	//is digit
 		if(index <=5){	//limit number of input characters
 			numbers[index] = key;
@@ -64,7 +74,7 @@ void UserInput::inputFromKeypad(LiquidCrystal_I2C& lcd, SetValue& setParameter, 
 	else if(key == Enter && index > 0) {
 		setParameter.value = atof(numbers);		//convert array of entered numbers to float and write it to SetValue variable
 		setParameter.limit();
-		lcd.setCursor(xPositon,2);
+		lcd.setCursor(xPositon, yPosition);
 		setParameter.display(lcd);
 		lcd.setCursor(0,3);
 		lcd.print("       ");		//clear all entered numbers from the screen
@@ -81,34 +91,34 @@ void UserInput::resetKeypadInput(){
 }
 
 /**
- * @brief manages input from rotary encoder
+ * @brief manages input from rotary encoder,
+ * displays new value of setParameter on the lcd in position given by xPosiotion and yPosition, if encoder was rotated
  * 
  * @param lcd 
  * @param setParameter 
  * @param encoder 
  * @param xPositon horizontal positon on the lcd to display the most significant digit of setParameter
- * @return true if encoder was rotated
- * @return false if wasn't
+ * @param yPosition vertical positon on the lcd to display the setParameter
  */
-void UserInput::checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder, int xPositon){
+void UserInput::checkEncoder(LiquidCrystal_I2C& lcd, SetValue& setParameter, Encoder& encoder, int xPositon, int yPosition){
 	if(encoder.wasButtonPressed()){
 		time = millis();
 		if(decimalPlace > setParameter.minDecimalPlace){	//if did't reach the last digit of setParameter
 			--decimalPlace;																	//move cursor to the left
-			++cursorPos;
+			++cursorPosX;
 		}   
 		else{
 			decimalPlace = setParameter.maxDecimalPlace;		//move the cursor back to the first digit of setParameter
-			cursorPos = xPositon;
+			cursorPosX = xPositon;
 		}
 		if(decimalPlace == tenths)	//jump across the decimal point
-			++cursorPos;
+			++cursorPosX;
 	}
 
 	if(encoder.rotation()){
 		setParameter.value += encoder.rotation() * pow(10, decimalPlace);
 		setParameter.limit();
-		lcd.setCursor(xPositon,2);
+		lcd.setCursor(xPositon, yPosition);
 		setParameter.display(lcd);
 		encoder.reset();
 		time = millis();

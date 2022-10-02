@@ -47,7 +47,7 @@ void constCurrentMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keyp
   lcd.print("Set I=");
   userInput.setCurrent.display(lcd);
   lcd.print("A");
-	userInput.cursorPos = 6;
+	userInput.cursorPosX = 6;
 	userInput.decimalPlace = ones;
 	taskLoop(ConstCurrent, userInput.setCurrent, lcd, userInput, keypad, encoder, measurements, controls);
 }
@@ -60,7 +60,7 @@ void constPowerMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad
   lcd.print("Set P=");
   userInput.setPower.display(lcd);
   lcd.print("W");
-	userInput.cursorPos = 8;
+	userInput.cursorPosX = 8;
 	userInput.decimalPlace = ones;
 	taskLoop(ConstPower, userInput.setPower, lcd, userInput, keypad, encoder, measurements, controls);
 }
@@ -73,12 +73,13 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
   lcd.print("Set R=");
   userInput.setResistance.display(lcd);
   lcd.write(ohm);
-	userInput.cursorPos = 9;
+	userInput.cursorPosX = 9;
 	userInput.decimalPlace = ones;
 	taskLoop(ConstResistance, userInput.setResistance, lcd, userInput, keypad, encoder, measurements, controls);
 }
 
 int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
+	TransientChangedVariable changedVariable;
 	uint32_t lastTime;
 	lcd.setCursor(0 ,0);
 	lcd.print(" Transient response ");
@@ -96,7 +97,7 @@ int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& 
 	lcd.setCursor(0, 0);
 	lcd.print("Time=");
 	transient.pulseTime.display(lcd);
-	lcd.print("ms     OFF");
+	lcd.print("ms      OFF");
   lcd.setCursor(0,2);
   lcd.print("Lo=");
 	transient.lowCurrent.display(lcd);
@@ -106,13 +107,15 @@ int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& 
 
 	switch (userInput.key){
 		case '1':	//Continous
-			userInput.cursorPos = 3;
+			userInput.cursorPosX = 3;
+			userInput.cursorPosY = 2;
 			userInput.decimalPlace = ones;
+			changedVariable = LowCurrent;
 			while(1){
 				measurements.update();
 				measurements.displayMeasurements(lcd, controls.isLoadOn());
 				controls.fanControll();
-				
+
 				switch (keypad.getKey()){
 					case Menu:
 						controls.loadOff(lcd);
@@ -132,7 +135,7 @@ int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& 
 
 							userInput.key = keypad.getKey();
 							lcd.cursor();
-							lcd.setCursor(userInput.cursorPos,2);
+							lcd.setCursor(userInput.cursorPosX, userInput.cursorPosY);
 							delay(100);
 							if(userInput.key == Menu){
 								controls.loadOff(lcd);
@@ -142,8 +145,42 @@ int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& 
 							else if(userInput.key == LoadOnOff)
 								controls.loadOnOffToggle(lcd);
 
-							userInput.inputFromKeypad(lcd, transient.lowCurrent, 3);
-							userInput.checkEncoder(lcd, transient.lowCurrent, encoder, 3);
+							if(changedVariable == LowCurrent){
+								userInput.inputFromKeypad(lcd, transient.lowCurrent, 3, 2);
+								userInput.checkEncoder(lcd, transient.lowCurrent, encoder, 3, 2);
+							}
+							else if(changedVariable == HighCurrent){
+								userInput.inputFromKeypad(lcd, transient.highCurrent, 14, 2);
+								userInput.checkEncoder(lcd, transient.highCurrent, encoder, 14, 2);
+							}
+							else if(changedVariable == PulseTime){
+								userInput.inputFromKeypad(lcd, transient.pulseTime, 5, 0);
+								userInput.checkEncoder(lcd, transient.pulseTime, encoder, 5, 0);
+							}
+
+							if(userInput.key == '#'){	//toggle changed variable between LowCurrent, HighCurrent and PulseTime
+								switch (changedVariable){
+								case LowCurrent:
+									userInput.cursorPosX = 14;
+									userInput.decimalPlace = ones;
+									changedVariable = HighCurrent;
+									break;
+								case HighCurrent:
+									userInput.cursorPosX = 8;
+									userInput.cursorPosY = 0;
+									userInput.decimalPlace = ones;
+									changedVariable = PulseTime;
+									break;
+								case PulseTime:
+									userInput.cursorPosX = 3;
+									userInput.cursorPosY = 2;
+									userInput.decimalPlace = ones;
+									changedVariable = LowCurrent;
+									break;
+								default:
+									break;
+								}
+							}
 						}
 						lcd.noCursor();
 						break;
@@ -175,13 +212,13 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 	lcd.print("  measurement mode  ");
 	lcd.setCursor(0, 2);
   lcd.print("Enter cutoff voltage");
-	userInput.cursorPos = 2;
+	userInput.cursorPosX = 2;
 	userInput.decimalPlace = ones;
 	changedVariable = DischargeCurrent;
 
 	do{
 		userInput.key = keypad.getKey();
-		userInput.inputFromKeypad(lcd, battery.cutoffVoltage, 14);
+		userInput.inputFromKeypad(lcd, battery.cutoffVoltage, 14, 2);
 	} while (userInput.key != Enter);
   
 	lcd.clear();
@@ -253,7 +290,7 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 
 					userInput.key = keypad.getKey();
 					lcd.cursor();
-					lcd.setCursor(userInput.cursorPos,2);
+					lcd.setCursor(userInput.cursorPosX,2);
 					delay(100);
 					if(userInput.key == Menu){
 						controls.loadOff(lcd);
@@ -268,13 +305,14 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 					}
 
 					if(changedVariable ==  DischargeCurrent){
-						userInput.inputFromKeypad(lcd, battery.dischargeCurrent, 2);
-						userInput.checkEncoder(lcd, battery.dischargeCurrent, encoder, 2);
+						userInput.inputFromKeypad(lcd, battery.dischargeCurrent, 2, 2);
+						userInput.checkEncoder(lcd, battery.dischargeCurrent, encoder, 2, 2);
 					}
-					else{
-						userInput.inputFromKeypad(lcd, battery.cutoffVoltage, 14);
-						userInput.checkEncoder(lcd, battery.cutoffVoltage, encoder, 14);
+					else if(changedVariable == CutoffVoltage){
+						userInput.inputFromKeypad(lcd, battery.cutoffVoltage, 14, 2);
+						userInput.checkEncoder(lcd, battery.cutoffVoltage, encoder, 14, 2);
 					}
+
 					if(prevSetCurrent != battery.dischargeCurrent.value){	//if changed discharge current
 						prevCapacity = battery.capacity;
 						prevTime = measurements.timer.getTotalSeconds();
@@ -282,12 +320,12 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 					}
 					if(userInput.key == '#'){	//toggle changed variable between dischargeCurrent and cutoffVoltage
 						if(changedVariable ==  DischargeCurrent){
-							userInput.cursorPos = 15;
+							userInput.cursorPosX = 15;
 							userInput.decimalPlace = ones;
 							changedVariable = CutoffVoltage;
 						}
 						else{
-							userInput.cursorPos = 2;
+							userInput.cursorPosX = 2;
 							userInput.decimalPlace = ones;
 							changedVariable = DischargeCurrent;
 						}
@@ -341,7 +379,7 @@ int taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& lc
 
 					userInput.key = keypad.getKey();
 					lcd.cursor();
-					lcd.setCursor(userInput.cursorPos,2);
+					lcd.setCursor(userInput.cursorPosX,2);
 					delay(100);
 					if(userInput.key == Menu){
 						controls.loadOff(lcd);
@@ -351,8 +389,8 @@ int taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& lc
 					else if(userInput.key == LoadOnOff)
 						controls.loadOnOffToggle(lcd);
 
-					userInput.inputFromKeypad(lcd, setParameter, 6);
-					userInput.checkEncoder(lcd, setParameter, encoder, 6);
+					userInput.inputFromKeypad(lcd, setParameter, 6, 2);
+					userInput.checkEncoder(lcd, setParameter, encoder, 6, 2);
 				}
 				lcd.noCursor();
 				break;
@@ -505,7 +543,7 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 		userInput.key = keypad.getKey();
 		if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
 			userInput.time = millis();
-			userInput.inputFromKeypad(lcd, userInput.setCurrent, 15);
+			userInput.inputFromKeypad(lcd, userInput.setCurrent, 15, 2);
 			lcd.setCursor(0, 2);
 			lcd.print("cal multiplier=");
 			userInput.key = ' ';
@@ -534,7 +572,7 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 		userInput.key = keypad.getKey();
 		if((userInput.key >= '0' && userInput.key <= '9') || userInput.key == '.'){
 			userInput.time = millis();
-			userInput.inputFromKeypad(lcd, userInput.setCurrent, 11);
+			userInput.inputFromKeypad(lcd, userInput.setCurrent, 11, 2);
 			userInput.key = ' ';
 			lcd.setCursor(0, 2);
 			lcd.print("cal offset=");

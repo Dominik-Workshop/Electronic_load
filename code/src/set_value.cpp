@@ -33,7 +33,10 @@ void SetValue::init(int digits, int decimals, float min, float max){
 
 void SetValue::display(LiquidCrystal_I2C& lcd){
   char displayValue[20];
-  dtostrf(value, (numOfDigits + 1), numOfDecimalPlaces, displayValue);
+  int decimal = 0;
+  if(numOfDecimalPlaces > 0)  //if value has decimal point
+    decimal = 1;
+  dtostrf(value, (numOfDigits + decimal), numOfDecimalPlaces, displayValue);
 	lcd.print(displayValue);
 }
 
