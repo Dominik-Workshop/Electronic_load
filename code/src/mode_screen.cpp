@@ -12,6 +12,7 @@
 #include "mode_screen.hh"
 
 Battery battery;
+Transient transient;
 
 void displayWelcomeScreen(LiquidCrystal_I2C& lcd){
 	lcd.clear();
@@ -77,8 +78,89 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 	taskLoop(ConstResistance, userInput.setResistance, lcd, userInput, keypad, encoder, measurements, controls);
 }
 
-void transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
+int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
+	uint32_t lastTime;
+	lcd.setCursor(0 ,0);
+	lcd.print(" Transient response ");
+  lcd.setCursor(0, 1);
+	lcd.print("1.Continous  2.Pulse");
+	lcd.setCursor(0, 2);
+  lcd.print("3.Toggle            ");
+	lcd.setCursor(0, 3);
+  lcd.print("              4.Exit");
+		do{
+		userInput.key = keypad.getKey();
+	} while (!(userInput.key >= '1' && userInput.key <= '4'));
 
+	lcd.clear();
+	lcd.setCursor(0, 0);
+	lcd.print("Time=");
+	transient.pulseTime.display(lcd);
+	lcd.print("ms     OFF");
+  lcd.setCursor(0,2);
+  lcd.print("Lo=");
+	transient.lowCurrent.display(lcd);
+	lcd.print("A  Hi=");
+	transient.highCurrent.display(lcd);
+	lcd.print("A");
+
+	switch (userInput.key){
+		case '1':	//Continous
+			userInput.cursorPos = 3;
+			userInput.decimalPlace = ones;
+			while(1){
+				measurements.update();
+				measurements.displayMeasurements(lcd, controls.isLoadOn());
+				controls.fanControll();
+				
+				switch (keypad.getKey()){
+					case Menu:
+						controls.loadOff(lcd);
+						userInput.resetKeypadInput();
+						return 0; //exit this loop, go back to menu
+						break;
+					case LoadOnOff:
+						controls.loadOnOffToggle(lcd);
+						break;
+					case Enter:
+						encoder.reset();
+						userInput.time = millis();
+						while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
+							measurements.update();
+							measurements.displayMeasurements(lcd, controls.isLoadOn());
+							controls.fanControll();
+
+							userInput.key = keypad.getKey();
+							lcd.cursor();
+							lcd.setCursor(userInput.cursorPos,2);
+							delay(100);
+							if(userInput.key == Menu){
+								controls.loadOff(lcd);
+								userInput.resetKeypadInput();
+								return 0; //exit this loop, go back to menu
+							}
+							else if(userInput.key == LoadOnOff)
+								controls.loadOnOffToggle(lcd);
+
+							userInput.inputFromKeypad(lcd, transient.lowCurrent, 3);
+							userInput.checkEncoder(lcd, transient.lowCurrent, encoder, 3);
+						}
+						lcd.noCursor();
+						break;
+					default:
+						delay(10);	//wait 10ms before checking again what keypad was pressed
+						break;
+				}
+			}
+			break;
+		case '2':	//Pulse
+			break;
+		case '3':	//Toggle
+			break;
+		case '4':	//Exit
+			break;
+	}
+	return 0;
 }
 
 int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
