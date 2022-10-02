@@ -43,6 +43,8 @@ int main(void){
   LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
   Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
   Encoder encoder;
+  Battery battery;
+  Transient transient;
 
   lcd.init();
   lcd.backlight();              //turn the backlight on
@@ -75,11 +77,11 @@ int main(void){
         displayMenu(lcd);
 				break;
 			case '4':
-				transientResponseMode(lcd, userInput, keypad, encoder, measurements, controls);
+				transientResponseMode(lcd, userInput, keypad, encoder, measurements, controls, transient);
         displayMenu(lcd);
 				break;
 			case '5':
-				batteryCapacityMode(lcd, userInput, keypad, encoder, measurements, controls);
+				batteryCapacityMode(lcd, userInput, keypad, encoder, measurements, controls, battery);
         displayMenu(lcd);
 				break;
 			case '6':

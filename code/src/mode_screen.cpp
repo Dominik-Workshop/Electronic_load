@@ -11,9 +11,6 @@
 
 #include "mode_screen.hh"
 
-Battery battery;
-Transient transient;
-
 void displayWelcomeScreen(LiquidCrystal_I2C& lcd){
 	lcd.clear();
 	lcd.setCursor(1,0);
@@ -78,7 +75,7 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 	taskLoop(ConstResistance, userInput.setResistance, lcd, userInput, keypad, encoder, measurements, controls);
 }
 
-int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
+int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls, Transient& transient){
 	TransientChangedVariable changedVariable;
 	uint32_t lastTime;	//used to time toggles between high and low currents
 	lcd.setCursor(0 ,0);
@@ -207,7 +204,7 @@ int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& 
 	return 0;
 }
 
-int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
+int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls, Battery& battery){
 	BatteryChangedVariable changedVariable;
 	float prevSetCurrent = battery.dischargeCurrent.value;
 	float prevCapacity = 0;
