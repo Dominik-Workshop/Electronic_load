@@ -80,7 +80,7 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 
 int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
 	TransientChangedVariable changedVariable;
-	uint32_t lastTime;
+	uint32_t lastTime;	//used to time toggles between high and low currents
 	lcd.setCursor(0 ,0);
 	lcd.print(" Transient response ");
   lcd.setCursor(0, 1);
@@ -111,10 +111,15 @@ int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& 
 			userInput.cursorPosY = 2;
 			userInput.decimalPlace = ones;
 			changedVariable = LowCurrent;
+			lastTime = millis();
 			while(1){
 				measurements.update();
 				measurements.displayMeasurements(lcd, controls.isLoadOn());
 				controls.fanControll();
+				if(lastTime + transient.pulseTime.value <= millis()){
+					transient.toggleCurrent(controls);
+					lastTime = millis();
+				}
 
 				switch (keypad.getKey()){
 					case Menu:
@@ -123,9 +128,11 @@ int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& 
 						return 0; //exit this loop, go back to menu
 						break;
 					case LoadOnOff:
+						lastTime = millis();
 						controls.loadOnOffToggle(lcd);
 						break;
 					case Enter:
+						controls.loadOff(lcd);
 						encoder.reset();
 						userInput.time = millis();
 						while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
