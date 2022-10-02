@@ -17,7 +17,7 @@
 #include "set_value.hh"
 #include "defines.hh"
 
-enum ChangedVariable{
+enum BatteryChangedVariable{
   DischargeCurrent,
   CutoffVoltage
 };

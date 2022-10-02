@@ -164,7 +164,7 @@ int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& 
 }
 
 int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls){
-	ChangedVariable changedVariable;
+	BatteryChangedVariable changedVariable;
 	float prevSetCurrent = battery.dischargeCurrent.value;
 	float prevCapacity = 0;
 	uint32_t prevTime = 0;
