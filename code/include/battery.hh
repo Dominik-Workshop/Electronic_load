@@ -28,6 +28,7 @@ class Battery{
     SetValue dischargeCurrent;
     float capacity = 0;       //in mAh
     uint32_t dischargeTime = 0;
+    BatteryChangedVariable changedVariable;
     
     Battery();
     void displayCapacity(LiquidCrystal_I2C& lcd);

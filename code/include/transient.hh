@@ -27,6 +27,7 @@ class Transient{
     SetValue lowCurrent;
     SetValue highCurrent;
     SetValue pulseTime; //in ms
+    TransientChangedVariable changedVariable;
 
     void toggleCurrent(Controls& controls);
 
