@@ -22,12 +22,17 @@ enum BatteryChangedVariable{
   CutoffVoltage
 };
 
+/**
+ * @brief contains battery capacity in mAh, discharge time, setValues: cutoffVoltage and dischargeCurrent,
+ * information which setValue is currently changed
+ * 
+ */
 class Battery{
   public:
-    SetValue cutoffVoltage; //in Volts
-    SetValue dischargeCurrent;
-    float capacity = 0;       //in mAh
-    uint32_t dischargeTime = 0;
+    float capacity = 0;         //in mAh
+    uint32_t dischargeTime = 0; //in seconds
+    SetValue cutoffVoltage;     //in Volts
+    SetValue dischargeCurrent;  //in Amps
     BatteryChangedVariable changedVariable;
     
     Battery();

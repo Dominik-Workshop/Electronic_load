@@ -52,7 +52,7 @@ void SetValue::limit(){
 }
 
 /**
- * @brief decrementation operator overload  for DecimalPlaces enum
+ * @brief decrementation operator overload for DecimalPlaces enum
  * 
  * @param dec 
  */

@@ -18,6 +18,11 @@ Battery::Battery(){
   dischargeCurrent.init(4, 3, 0.004, MAX_CURRENT);
 }
 
+/**
+ * @brief displays battery capacity in mAh, in the top left corner of the lcd
+ * 
+ * @param lcd 
+ */
 void Battery::displayCapacity(LiquidCrystal_I2C& lcd){
   char displayValue[20];
   dtostrf(capacity, 5, 0, displayValue);

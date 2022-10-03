@@ -21,14 +21,6 @@ UserInput::UserInput(){
 }
 
 /**
- * @brief manages input from keypad, displays entered digit or decimal point in the bottom left corner of the lcd
- * 
- * @param lcd 
- * @param setParameter 
- * @param xPositon horizontal positon on the lcd to display the most significant digit of setParameter
- */
-
-/**
  * @brief manages input from keypad, displays entered digit or decimal point in the bottom left corner of the lcd,
  * when Enter pressed displays new value of setParameter on the lcd in position given by xPosiotion and yPosition
  * 

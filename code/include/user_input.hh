@@ -20,7 +20,9 @@
 #include "encoder.hh"
 
 /**
- * @brief used for storing data recieved from the user via keypad or rotary encoder
+ * @brief used for storing data recieved from the user via keypad and rotary encoder,
+ * can manage input from keypad and encoder, contains setValues: setCurrent, setPower, setResistance,
+ * one character entered from keypad, encoder's cursor position, time from last action
  * 
  */
 class UserInput{

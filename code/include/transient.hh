@@ -22,6 +22,11 @@ enum TransientChangedVariable{
   PulseTime
 };
 
+/**
+ * @brief contains setValues: lowCurrent, highCurrent, pulseTime, information which setValue is currently changed,
+ * can toggle the current betweet low and high current
+ * 
+ */
 class Transient{
   public:
     SetValue lowCurrent;
