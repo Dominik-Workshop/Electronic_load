@@ -76,7 +76,6 @@ void constResistanceMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& k
 }
 
 int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls, Transient& transient){
-	uint32_t lastTime;	//used to time toggles between high and low currents
 	lcd.setCursor(0, 0);
 	lcd.print(" Transient response ");
   lcd.setCursor(0, 1);
@@ -90,116 +89,15 @@ int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& 
 		userInput.key = keypad.getKey();
 	} while (!(userInput.key >= '1' && userInput.key <= '4'));
 
-	lcd.clear();
-	lcd.setCursor(0, 0);
-	lcd.print("Time=");
-	transient.pulseTime.display(lcd);
-	lcd.print("ms      OFF");
-  lcd.setCursor(0, 2);
-  lcd.print("Lo=");
-	transient.lowCurrent.display(lcd);
-	lcd.print("A  Hi=");
-	transient.highCurrent.display(lcd);
-	lcd.print("A");
-
 	switch (userInput.key){
-		case '1':	//Continous
-			userInput.cursorPosX = 3;
-			userInput.cursorPosY = 2;
-			userInput.decimalPlace = ones;
-			transient.changedVariable = LowCurrent;
-			lastTime = millis();
-			while(1){
-				measurements.update();
-				measurements.displayMeasurements(lcd, controls.isLoadOn());
-				controls.fanControll();
-				if(lastTime + transient.pulseTime.value <= millis()){	//toggle current after set time
-					transient.toggleCurrent(controls);
-					lastTime = millis();
-				}
-
-				switch (keypad.getKey()){
-					case Menu:
-						controls.loadOff(lcd);
-						userInput.resetKeypadInput();
-						return 0; //exit this loop, go back to menu
-						break;
-					case LoadOnOff:
-						lastTime = millis();
-						controls.loadOnOffToggle(lcd);
-						break;
-					case Enter:
-						controls.loadOff(lcd);
-						encoder.reset();
-						userInput.time = millis();
-						while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
-							measurements.update();
-							measurements.displayMeasurements(lcd, controls.isLoadOn());
-							controls.fanControll();
-
-							userInput.key = keypad.getKey();
-							lcd.cursor();
-							lcd.setCursor(userInput.cursorPosX, userInput.cursorPosY);
-							delay(100);
-							if(userInput.key == Menu){
-								controls.loadOff(lcd);
-								userInput.resetKeypadInput();
-								return 0; //exit this loop, go back to menu
-							}
-							else if(userInput.key == LoadOnOff)
-								controls.loadOnOffToggle(lcd);
-
-							switch (transient.changedVariable){
-								case LowCurrent:
-									userInput.inputFromKeypad(lcd, transient.lowCurrent, 3, 2);
-									userInput.checkEncoder(lcd, transient.lowCurrent, encoder, 3, 2);
-									break;
-								case HighCurrent:
-									userInput.inputFromKeypad(lcd, transient.highCurrent, 14, 2);
-									userInput.checkEncoder(lcd, transient.highCurrent, encoder, 14, 2);
-									break;
-								case PulseTime:
-									userInput.inputFromKeypad(lcd, transient.pulseTime, 5, 0);
-									userInput.checkEncoder(lcd, transient.pulseTime, encoder, 5, 0);
-									break;
-							}
-
-							if(userInput.key == '#'){	//toggle changed variable between LowCurrent, HighCurrent and PulseTime
-								userInput.time = millis();
-								switch (transient.changedVariable){
-									case LowCurrent:
-										userInput.cursorPosX = 14;
-										userInput.decimalPlace = ones;
-										transient.changedVariable = HighCurrent;
-										break;
-									case HighCurrent:
-										userInput.cursorPosX = 8;
-										userInput.cursorPosY = 0;
-										userInput.decimalPlace = ones;
-										transient.changedVariable = PulseTime;
-										break;
-									case PulseTime:
-										userInput.cursorPosX = 3;
-										userInput.cursorPosY = 2;
-										userInput.decimalPlace = ones;
-										transient.changedVariable = LowCurrent;
-										break;
-									default:
-										break;
-								}
-							}
-						}
-						lcd.noCursor();
-						break;
-					default:
-						delay(10);	//wait 10ms before checking again what keypad was pressed
-						break;
-				}
-			}
+		case '1':
+			transient.continousMode(lcd, userInput, keypad, encoder, measurements, controls);
 			break;
-		case '2':	//Pulse
+		case '2':
+			transient.pulseMode(lcd, userInput, keypad, encoder, measurements, controls);
 			break;
-		case '3':	//Toggle
+		case '3':
+			transient.toggleMode(lcd, userInput, keypad, encoder, measurements, controls);
 			break;
 		case '4':	//Exit
 			break;
