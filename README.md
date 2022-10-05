@@ -3,7 +3,7 @@
 ### Project Goals
 :heavy_check_mark: **300 W power dissipation**
 
-:heavy_check_mark: **up to 8A and 60V** (obeying the 300W limit)
+:heavy_check_mark: **up to 8A and 50V** (obeying the 300W limit)
 
 :heavy_check_mark: **Remote voltage sensing option**
 
@@ -15,7 +15,7 @@
 
 :heavy_check_mark: **Constant resistance mode**
 
-**Transient response mode**
+:heavy_check_mark: **Transient response mode**
 
 :heavy_check_mark: **Battery testing mode**
 
