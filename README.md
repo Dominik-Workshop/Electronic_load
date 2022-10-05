@@ -22,9 +22,17 @@
 :heavy_check_mark: **Nice to look at:** doesn't look like a poor DIY build
 
 <p align="center">
-  <img src="/images/load_assembled.png" />
-  <img src="/images/insides.png" />
-  <img src="/images/insides_rear.png" />
+  <img src="/images/front.jpg" width="49%" />
+  <img src="/images/rear.jpg" width="49%" />
+  <img src="/images/insides.jpg" width="49%" />
+  <img src="/images/insides2.jpg" width="49%" />
+  <img src="/images/main_PCB.jpg" />
+</p>
+
+<p align="center">
+  <img src="/images/load_assembled_render.png" />
+  <img src="/images/insides_render.png" width="49%" />
+  <img src="/images/insides_rear_render.png" width="49%" />
 </p>
 
 ### To-Do:
