@@ -1,20 +1,20 @@
 <mxfile host="65bd71144e">
     <diagram id="M2BFBASVa4sEkwWjOiuD" name="Strona-1">
-        <mxGraphModel dx="889" dy="274" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="919" dy="204" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="3" value="CalibrationValues" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="-40" y="10" width="160" height="150" as="geometry"/>
+                <mxCell id="3" value="DacCalibration" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="-80" y="10" width="200" height="210" as="geometry"/>
                 </mxCell>
-                <mxCell id="4" value="+DAC: int&#10;+ADC_current: int&#10;+ADC_voltage: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="3" vertex="1">
-                    <mxGeometry y="26" width="160" height="54" as="geometry"/>
+                <mxCell id="4" value="-setCurrentMultiplier: int&#10;-setCurrentOffset: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="3" vertex="1">
+                    <mxGeometry y="26" width="200" height="64" as="geometry"/>
                 </mxCell>
                 <mxCell id="5" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="3" vertex="1">
-                    <mxGeometry y="80" width="160" height="8" as="geometry"/>
+                    <mxGeometry y="90" width="200" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="6" value="+readFromEEPROM(): void&#10;+save(int, int, int): void&#10;+writeToEEPROM(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="3" vertex="1">
-                    <mxGeometry y="88" width="160" height="62" as="geometry"/>
+                <mxCell id="6" value="+readFromEEPROM(): void&#10;+writeToEEPROM(): void&#10;&#10;+ getSetCurrentMultiplier(): int&#10;+ getSetCurrentOffset(): int&#10;+ setSetCurrentMultiplier(int): void&#10;+ setSetCurrentOffset(int): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="3" vertex="1">
+                    <mxGeometry y="98" width="200" height="112" as="geometry"/>
                 </mxCell>
                 <mxCell id="7" value="Encoder" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
                     <mxGeometry x="130" y="10" width="180" height="210" as="geometry"/>
@@ -29,71 +29,96 @@
                     <mxGeometry y="88" width="180" height="122" as="geometry"/>
                 </mxCell>
                 <mxCell id="11" value="UserInput" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="350" y="10" width="160" height="204" as="geometry"/>
+                    <mxGeometry x="320" y="10" width="240" height="320" as="geometry"/>
                 </mxCell>
-                <mxCell id="12" value="+setCurrent: setValue&#10;+setPower: setValue&#10;+setResistance: setValue&#10;+numbers[]: char&#10;+index: int&#10;+key: char&#10;+decimalPointPresent: bool&#10;+decimalPlace: float&#10;+cursorPos: int&#10;+time: uint32_t" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="11" vertex="1">
-                    <mxGeometry y="26" width="160" height="144" as="geometry"/>
+                <mxCell id="12" value="+ setCurrent: SetValue&#10;+ setPower: SetValue&#10;+ setResistance: SetValue&#10;&#10;+ key: char&#10;+ decimalPlace: DecimalPlaces&#10;+ cursorPosX: int&#10;+ cursorPosY: int&#10;+ time: uint32_t&#10;- numbers[]: char&#10;- decimalPointPresent: bool&#10;- index: int&#10;- x_pos: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="11" vertex="1">
+                    <mxGeometry y="26" width="240" height="194" as="geometry"/>
                 </mxCell>
                 <mxCell id="13" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="11" vertex="1">
-                    <mxGeometry y="170" width="160" height="8" as="geometry"/>
+                    <mxGeometry y="220" width="240" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="14" value="+ method(type): type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="11" vertex="1">
-                    <mxGeometry y="178" width="160" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="15" value="MovingAverage" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="550" y="10" width="160" height="160" as="geometry"/>
-                </mxCell>
-                <mxCell id="16" value="-readings[]: float&#10;-readIndex: int&#10;-total: float&#10;-average: float" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="15" vertex="1">
-                    <mxGeometry y="26" width="160" height="64" as="geometry"/>
-                </mxCell>
-                <mxCell id="17" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="15" vertex="1">
-                    <mxGeometry y="90" width="160" height="8" as="geometry"/>
-                </mxCell>
-                <mxCell id="18" value="+MovingAverage()&#10;+calculate(int): int&#10;+getAverage(): int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="15" vertex="1">
-                    <mxGeometry y="98" width="160" height="62" as="geometry"/>
+                <mxCell id="14" value="+ inputFromKeypad(&amp;LiquidCrystal_I2C,&#10;     &amp;SetValue, int, int): void&#10;+ resetKeypadInput(): void&#10;+ checkEncoder(&amp;LiquidCrystal_I2C,&#10;    &amp;SetValue, &amp;Encoder, int, int):void&#10;+ UserInput()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="11" vertex="1">
+                    <mxGeometry y="228" width="240" height="92" as="geometry"/>
                 </mxCell>
                 <mxCell id="21" value="Measurements" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontColor=#FFFFFF;" parent="1" vertex="1">
-                    <mxGeometry x="550" y="210" width="160" height="120" as="geometry"/>
+                    <mxGeometry x="570" y="10" width="290" height="300" as="geometry"/>
                 </mxCell>
-                <mxCell id="22" value="-reading: float&#10;-average: MovingAverage" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#FFFFFF;" parent="21" vertex="1">
-                    <mxGeometry y="26" width="160" height="44" as="geometry"/>
+                <mxCell id="22" value="+ voltage: float&#10;+ current: float&#10;+ power: float&#10;+ temperature: int&#10;+ calibration: AdcCalibration&#10;+ adc: Adafruit_ADS1115&#10;+ timer: MCP79410_Timer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#FFFFFF;" parent="21" vertex="1">
+                    <mxGeometry y="26" width="290" height="114" as="geometry"/>
                 </mxCell>
                 <mxCell id="23" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;fontColor=#990000;" parent="21" vertex="1">
-                    <mxGeometry y="70" width="160" height="8" as="geometry"/>
+                    <mxGeometry y="140" width="290" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="24" value="+newReading(float): void&#10;+getAverage(): float" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#FFFFFF;" parent="21" vertex="1">
-                    <mxGeometry y="78" width="160" height="42" as="geometry"/>
-                </mxCell>
-                <mxCell id="26" value="1" style="endArrow=none;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=bottom;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.501;entryY=1.02;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=default;endFill=0;" parent="1" source="21" target="18" edge="1">
-                    <mxGeometry x="-1" y="-10" relative="1" as="geometry">
-                        <mxPoint x="400" y="210" as="sourcePoint"/>
-                        <mxPoint x="670" y="170" as="targetPoint"/>
-                        <mxPoint as="offset"/>
-                        <Array as="points">
-                            <mxPoint x="630" y="180"/>
-                            <mxPoint x="630" y="180"/>
-                        </Array>
-                    </mxGeometry>
+                <mxCell id="24" value="+ Measurements()&#10;+ update(): void&#10;+ displayMeasurements(lcd: LiquidCrystal_I2C&amp;,&#10;    loadIsOn: bool);&#10;+ measureVoltage(): float&#10;+ measureCurrent(): float&#10;+ measureTemperature(): int&#10;- display(lcd: LiquidCrystal_I2C&amp;, value: float, &#10;    numOfDigits: int, numOfDecimalPlaces: int): void&#10;- noLessThanZero(value: float&amp;): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#FFFFFF;" parent="21" vertex="1">
+                    <mxGeometry y="148" width="290" height="152" as="geometry"/>
                 </mxCell>
                 <mxCell id="27" value="SetValue" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="319" y="270" width="220" height="200" as="geometry"/>
+                    <mxGeometry x="320" y="380" width="240" height="220" as="geometry"/>
                 </mxCell>
-                <mxCell id="28" value="+value: float&#10;-numOfDigits: int&#10;-numOfDecimalPlaces: int&#10;-maxValue: float&#10;-minValue: float" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="27" vertex="1">
-                    <mxGeometry y="26" width="220" height="94" as="geometry"/>
+                <mxCell id="28" value="+ value: float&#10;+ maxDecimalPlace: DecimalPlaces&#10;+ minDecimalPlace: DecimalPlaces&#10;-numOfDigits: int&#10;-numOfDecimalPlaces: int&#10;-maxValue: float&#10;-minValue: float" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="27" vertex="1">
+                    <mxGeometry y="26" width="240" height="114" as="geometry"/>
                 </mxCell>
                 <mxCell id="29" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="27" vertex="1">
-                    <mxGeometry y="120" width="220" height="8" as="geometry"/>
+                    <mxGeometry y="140" width="240" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="30" value="+init(digits: int, decimals: int,&#10;        min: int, max: int): void&#10;+display(lcd: LiquidCrystal_I2C &amp;): void&#10;+limit(): void&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="27" vertex="1">
-                    <mxGeometry y="128" width="220" height="72" as="geometry"/>
+                <mxCell id="30" value="+init(digits: int, decimals: int,&#10;        min: float, max: float): void&#10;+display(lcd: LiquidCrystal_I2C &amp;): void&#10;+limit(): void&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="27" vertex="1">
+                    <mxGeometry y="148" width="240" height="72" as="geometry"/>
                 </mxCell>
-                <mxCell id="32" value="3" style="endArrow=none;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=bottom;strokeColor=default;endFill=0;entryX=0.494;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="27" target="14">
+                <mxCell id="32" value="3" style="endArrow=none;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=bottom;strokeColor=default;endFill=0;entryX=0.501;entryY=1.001;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="27" target="14" edge="1">
                     <mxGeometry x="-1" y="-6" relative="1" as="geometry">
                         <mxPoint x="640" y="220" as="sourcePoint"/>
-                        <mxPoint x="427" y="210" as="targetPoint"/>
+                        <mxPoint x="439" y="350" as="targetPoint"/>
                         <mxPoint as="offset"/>
                         <Array as="points"/>
                     </mxGeometry>
+                </mxCell>
+                <mxCell id="33" value="AdcCalibration" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="-80" y="230" width="200" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="- voltageMultiplier: int&#10;- voltageOffset: int&#10;- currentMultiplier: int&#10;- currentOffset: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="33" vertex="1">
+                    <mxGeometry y="26" width="200" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="33" vertex="1">
+                    <mxGeometry y="90" width="200" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="+readFromEEPROM(): void&#10;+writeToEEPROM(): void&#10;&#10;+ getVoltageMultiplier(): int&#10;+ getVoltageOffset(): int&#10;+ getCurrentMultiplier(): int&#10;+ getCurrentOffset(): int&#10;&#10;+ setVoltageMultiplier(int): void&#10;+ setVoltageOffset(int): void&#10;+ setCurrentMultiplier(int): void&#10;+ setCurrentOffset(int): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="33" vertex="1">
+                    <mxGeometry y="98" width="200" height="182" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="Battery" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="570" y="320" width="260" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="+ capacity: float&#10;+ dischargeTime: uint32_t&#10;+ cutoffVoltage: SetValue&#10;+ dischargeCurrent: SetValue&#10;+ changedVariable: BatteryChangedVariable" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="37">
+                    <mxGeometry y="26" width="260" height="84" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="37">
+                    <mxGeometry y="110" width="260" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="+ Battery()&#10;+ displayCapacity(LiquidCrystal_I2C&amp;): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="37">
+                    <mxGeometry y="118" width="260" height="42" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="Controls" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="870" y="10" width="270" height="290" as="geometry"/>
+                </mxCell>
+                <mxCell id="42" value="+ dac: Adafruit_MCP4725&#10;+ calibration: DacCalibration&#10;+ measurements: Measurements&amp;&#10;- fanspeed: int&#10;- lowTemperatureThreshold: int&#10;- highTemperatureThreshold: int&#10;- loadIsOn: bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="41">
+                    <mxGeometry y="26" width="270" height="114" as="geometry"/>
+                </mxCell>
+                <mxCell id="43" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="41">
+                    <mxGeometry y="140" width="270" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="44" value="+ Controls(measurements_: Measurements&amp;)&#10;+ fanControll(): void&#10;+ loadOn(lcd: LiquidCrystal_I2C&amp;): void&#10;+ loadOff(lcd: LiquidCrystal_I2C&amp;): void&#10;+ loadOnOffToggle(lcd: LiquidCrystal_I2C&amp;): void&#10;+ regulateCurrent(setCurrent: float): void&#10;+ regulatePower(setPower: float): void&#10;+ regulateResistance(setResistance: float): void&#10;+ isLoadOn(): bool&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="41">
+                    <mxGeometry y="148" width="270" height="142" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="Transient" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="870" y="310" width="270" height="310" as="geometry"/>
+                </mxCell>
+                <mxCell id="46" value="+ lowCurrent: SetValue&#10;+ highCurrent: SetValue&#10;+ pulseTime: SetValue&#10;- lastCurrent: bool&#10;- lastTime: uint32_t&#10;- changedVariable: TransientChangedVariable" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="45">
+                    <mxGeometry y="26" width="270" height="104" as="geometry"/>
+                </mxCell>
+                <mxCell id="47" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="45">
+                    <mxGeometry y="130" width="270" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="48" value="+ Transient()&#10;+ continousMode(LiquidCrystal_I2C&amp;,&#10;    UserInput&amp;, Keypad&amp;, Encoder&amp;, &#10;    Measurements&amp;, Controls&amp;): int&#10;+ pulseMode(LiquidCrystal_I2C&amp;,&#10;    UserInput&amp;, Keypad&amp;, Encoder&amp;, &#10;    Measurements&amp;, Controls&amp;): int&#10;+ toggleMode(LiquidCrystal_I2C&amp;,&#10;    UserInput&amp;, Keypad&amp;, Encoder&amp;, &#10;    Measurements&amp;, Controls&amp;): int&#10;- toggleCurrent(Controls&amp;): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="45">
+                    <mxGeometry y="138" width="270" height="172" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
