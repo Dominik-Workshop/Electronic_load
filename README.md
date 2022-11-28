@@ -22,11 +22,11 @@
 :heavy_check_mark: **Nice to look at:** doesn't look like a poor DIY build
 
 <p align="center">
-  <img src="/images/front.jpg" width="49%" />
+  <img src="/images/front.jpg" />
   <img src="/images/rear.jpg" width="49%" />
   <img src="/images/insides.jpg" width="49%" />
   <img src="/images/insides2.jpg" width="49%" />
-  <img src="/images/main_PCB.jpg" />
+  <img src="/images/main_PCB.jpg" width="49%" />
 </p>
 
 <p align="center">
