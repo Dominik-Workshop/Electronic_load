@@ -85,7 +85,7 @@ int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& 
 	lcd.setCursor(0, 3);
   lcd.print("              4.Exit");
 
-		do{
+	do{
 		userInput.key = keypad.getKey();
 	} while (!(userInput.key >= '1' && userInput.key <= '4'));
 
@@ -275,7 +275,6 @@ int taskLoop(ModeOfOperation mode, SetValue& setParameter, LiquidCrystal_I2C& lc
 				controls.loadOff(lcd);
 				userInput.resetKeypadInput();
 				return 0; //exit this loop, go back to menu
-				break;
 			case LoadOnOff:
 				controls.loadOnOffToggle(lcd);
 				break;
