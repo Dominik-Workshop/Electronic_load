@@ -81,7 +81,7 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 
     0 1 2 3 4 5 6 7 8 9 A B C D E F G H I J
   -------------------------------------------
-0 | 0 0 0 0 0 m A h                   O F F |
+0 | 0 0 0 0 0 m A h                   O F F |     battery mode
 1 | 0 . 0 0 0 V   0 . 0 0 0 A     0 . 0 0 W |
 2 | I = 0 . 1 0 0 A     O f f =   0 . 0 0 V |
 3 |               0 0 : 0 0 : 0 0   2 3 * C |
@@ -89,9 +89,25 @@ void calibration(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, E
 
     0 1 2 3 4 5 6 7 8 9 A B C D E F G H I J
   -------------------------------------------
-0 | T i m e = 1 0 0 0 m s             O F F |
+0 | T i m e = 1 0 0 0 m s             O F F |     transient continous
 1 | 0 . 0 0 0 V   0 . 0 0 0 A     0 . 0 0 W |
 2 | L o = 1 . 0 0 0 A     H i = 2 . 0 0 0 A |
 3 |                                 2 3 * C |
-  -------------------------------------------  
+  -------------------------------------------
+
+    0 1 2 3 4 5 6 7 8 9 A B C D E F G H I J
+  -------------------------------------------
+0 | T i m e = 1 0 0 0 m s             O F F |     transient pulse
+1 | 0 . 0 0 0 V   0 . 0 0 0 A     0 . 0 0 W |
+2 | L o = 1 . 0 0 0 A     H i = 2 . 0 0 0 A |
+3 |                                 2 3 * C |
+  ------------------------------------------- 
+
+    0 1 2 3 4 5 6 7 8 9 A B C D E F G H I J
+  -------------------------------------------
+0 |                                   O F F |     transient toggle
+1 | 0 . 0 0 0 V   0 . 0 0 0 A     0 . 0 0 W |
+2 | L o = 1 . 0 0 0 A     H i = 2 . 0 0 0 A |
+3 |                                 2 3 * C |
+  ------------------------------------------- 
 */
