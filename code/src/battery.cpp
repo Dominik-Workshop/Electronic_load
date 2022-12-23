@@ -12,10 +12,8 @@
 #include "battery.hh"
 
 Battery::Battery(){
-  cutoffVoltage.value = 0;
-  cutoffVoltage.init(4, 2, 0, 50);
-  dischargeCurrent.value = 0.01;
-  dischargeCurrent.init(4, 3, 0.004, MAX_CURRENT);
+  cutoffVoltage.init(4, 2, 0, 50, 0);
+  dischargeCurrent.init(4, 3, 0.004, MAX_CURRENT, 0.01);
 }
 
 /**

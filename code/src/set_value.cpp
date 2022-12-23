@@ -21,14 +21,16 @@
  * @param decimals number of digits after decimal point
  * @param min minimum value
  * @param max maximum value
+ * @param init_value initial value of the set parameter 
  */
-void SetValue::init(int digits, int decimals, float min, float max){
+void SetValue::init(int digits, int decimals, float min, float max, float init_value){
   numOfDigits = digits;
   numOfDecimalPlaces = decimals;
   minValue = min;
   maxValue = max;
   maxDecimalPlace = static_cast<DecimalPlaces> (digits - decimals -1);
   minDecimalPlace = static_cast<DecimalPlaces> (-decimals);
+  value = init_value;
 }
 
 void SetValue::display(LiquidCrystal_I2C& lcd){

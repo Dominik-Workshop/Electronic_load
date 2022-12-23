@@ -34,7 +34,7 @@ class SetValue{
     float value;
     DecimalPlaces maxDecimalPlace;  //value derived from int digits and int decimals passed to init()
     DecimalPlaces minDecimalPlace;  //value derived from int digits and int decimals passed to init()
-    void init(int digits, int decimals, float min, float max);
+    void init(int digits, int decimals, float min, float max, float init_value);
     void display(LiquidCrystal_I2C& lcd);
     void limit();
   private:

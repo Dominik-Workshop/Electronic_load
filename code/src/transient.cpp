@@ -12,12 +12,9 @@
 #include "transient.hh"
 
 Transient::Transient(){
-  lowCurrent.value = 0.01;
-  lowCurrent.init(4, 3, 0.004, MAX_CURRENT);
-  highCurrent.value = 0.1;
-  highCurrent.init(4, 3, 0.004, MAX_CURRENT);
-  pulseTime.value = 50;
-  pulseTime.init(4, 0, 1, 9999);
+  lowCurrent.init(4, 3, 0.004, MAX_CURRENT, 0.01);
+  highCurrent.init(4, 3, 0.004, MAX_CURRENT, 0.1);
+  pulseTime.init(4, 0, 1, 9999, 50);
 }
 
 void Transient::toggleCurrent(Controls& controls){
