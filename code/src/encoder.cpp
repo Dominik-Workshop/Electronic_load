@@ -19,7 +19,7 @@ Encoder * Encoder::instance;
  * 
  */
 void Encoder::begin(){
-  attachInterrupt(digitalPinToInterrupt(ENCODER_A), isrRotation, LOW);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_A), isrRotation, FALLING);
   attachInterrupt(digitalPinToInterrupt(ENCODER_BUTTON), isrButton, FALLING);
   instance = this;
 }
