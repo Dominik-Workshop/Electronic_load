@@ -133,7 +133,7 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 	battery.cutoffVoltage.display(lcd);
 	lcd.print("V");
 
-	controls.loadOff(lcd);
+	//controls.loadOff(lcd);
 	controls.regulateCurrent(battery.dischargeCurrent.value);
 
 	while(1){
@@ -198,6 +198,7 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 					delay(100);
 					if(userInput.key == Menu){
 						controls.loadOff(lcd);
+						measurements.timer.stop();
 						return 0; //exit this loop, go back to menu
 					}
 					else if(userInput.key == LoadOnOff){
