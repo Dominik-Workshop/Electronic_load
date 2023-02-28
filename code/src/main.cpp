@@ -84,10 +84,10 @@ int main(void){
 				batteryCapacityMode(lcd, userInput, keypad, encoder, measurements, controls, battery);
         displayMenu(lcd);
 				break;
-			case '6':
-				calibration(lcd, userInput, keypad, encoder, measurements, controls);
-        displayMenu(lcd);
-				break;
+			// case '6':
+			// 	calibration(lcd, userInput, keypad, encoder, measurements, controls);
+      //  displayMenu(lcd);
+			// 	break;
 			default:
 				delay(10);	//wait 10ms before checking again what keypad was pressed
 				break;
