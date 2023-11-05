@@ -1,5 +1,7 @@
 # DC Electronic load
 
+More info can be found on my YouTube channel: https://youtu.be/NScaRQj53l0
+
 ### Project Goals
 :heavy_check_mark: **300 W power dissipation**
 
