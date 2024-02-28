@@ -1,10 +1,12 @@
 # DC Electronic load
 
 ## Used tools:
-<img align="center" height="64" src="images/logos/Eagle.png">   <img align="center" height="64" src="images/logos/Fusion-360.png">   <img align="center" height="64" src="images/logos/Platformio_vscode.png">
+<img align="center" height="64" src="images/logos/Eagle.png"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
+<img align="center"  height="64" src="images/logos/Fusion-360.png"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
+<img align="center" height="64" src="images/logos/Platformio_vscode.png">
+#
 
-
-More info about this project can be found on my YouTube channel: https://youtu.be/NScaRQj53l0
+### More info about this project can be found on my YouTube channel: https://youtu.be/NScaRQj53l0
 
 ### Project Goals
 :heavy_check_mark: **300 W power dissipation**
