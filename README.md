@@ -1,5 +1,8 @@
 # DC Electronic load
 
+## Used tools:
+<img align="center" height="64" src="images/logos/Eagle.png"> <img align="center" height="64" src="images/logos/Fusion-360.png"> <img align="center" height="64" src="images/logos/Platformio_vscode.png">
+
 More info can be found on my YouTube channel: https://youtu.be/NScaRQj53l0
 
 ### Project Goals
