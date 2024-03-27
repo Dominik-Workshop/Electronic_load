@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.05" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -8570,16 +8570,16 @@ DIN A5, landscape with doc field</description>
 <part name="SW1" library="switch-alps" library_urn="urn:adsk.eagle:library:373" deviceset="EC12E_SW" device="" package3d_urn="urn:adsk.eagle:package:27083/1" override_package3d_urn="urn:adsk.eagle:package:36740674/2" override_package_urn="urn:adsk.eagle:footprint:27082/1"/>
 <part name="P+2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
-<part name="JP1" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X5" device="" package3d_urn="urn:adsk.eagle:package:22469/2"/>
+<part name="JP1" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X5" device="/90" package3d_urn="urn:adsk.eagle:package:22467/2"/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="R1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="4k7"/>
 <part name="R2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="4k7"/>
 <part name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="12k"/>
 <part name="S1" library="switch" library_urn="urn:adsk.eagle:library:380" deviceset="TL46PO" device="" package3d_urn="urn:adsk.eagle:package:27746/1" override_package3d_urn="urn:adsk.eagle:package:36740710/2" override_package_urn="urn:adsk.eagle:footprint:27637/1"/>
-<part name="JP2" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="/90" package3d_urn="urn:adsk.eagle:package:22437/2"/>
-<part name="JP3" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="/90" package3d_urn="urn:adsk.eagle:package:22437/2"/>
 <part name="JP4" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="/90" package3d_urn="urn:adsk.eagle:package:22437/2"/>
+<part name="JP3" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="/90" package3d_urn="urn:adsk.eagle:package:22437/2"/>
+<part name="JP2" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="/90" package3d_urn="urn:adsk.eagle:package:22437/2"/>
 <part name="C1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="100n"/>
 <part name="C2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="100n"/>
 <part name="C3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="100n"/>
@@ -8604,6 +8604,9 @@ sense</text>
 terminals</text>
 <text x="115.57" y="40.64" size="1.778" layer="97">Voltage
 measure</text>
+<text x="93.98" y="10.16" size="3.81" layer="94">Electronic load
+front board</text>
+<text x="140.97" y="20.32" size="2.54" layer="94">Dominik Wokshop</text>
 </plain>
 <instances>
 <instance part="SW1" gate="G$1" x="106.68" y="81.28" smashed="yes">
@@ -8639,7 +8642,7 @@ measure</text>
 <instance part="S1" gate="BEF1" x="93.98" y="38.1" smashed="yes" rot="R90">
 <attribute name="NAME" x="96.52" y="53.34" size="1.778" layer="95" rot="R180"/>
 </instance>
-<instance part="JP2" gate="G$1" x="111.76" y="41.91" smashed="yes">
+<instance part="JP4" gate="G$1" x="111.76" y="41.91" smashed="yes">
 <attribute name="NAME" x="105.41" y="47.625" size="1.778" layer="95"/>
 <attribute name="VALUE" x="105.41" y="36.83" size="1.778" layer="96"/>
 </instance>
@@ -8647,7 +8650,7 @@ measure</text>
 <attribute name="NAME" x="80.264" y="30.607" size="1.778" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="80.01" y="30.48" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="JP4" gate="G$1" x="73.66" y="50.8" smashed="yes" rot="R180">
+<instance part="JP2" gate="G$1" x="73.66" y="50.8" smashed="yes" rot="R180">
 <attribute name="NAME" x="80.01" y="45.085" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="80.01" y="55.88" size="1.778" layer="96" rot="R180"/>
 </instance>
@@ -8739,6 +8742,7 @@ measure</text>
 <wire x1="93.98" y1="91.44" x2="121.92" y2="91.44" width="0.1524" layer="91"/>
 <wire x1="93.98" y1="86.36" x2="93.98" y2="91.44" width="0.1524" layer="91"/>
 <junction x="93.98" y="91.44"/>
+<label x="70.612" y="91.948" size="1.27" layer="95"/>
 </segment>
 </net>
 <net name="ENC_A" class="0">
@@ -8755,6 +8759,7 @@ measure</text>
 <wire x1="86.36" y1="93.98" x2="109.22" y2="93.98" width="0.1524" layer="91"/>
 <wire x1="86.36" y1="86.36" x2="86.36" y2="93.98" width="0.1524" layer="91"/>
 <junction x="86.36" y="93.98"/>
+<label x="70.612" y="94.488" size="1.27" layer="95"/>
 </segment>
 </net>
 <net name="ENC_B" class="0">
@@ -8771,6 +8776,7 @@ measure</text>
 <wire x1="78.74" y1="96.52" x2="104.14" y2="96.52" width="0.1524" layer="91"/>
 <wire x1="78.74" y1="86.36" x2="78.74" y2="96.52" width="0.1524" layer="91"/>
 <junction x="78.74" y="96.52"/>
+<label x="70.612" y="97.028" size="1.27" layer="95"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -8778,7 +8784,7 @@ measure</text>
 <pinref part="S1" gate="BEF1" pin="P"/>
 <wire x1="99.06" y1="38.1" x2="101.6" y2="38.1" width="0.1524" layer="91"/>
 <wire x1="101.6" y1="38.1" x2="101.6" y2="41.91" width="0.1524" layer="91"/>
-<pinref part="JP2" gate="G$1" pin="2"/>
+<pinref part="JP4" gate="G$1" pin="2"/>
 <wire x1="101.6" y1="41.91" x2="109.22" y2="41.91" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -8787,7 +8793,7 @@ measure</text>
 <pinref part="S1" gate="BEF1" pin="P1"/>
 <wire x1="99.06" y1="48.26" x2="101.6" y2="48.26" width="0.1524" layer="91"/>
 <wire x1="101.6" y1="48.26" x2="101.6" y2="44.45" width="0.1524" layer="91"/>
-<pinref part="JP2" gate="G$1" pin="1"/>
+<pinref part="JP4" gate="G$1" pin="1"/>
 <wire x1="101.6" y1="44.45" x2="109.22" y2="44.45" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -8802,7 +8808,7 @@ measure</text>
 </net>
 <net name="N$8" class="0">
 <segment>
-<pinref part="JP4" gate="G$1" pin="1"/>
+<pinref part="JP2" gate="G$1" pin="1"/>
 <wire x1="76.2" y1="48.26" x2="86.36" y2="48.26" width="0.1524" layer="91"/>
 <wire x1="86.36" y1="48.26" x2="86.36" y2="40.64" width="0.1524" layer="91"/>
 <pinref part="S1" gate="BEF1" pin="S"/>
@@ -8811,7 +8817,7 @@ measure</text>
 </net>
 <net name="N$9" class="0">
 <segment>
-<pinref part="JP4" gate="G$1" pin="2"/>
+<pinref part="JP2" gate="G$1" pin="2"/>
 <pinref part="S1" gate="BEF1" pin="S1"/>
 <wire x1="76.2" y1="50.8" x2="88.9" y2="50.8" width="0.1524" layer="91"/>
 </segment>
