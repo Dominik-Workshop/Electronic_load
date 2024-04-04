@@ -160,6 +160,11 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 					prevSetCurrent = battery.dischargeCurrent.value;
 				}
 			}
+			if(data == 'c'){
+				battery.cutoffVoltage.value = Serial.parseFloat();
+				lcd.setCursor(14, 2);
+				battery.cutoffVoltage.display(lcd);
+			}
 		}
 
 		measurements.update();

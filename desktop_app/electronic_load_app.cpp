@@ -45,8 +45,8 @@ void Electronic_load_app::Read_Data(){
             if (parts.size() != 3) {
                 qDebug() << "Invalid data format. Expected 3 parts separated by semicolons.";
             }else{
-                ui->measuredVoltage->setText(parts[0].replace(",", "."));
-                ui->measuredCurrent->setText(parts[2].replace(",", "."));
+                ui->measuredVoltage->setText(parts[0]);
+                ui->measuredCurrent->setText(parts[2]);
             }
             Data_From_Serial_Port = "";
             Is_data_received = false;
@@ -71,11 +71,25 @@ void Electronic_load_app::on_load_on_offfButton_clicked(){
 
 
 void Electronic_load_app::on_setCurrent_editingFinished(){
-    qDebug() << "finished";
-
+    qDebug() << "ell";
     if(COMPORT->isOpen()){
         COMPORT->write("a");
         COMPORT->write(ui->setCurrent->text().toLatin1()+ char(10));
+    }
+}
+
+
+void Electronic_load_app::requestData(RequestedData data){
+
+
+}
+
+
+void Electronic_load_app::on_cutoffVoltage_editingFinished(){
+    qDebug() << "ell";
+    if(COMPORT->isOpen()){
+        COMPORT->write("c");
+        COMPORT->write(ui->cutoffVoltage->text().toLatin1()+ char(10));
     }
 }
 

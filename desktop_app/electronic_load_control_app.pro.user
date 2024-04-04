@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 12.0.2, 2024-04-03T21:44:49. -->
+<!-- Written by QtCreator 12.0.2, 2024-04-03T21:51:04. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -240,13 +240,14 @@
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="bool" key="PE.EnvironmentAspect.PrintOnRun">false</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:E:/my_code/QT_creator_projects/electronic_load_control_app/electronic_load_control_app.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">E:/my_code/QT_creator_projects/electronic_load_control_app/electronic_load_control_app.pro</value>
-    <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">false</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">electronic_load_control_app2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:E:/projects/Electronic_load/desktop_app/electronic_load_control_app.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">E:/projects/Electronic_load/desktop_app/electronic_load_control_app.pro</value>
+    <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">true</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">E:/my_code/QT_creator_projects/build-electronic_load_control_app-Desktop_Qt_6_6_2_MinGW_64_bit-Debug</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>
