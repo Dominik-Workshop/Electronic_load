@@ -40,5 +40,19 @@ private:
     QSerialPort* COMPORT;
     QString Data_From_Serial_Port;
     bool Is_data_received = false;
+    bool IsOutputOn = false;
 };
 #endif // ELECTRONIC_LOAD_APP_H
+
+/*
+-request data:
+    is load on
+    discharging current
+    cutoff voltage
+-receive data:
+    current
+    voltage
+    time
+    (and the requested data)
+
+ */
