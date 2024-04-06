@@ -1,12 +1,8 @@
 # DC Electronic load
 
-### More info about this project can be found on my YouTube channel: https://youtu.be/NScaRQj53l0
+### More info about this project can be found on my channel: 
+<img align="center" height="32" src="images/logos/YT.png"> https://youtu.be/NScaRQj53l0
 
-## Used tools:
-<img align="center" height="64" src="images/logos/Eagle.png"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
-<img align="center"  height="64" src="images/logos/Fusion-360.png"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
-<img align="center" height="64" src="images/logos/Platformio_vscode.png">
-#
 
 ## Project status: :heavy_check_mark: ready for construction!
 The project is poised for construction and operational use. However, ongoing development persists, addressing minor bug fixes and introducing new features. Stay tuned for updates!
@@ -79,10 +75,16 @@ Uploading the code this way will reduce the boot up time.
 Note: since this method removes the bootloader, in order to program the uC via UART next time,
     you have to burn the bootloader.
 
-## Special thanks
-
-Special thanks to [**Eryk Możdzeń**](https://github.com/Eryk-Mozdzen), who helped solving a software problem with a memory leak.
+## Used tools:
+<img align="center" height="64" src="images/logos/Eagle.png"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
+<img align="center"  height="64" src="images/logos/Fusion-360.png"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
+<img align="center" height="64" src="images/logos/Platformio_vscode.png">
+#
 
 ## What could be improved in the next version:
   - Add reverse polarity protection
   - Higher resolution DAC
+
+## Special thanks
+
+Special thanks to [**Eryk Możdzeń**](https://github.com/Eryk-Mozdzen), who helped solving a software problem with a memory leak.
