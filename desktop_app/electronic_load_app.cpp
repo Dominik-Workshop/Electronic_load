@@ -9,7 +9,7 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     connect(Electronic_load_app::findChild<QPushButton *>("Button_off"), SIGNAL(released()), this, SLOT(send_off_cmd()));
 
     COMPORT = new QSerialPort();
-    COMPORT->setPortName("COM5");
+    COMPORT->setPortName("ttyUSB0");
     COMPORT->setBaudRate(QSerialPort::BaudRate::Baud9600);
     COMPORT->setParity(QSerialPort::Parity::NoParity);
     COMPORT->setDataBits(QSerialPort::DataBits::Data8);
@@ -58,15 +58,6 @@ void Electronic_load_app::Read_Data(){
 void Electronic_load_app::on_load_on_offfButton_clicked(){
     if(COMPORT->isOpen()){
         COMPORT->write("o");
-        if(IsOutputOn){
-            ui->load_on_offfButton->setStyleSheet("* { background-color: rgb(255,0,0) }");
-            ui->load_on_offfButton->setText("Load OFF");
-        }
-        else{
-            ui->load_on_offfButton->setText("Load ON");
-            ui->load_on_offfButton->setStyleSheet("* { background-color: rgb(0,255,0) }");
-        }
-        /*
         if(ui->load_on_offfButton->text() == "Load ON"){
             ui->load_on_offfButton->setStyleSheet("* { background-color: rgb(255,0,0) }");
             ui->load_on_offfButton->setText("Load OFF");
@@ -74,37 +65,32 @@ void Electronic_load_app::on_load_on_offfButton_clicked(){
         else{
             ui->load_on_offfButton->setText("Load ON");
             ui->load_on_offfButton->setStyleSheet("* { background-color: rgb(0,255,0) }");
-        }*/
+        }
     }
 }
 
+
 void Electronic_load_app::on_setCurrent_editingFinished(){
+    qDebug() << "ell";
     if(COMPORT->isOpen()){
         COMPORT->write("a");
         COMPORT->write(ui->setCurrent->text().toLatin1()+ char(10));
     }
 }
 
+
+void Electronic_load_app::requestData(RequestedData data){
+
+
+}
+
+
 void Electronic_load_app::on_cutoffVoltage_editingFinished(){
+    qDebug() << "ell";
     if(COMPORT->isOpen()){
         COMPORT->write("c");
         COMPORT->write(ui->cutoffVoltage->text().toLatin1()+ char(10));
     }
 }
 
-void Electronic_load_app::requestData(RequestedData data){
-    if(COMPORT->isOpen()){
-        switch(data){
-        case DischargingCurrent:
-            COMPORT->write("d");
-            break;
-        case CutoffVoltage:
-            COMPORT->write("c");
-            break;
-        case OutputState:
-            COMPORT->write("o");
-        default:
-            break;
-        }
-    }
-}
+

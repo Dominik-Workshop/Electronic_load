@@ -35,24 +35,11 @@ private slots:
     void on_setCurrent_editingFinished();
     void on_cutoffVoltage_editingFinished();
 
+
 private:
     Ui::Electronic_load_app *ui;
     QSerialPort* COMPORT;
     QString Data_From_Serial_Port;
     bool Is_data_received = false;
-    bool IsOutputOn = false;
 };
 #endif // ELECTRONIC_LOAD_APP_H
-
-/*
--request data:
-    is load on
-    discharging current
-    cutoff voltage
--receive data:
-    current
-    voltage
-    time
-    (and the requested data)
-
- */

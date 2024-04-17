@@ -8,7 +8,7 @@
 int main(int argc, char *argv[])
 {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QApplication::setStyle(QStyleFactory::create("Fusion")); // these lines before the next
+    //QApplication::setStyle(QStyleFactory::create("Fusion")); // these lines before the next
     QApplication a(argc, argv);
 
     QTranslator translator;
@@ -21,6 +21,6 @@ int main(int argc, char *argv[])
         }
     }
     Electronic_load_app w;
-    w.showMaximized();
+    w.show();
     return a.exec();
 }
