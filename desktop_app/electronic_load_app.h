@@ -36,10 +36,17 @@ private slots:
     void on_cutoffVoltage_editingFinished();
 
 
+    void on_resetMeas_clicked();
+
 private:
     Ui::Electronic_load_app *ui;
     QSerialPort* COMPORT;
     QString Data_From_Serial_Port;
     bool Is_data_received = false;
+    QString prevCurrent;
+    QString prevCutoff;
+
+    float capacitymAh=0;
+    float capacityWh=0;
 };
 #endif // ELECTRONIC_LOAD_APP_H

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>805</width>
-    <height>519</height>
+    <width>994</width>
+    <height>751</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,11 +25,70 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QGraphicsView" name="graphicsView">
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(100, 100, 100)</string>
-      </property>
-     </widget>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QGraphicsView" name="graphicsView">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(100, 100, 100)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="Settings">
+          <property name="font">
+           <font>
+            <pointsize>20</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color : rgb(255,255,255);
+background-color: rgb(39, 39, 39);</string>
+          </property>
+          <property name="text">
+           <string>Settings</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="font">
+           <font>
+            <pointsize>20</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color : rgb(255,255,255);
+background-color: rgb(39, 39, 39);</string>
+          </property>
+          <property name="text">
+           <string>Save as</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </item>
     <item row="0" column="1">
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -44,14 +103,19 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>40</height>
+          <height>60</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>200</width>
+          <width>220</width>
           <height>60</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>18</pointsize>
+         </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(255, 0, 0)</string>
@@ -77,7 +141,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>16</pointsize>
+          <pointsize>18</pointsize>
          </font>
         </property>
         <property name="styleSheet">
@@ -98,7 +162,7 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
+          <width>220</width>
           <height>150</height>
          </size>
         </property>
@@ -152,7 +216,7 @@
           <rect>
            <x>10</x>
            <y>30</y>
-           <width>143</width>
+           <width>131</width>
            <height>41</height>
           </rect>
          </property>
@@ -172,11 +236,14 @@
 	background-color: rgb(127, 127, 127);
 }</string>
          </property>
+         <property name="inputMethodHints">
+          <set>Qt::ImhNone</set>
+         </property>
         </widget>
         <widget class="QLabel" name="label_6">
          <property name="geometry">
           <rect>
-           <x>160</x>
+           <x>150</x>
            <y>30</y>
            <width>22</width>
            <height>30</height>
@@ -223,7 +290,7 @@
 }</string>
          </property>
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Cutoff voltage&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Cut-off voltage&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="cutoffVoltage">
@@ -231,7 +298,7 @@
           <rect>
            <x>10</x>
            <y>100</y>
-           <width>143</width>
+           <width>131</width>
            <height>41</height>
           </rect>
          </property>
@@ -255,7 +322,7 @@
         <widget class="QLabel" name="label_8">
          <property name="geometry">
           <rect>
-           <x>160</x>
+           <x>150</x>
            <y>100</y>
            <width>22</width>
            <height>30</height>
@@ -299,7 +366,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>16</pointsize>
+          <pointsize>18</pointsize>
          </font>
         </property>
         <property name="text">
@@ -317,8 +384,8 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>150</height>
+          <width>220</width>
+          <height>215</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -347,7 +414,7 @@
           <rect>
            <x>10</x>
            <y>60</y>
-           <width>143</width>
+           <width>131</width>
            <height>45</height>
           </rect>
          </property>
@@ -356,16 +423,31 @@
            <pointsize>24</pointsize>
           </font>
          </property>
+         <property name="acceptDrops">
+          <bool>true</bool>
+         </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgb(127, 127, 127)</string>
          </property>
+         <property name="inputMethodHints">
+          <set>Qt::ImhNone</set>
+         </property>
+         <property name="echoMode">
+          <enum>QLineEdit::Normal</enum>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
         </widget>
         <widget class="QLineEdit" name="measuredCurrent">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="geometry">
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>143</width>
+           <width>131</width>
            <height>45</height>
           </rect>
          </property>
@@ -376,12 +458,15 @@
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgb(127, 127, 127)</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
          </property>
         </widget>
         <widget class="QLabel" name="label_5">
          <property name="geometry">
           <rect>
-           <x>160</x>
+           <x>150</x>
            <y>60</y>
            <width>21</width>
            <height>40</height>
@@ -413,7 +498,7 @@
         <widget class="QLabel" name="label_7">
          <property name="geometry">
           <rect>
-           <x>160</x>
+           <x>150</x>
            <y>10</y>
            <width>31</width>
            <height>30</height>
@@ -439,6 +524,126 @@
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;A&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
+        <widget class="QLineEdit" name="capacity_mAh">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>110</y>
+           <width>131</width>
+           <height>45</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>24</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(127, 127, 127)</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="capacity_Wh">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>160</y>
+           <width>131</width>
+           <height>45</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>24</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(127, 127, 127)</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_9">
+         <property name="geometry">
+          <rect>
+           <x>143</x>
+           <y>110</y>
+           <width>71</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>24</pointsize>
+          </font>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+	border-width: 0;
+}</string>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;mAh&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_10">
+         <property name="geometry">
+          <rect>
+           <x>150</x>
+           <y>160</y>
+           <width>61</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>24</pointsize>
+          </font>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);
+border-width: 0</string>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wh&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="resetMeas">
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color : rgb(255,255,255)</string>
+        </property>
+        <property name="text">
+         <string>Reset measurement</string>
+        </property>
        </widget>
       </item>
       <item>

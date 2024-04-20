@@ -1,5 +1,6 @@
 #include "electronic_load_app.h"
 #include "ui_electronic_load_app.h"
+#include <QDoubleValidator>
 
 Electronic_load_app::Electronic_load_app(QWidget *parent)
     : QMainWindow(parent)
@@ -25,6 +26,10 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     }
 
     connect(COMPORT, SIGNAL(readyRead()), this, SLOT(Read_Data()));
+
+    ui->capacity_mAh->setText(QString::number(capacitymAh));
+    ui->capacity_Wh->setText(QString::number(capacityWh));
+
 }
 
 Electronic_load_app::~Electronic_load_app()
@@ -33,6 +38,11 @@ Electronic_load_app::~Electronic_load_app()
 }
 
 void Electronic_load_app::Read_Data(){
+
+    ui->capacity_mAh->setText(QString::number(capacitymAh));
+    ui->capacity_Wh->setText(QString::number(capacityWh));
+    capacityWh = 0.001;
+    capacitymAh = 0.002;
     if(COMPORT->isOpen()){
         while(COMPORT->bytesAvailable()){
             Data_From_Serial_Port += COMPORT->readAll();
@@ -40,14 +50,51 @@ void Electronic_load_app::Read_Data(){
                 Is_data_received = true;
         }
         if(Is_data_received){
-            qDebug() << "data from serial: " << Data_From_Serial_Port;
+            //qDebug() << "data from serial: " << Data_From_Serial_Port;
             QStringList parts = Data_From_Serial_Port.split(";");
-            if (parts.size() != 3) {
-                qDebug() << "Invalid data format. Expected 3 parts separated by semicolons.";
-            }else{
-                ui->measuredVoltage->setText(parts[0]);
-                ui->measuredCurrent->setText(parts[2]);
+            if(parts[0] == 'm'){
+                if (parts.size() != 7) {
+                    qDebug() << "Invalid data format. Expected 7 parts separated by semicolons.";
+                }else{
+                    if(prevCurrent != parts[4]){
+                        qDebug() << prevCurrent << parts[4];
+                        ui->setCurrent->setText(parts[4]);
+                        prevCurrent = QString(parts[4]);
+                    }
+                    if(prevCutoff != parts[5]){
+                        qDebug() << prevCutoff << parts[5];
+                        ui->cutoffVoltage->setText(parts[5]);
+                        prevCutoff = QString(parts[5]);
+                    }
+
+                    ui->measuredVoltage->setText(parts[1]);
+                    ui->measuredCurrent->setText(parts[3]);
+
+                    if(parts[6]=="1\r\n"){
+                        ui->load_on_offfButton->setText("Load ON");
+                        ui->load_on_offfButton->setStyleSheet("* { background-color: rgb(0,255,0) }");
+                    }
+                    else {
+                        ui->load_on_offfButton->setStyleSheet("* { background-color: rgb(255,0,0) }");
+                        ui->load_on_offfButton->setText("Load OFF");
+                    }
+                }
             }
+            if(parts[0] == 'd'){
+                if (parts.size() != 2) {
+                    qDebug() << "Invalid data format. Expected 2 parts separated by semicolons.";
+                }else{
+                    ui->setCurrent->setText(parts[1]);
+                }
+            }
+            if(parts[0] == 'q'){
+                if (parts.size() != 2) {
+                    qDebug() << "Invalid data format. Expected 2 parts separated by semicolons.";
+                }else{
+                    ui->cutoffVoltage->setText(parts[1]);
+                }
+            }
+
             Data_From_Serial_Port = "";
             Is_data_received = false;
         }
@@ -58,14 +105,7 @@ void Electronic_load_app::Read_Data(){
 void Electronic_load_app::on_load_on_offfButton_clicked(){
     if(COMPORT->isOpen()){
         COMPORT->write("o");
-        if(ui->load_on_offfButton->text() == "Load ON"){
-            ui->load_on_offfButton->setStyleSheet("* { background-color: rgb(255,0,0) }");
-            ui->load_on_offfButton->setText("Load OFF");
-        }
-        else{
-            ui->load_on_offfButton->setText("Load ON");
-            ui->load_on_offfButton->setStyleSheet("* { background-color: rgb(0,255,0) }");
-        }
+
     }
 }
 
@@ -86,7 +126,6 @@ void Electronic_load_app::requestData(RequestedData data){
 
 
 void Electronic_load_app::on_cutoffVoltage_editingFinished(){
-    qDebug() << "ell";
     if(COMPORT->isOpen()){
         COMPORT->write("c");
         COMPORT->write(ui->cutoffVoltage->text().toLatin1()+ char(10));
@@ -94,3 +133,9 @@ void Electronic_load_app::on_cutoffVoltage_editingFinished(){
 }
 
 
+
+void Electronic_load_app::on_resetMeas_clicked()
+{
+    capacityWh = 0;
+    capacitymAh = 0;
+}
