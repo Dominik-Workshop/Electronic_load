@@ -7,6 +7,8 @@
 #include <QString>
 #include <QtSerialPort/QSerialPort>
 
+#include "measurements.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class Electronic_load_app;
@@ -19,6 +21,17 @@ enum RequestedData{
     OutputState
 };
 
+enum RXdata{
+    Command,
+    MeasuredVoltage,
+    MeasuredCurrent,
+    MeasuredTemperature,
+    SetCurret,
+    SetCutofffVoltage,
+    IsLoadOn,
+    Time
+};
+
 class Electronic_load_app : public QMainWindow
 {
     Q_OBJECT
@@ -28,6 +41,7 @@ public:
     ~Electronic_load_app();
 
     void requestData(RequestedData data);
+    void processReacivedData();
 
 private slots:
     void Read_Data();
@@ -45,6 +59,8 @@ private:
     bool Is_data_received = false;
     QString prevCurrent;
     QString prevCutoff;
+
+    Measurements measurements;
 
     float capacitymAh=0;
     float capacityWh=0;

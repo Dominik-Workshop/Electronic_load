@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    electronic_load_app.cpp
+    electronic_load_app.cpp \
+    measurements.cpp
 
 HEADERS += \
-    electronic_load_app.h
+    electronic_load_app.h \
+    measurements.h
 
 FORMS += \
     electronic_load_app.ui
