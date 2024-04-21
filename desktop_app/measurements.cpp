@@ -1,4 +1,13 @@
-
+/**
+ * @file measurements.cpp
+ * @author Dominik Workshop
+ * @brief
+ * @version 1.0
+ * @date 2024-04-21
+ *
+ * @copyright Copyright (c) 2024
+ *
+ */
 
 #include <stdlib.h>
 
@@ -6,28 +15,46 @@
 
 Measurements::Measurements(){
     voltageReadings = nullptr;
-    voltageCount = 0;
+    currentReadings = nullptr;
     numberOfReadings = 0;
+    arrayCapacity = 10;
+
+    mAhCapacity = 0;
+    WhCapacity = 0;
 }
 
-void Measurements::addVoltage(float value) {
-    /*if (voltageCount >= numberOfReadings) {
-        // If the array is full, increase capacity
-        int newCapacity = (numberOfReadings == 0) ? 1 : numberOfReadings * 2;
-        float* newArray = (float*)realloc(voltageReadings, newCapacity * sizeof(float));
-        if (newArray == nullptr) {
-            // Handle memory allocation failure
-            // For example, you could throw an exception or return an error code
-            // Here, let's just print an error message and return
-            return;
-        }
-        // Update the array and capacity
-        voltageReadings = newArray;
-        numberOfReadings = newCapacity;
-    }
-    // Add the new voltage value*/
-    ++numberOfReadings;
-    voltageReadings = (float*)realloc(voltageReadings, (numberOfReadings * sizeof(float)));
-    voltageReadings[numberOfReadings - 1] = value;
+Measurements::~Measurements(){
+    free(voltageReadings);
+    free(currentReadings);
+}
 
+/**
+ * @brief Adds voltage and current readings to the arrays
+ * @param voltage
+ * @param current
+ */
+void Measurements::addReadings(float voltage, float current){
+    if (numberOfReadings >= arrayCapacity)
+        arrayCapacity += 10;
+
+    voltageReadings = (float*)realloc(voltageReadings, (arrayCapacity * sizeof(float)));
+    currentReadings = (float*)realloc(currentReadings, (arrayCapacity * sizeof(float)));
+    voltageReadings[numberOfReadings] = voltage;
+    currentReadings[numberOfReadings] = current;
+    ++numberOfReadings;
+}
+
+/**
+ * @brief Resets the measurement data arrays and capacity values
+ */
+void Measurements::resetMeasurements(){
+    free(voltageReadings);
+    free(currentReadings);
+    voltageReadings = nullptr;
+    currentReadings = nullptr;
+    numberOfReadings = 0;
+    arrayCapacity = 10;
+
+    mAhCapacity = 0;
+    WhCapacity = 0;
 }

@@ -15,21 +15,17 @@ class Electronic_load_app;
 }
 QT_END_NAMESPACE
 
-enum RequestedData{
-    DischargingCurrent,
-    CutoffVoltage,
-    OutputState
-};
 
 enum RXdata{
     Command,
     MeasuredVoltage,
     MeasuredCurrent,
     MeasuredTemperature,
-    SetCurret,
     SetCutofffVoltage,
+    SetCurret,
     IsLoadOn,
-    Time
+    Time,
+    CRC
 };
 
 class Electronic_load_app : public QMainWindow
@@ -40,7 +36,6 @@ public:
     Electronic_load_app(QWidget *parent = nullptr);
     ~Electronic_load_app();
 
-    void requestData(RequestedData data);
     void processReacivedData();
 
 private slots:
@@ -51,6 +46,9 @@ private slots:
 
 
     void on_resetMeas_clicked();
+
+
+    void on_SaveButton_clicked();
 
 private:
     Ui::Electronic_load_app *ui;

@@ -70,47 +70,48 @@ uint32_t calculateCRC(const uint8_t* data, size_t length) {
 
 void Electronic_load_app::processReacivedData(){
     QStringList parts = Data_From_Serial_Port.split(";");
+    QStringList parts2 = Data_From_Serial_Port.split(";");
 
-        // Extract the received CRC checksum from the last part of the received data
-        uint32_t receivedCRC = parts.back().toUInt();
+    // Extract the received CRC checksum from the last part of the received data
+    uint32_t receivedCRC = parts2.back().toUInt();
 
-        // Remove the CRC part from the received data
-        parts.removeLast();
+    // Remove the CRC part from the received data
+    parts2.removeLast();
 
-        // Remove the 'm' character from the beginning of the data
-        QByteArray data = parts.join(";").toUtf8();
+    // Remove the 'm' character from the beginning of the data
+    QByteArray data = parts2.join(";").toUtf8();
+    data.remove(0, 1);
+
+    // Ensure there are no leading semicolons after removing 'm'
+    if (data.startsWith(';')) {
         data.remove(0, 1);
+    }
 
-        // Ensure there are no leading semicolons after removing 'm'
-        if (data.startsWith(';')) {
-            data.remove(0, 1);
-        }
+    // Print the received data and extracted CRC checksum for debugging
+    qDebug() << "Received data: " << data;
+    qDebug() << "Received CRC: " << receivedCRC;
 
-        // Print the received data and extracted CRC checksum for debugging
-        qDebug() << "Received data: " << data;
-        qDebug() << "Received CRC: " << receivedCRC;
+    // Calculate CRC checksum over the received data
+    qDebug() << (data.constData());
+    uint32_t calculatedCRC = calculateCRC(reinterpret_cast<const uint8_t*>(data.constData()), data.size());
 
-        // Calculate CRC checksum over the received data
-        qDebug() << (data.constData());
-        uint32_t calculatedCRC = calculateCRC(reinterpret_cast<const uint8_t*>(data.constData()), data.size());
+    // Print the calculated CRC for debugging
+    qDebug() << "Calculated CRC: " << calculatedCRC;
 
-        // Print the calculated CRC for debugging
-        qDebug() << "Calculated CRC: " << calculatedCRC;
-
-        // Compare received CRC with calculated CRC
-        if (receivedCRC == calculatedCRC) {
-            qDebug() << "CRC checksum matches. Data integrity verified.";
-            // Now you can proceed with processing the received data
-        } else {
-            qDebug() << "CRC checksum does not match. Data may be corrupted.";
-        }
+    // Compare received CRC with calculated CRC
+    if (receivedCRC == calculatedCRC) {
+        qDebug() << "CRC checksum matches. Data integrity verified.";
+        // Now you can proceed with processing the received data
+    } else {
+        qDebug() << "CRC checksum does not match. Data may be corrupted.";
+    }
 
 
 
 
     if(parts[Command] == 'm'){
         if (parts.size() != 9) {
-            qDebug() << "Invalid data format. Expected 7 parts separated by semicolons.";
+            qDebug() << "Invalid data format. Expected 9 parts separated by semicolons.";
             return;
         }
         if(prevCurrent != parts[SetCurret]){
@@ -166,7 +167,7 @@ void Electronic_load_app::on_resetMeas_clicked(){
 }
 
 void Electronic_load_app::on_SaveButton_clicked(){
-    for(int i =0; i < measurements.numberOfReadings; ++i){
+    for(int i = 0; i < measurements.numberOfReadings; ++i){
            qDebug()<< measurements.voltageReadings[i] << ", " << measurements.currentReadings[i];
     }
 }

@@ -71,7 +71,7 @@ background-color: rgb(39, 39, 39);</string>
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="SaveButton">
           <property name="font">
            <font>
             <pointsize>20</pointsize>
