@@ -1,13 +1,13 @@
 #include "electronic_load_app.h"
 #include "ui_electronic_load_app.h"
 #include <QDoubleValidator>
+#include <QVector>
 
 Electronic_load_app::Electronic_load_app(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Electronic_load_app)
 {
     ui->setupUi(this);
-    connect(Electronic_load_app::findChild<QPushButton *>("Button_off"), SIGNAL(released()), this, SLOT(send_off_cmd()));
 
     COMPORT = new QSerialPort();
     COMPORT->setPortName("ttyUSB0");
@@ -27,8 +27,11 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
 
     connect(COMPORT, SIGNAL(readyRead()), this, SLOT(Read_Data()));
 
-    ui->capacity_mAh->setText(QString::number(capacitymAh));
-    ui->capacity_Wh->setText(QString::number(capacityWh));
+    ui->capacity_mAh->setText(QString::number(measurements.mAhCapacity));
+    ui->capacity_Wh->setText(QString::number(measurements.WhCapacity));
+
+    ui->VoltagePlot->xAxis->setLabel("Time [s]");
+    ui->VoltagePlot->yAxis->setLabel("Voltage [V]");
 
 }
 
@@ -45,10 +48,25 @@ void Electronic_load_app::Read_Data(){
         }
         if(Is_data_received){
 
-            //qDebug() << "data from serial: " << Data_From_Serial_Port;
-            processReacivedData();
+            qDebug() << "data from serial: " << Data_From_Serial_Port;
+            processReceivedData();
             Data_From_Serial_Port = "";
             Is_data_received = false;
+
+            // Move initialization inside the if block
+            QVector<double> x(measurements.numberOfReadings), y(measurements.numberOfReadings);
+            for (int i = 0; i < measurements.numberOfReadings; ++i) {
+                x[i] = i; // Assuming x-axis is index based
+                y[i] = measurements.voltageReadings[i];
+            }
+
+            // Clear existing graph and update with new data
+            ui->VoltagePlot->clearGraphs();
+            ui->VoltagePlot->addGraph();
+            ui->VoltagePlot->graph(0)->setData(x, y);
+            ui->VoltagePlot->rescaleAxes();
+            ui->VoltagePlot->replot();
+            ui->VoltagePlot->update();
         }
     }
 }
@@ -68,49 +86,50 @@ uint32_t calculateCRC(const uint8_t* data, size_t length) {
   return crc ^ 0xFFFFFFFF;
 }
 
-void Electronic_load_app::processReacivedData(){
+void Electronic_load_app::processReceivedData(){
     QStringList parts = Data_From_Serial_Port.split(";");
+    QStringList parts2 = Data_From_Serial_Port.split(";");
 
-        // Extract the received CRC checksum from the last part of the received data
-        uint32_t receivedCRC = parts.back().toUInt();
+    // Extract the received CRC checksum from the last part of the received data
+    uint32_t receivedCRC = parts2.back().toUInt();
 
-        // Remove the CRC part from the received data
-        parts.removeLast();
+    // Remove the CRC part from the received data
+    parts2.removeLast();
 
-        // Remove the 'm' character from the beginning of the data
-        QByteArray data = parts.join(";").toUtf8();
+    // Remove the 'm' character from the beginning of the data
+    QByteArray data = parts2.join(";").toUtf8();
+    data.remove(0, 1);
+
+    // Ensure there are no leading semicolons after removing 'm'
+    if (data.startsWith(';')) {
         data.remove(0, 1);
+    }
 
-        // Ensure there are no leading semicolons after removing 'm'
-        if (data.startsWith(';')) {
-            data.remove(0, 1);
-        }
+    // Print the received data and extracted CRC checksum for debugging
+    qDebug() << "Received data: " << data;
+    qDebug() << "Received CRC: " << receivedCRC;
 
-        // Print the received data and extracted CRC checksum for debugging
-        qDebug() << "Received data: " << data;
-        qDebug() << "Received CRC: " << receivedCRC;
+    // Calculate CRC checksum over the received data
+    qDebug() << (data.constData());
+    uint32_t calculatedCRC = calculateCRC(reinterpret_cast<const uint8_t*>(data.constData()), data.size());
 
-        // Calculate CRC checksum over the received data
-        qDebug() << (data.constData());
-        uint32_t calculatedCRC = calculateCRC(reinterpret_cast<const uint8_t*>(data.constData()), data.size());
+    // Print the calculated CRC for debugging
+    qDebug() << "Calculated CRC: " << calculatedCRC;
 
-        // Print the calculated CRC for debugging
-        qDebug() << "Calculated CRC: " << calculatedCRC;
-
-        // Compare received CRC with calculated CRC
-        if (receivedCRC == calculatedCRC) {
-            qDebug() << "CRC checksum matches. Data integrity verified.";
-            // Now you can proceed with processing the received data
-        } else {
-            qDebug() << "CRC checksum does not match. Data may be corrupted.";
-        }
+    // Compare received CRC with calculated CRC
+    if (receivedCRC == calculatedCRC) {
+        qDebug() << "CRC checksum matches. Data integrity verified.";
+        // Now you can proceed with processing the received data
+    } else {
+        qDebug() << "CRC checksum does not match. Data may be corrupted.";
+    }
 
 
 
 
     if(parts[Command] == 'm'){
         if (parts.size() != 9) {
-            qDebug() << "Invalid data format. Expected 7 parts separated by semicolons.";
+            qDebug() << "Invalid data format. Expected 9 parts separated by semicolons.";
             return;
         }
         if(prevCurrent != parts[SetCurret]){
@@ -166,7 +185,7 @@ void Electronic_load_app::on_resetMeas_clicked(){
 }
 
 void Electronic_load_app::on_SaveButton_clicked(){
-    for(int i =0; i < measurements.numberOfReadings; ++i){
+    for(int i = 0; i < measurements.numberOfReadings; ++i){
            qDebug()<< measurements.voltageReadings[i] << ", " << measurements.currentReadings[i];
     }
 }

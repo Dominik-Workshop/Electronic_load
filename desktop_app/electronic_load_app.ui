@@ -27,17 +27,7 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QGraphicsView" name="graphicsView">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(100, 100, 100)</string>
-        </property>
-       </widget>
+       <widget class="QCustomPlot" name="VoltagePlot" native="true"/>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -665,6 +655,14 @@ border-width: 0</string>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

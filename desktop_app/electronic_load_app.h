@@ -28,26 +28,22 @@ enum RXdata{
     CRC
 };
 
-class Electronic_load_app : public QMainWindow
-{
+class Electronic_load_app : public QMainWindow{
     Q_OBJECT
 
 public:
     Electronic_load_app(QWidget *parent = nullptr);
     ~Electronic_load_app();
 
-    void processReacivedData();
+    void processReceivedData();
 
 private slots:
     void Read_Data();
-    void on_load_on_offfButton_clicked();
+
     void on_setCurrent_editingFinished();
     void on_cutoffVoltage_editingFinished();
-
-
+    void on_load_on_offfButton_clicked();
     void on_resetMeas_clicked();
-
-
     void on_SaveButton_clicked();
 
 private:
@@ -59,8 +55,5 @@ private:
     QString prevCutoff;
 
     Measurements measurements;
-
-    float capacitymAh=0;
-    float capacityWh=0;
 };
 #endif // ELECTRONIC_LOAD_APP_H

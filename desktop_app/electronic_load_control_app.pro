@@ -1,6 +1,6 @@
 QT       += core gui serialport
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 CONFIG += c++17
 
@@ -11,11 +11,13 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     electronic_load_app.cpp \
-    measurements.cpp
+    measurements.cpp \
+    qcustomplot.cpp
 
 HEADERS += \
     electronic_load_app.h \
-    measurements.h
+    measurements.h \
+    qcustomplot.h
 
 FORMS += \
     electronic_load_app.ui
