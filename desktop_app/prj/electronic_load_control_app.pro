@@ -8,16 +8,19 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+INCLUDEPATH += inc/
+VPATH += src/
+
 SOURCES += \
-    main.cpp \
-    electronic_load_app.cpp \
-    measurements.cpp \
-    qcustomplot.cpp
+    src/electronic_load_app.cpp \
+    src/main.cpp \
+    src/measurements.cpp \
+    src/qcustomplot.cpp
 
 HEADERS += \
-    electronic_load_app.h \
-    measurements.h \
-    qcustomplot.h
+    inc/electronic_load_app.h \
+    inc/measurements.h \
+    inc/qcustomplot.h \
 
 FORMS += \
     electronic_load_app.ui
