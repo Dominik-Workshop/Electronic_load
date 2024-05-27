@@ -19,14 +19,16 @@ class Measurements{
 public:
     Measurements();
     ~Measurements();
-    void addReadings(float voltage, float current);
+    void addReadings(float voltage, float current, float time);
     void resetMeasurements();
     void calculateCapacity();
     float* voltageReadings;
     float* currentReadings;
+    float* time;
     float temperature;
     float mAhCapacity;
     float WhCapacity;
+    int mAhNominalCapacity;
     int numberOfReadings; //Number of readings stored
 private:
     int arrayCapacity; // Capacity for the readings

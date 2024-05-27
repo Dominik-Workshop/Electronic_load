@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>994</width>
-    <height>751</height>
+    <width>1069</width>
+    <height>735</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,7 +27,14 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QCustomPlot" name="VoltagePlot" native="true"/>
+       <widget class="QCustomPlot" name="VoltagePlot" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>500</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -532,7 +539,7 @@ background-color: rgb(39, 39, 39);</string>
           <string notr="true">background-color: rgb(127, 127, 127)</string>
          </property>
          <property name="readOnly">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
         <widget class="QLineEdit" name="capacity_Wh">
@@ -623,6 +630,18 @@ border-width: 0</string>
       </item>
       <item>
        <widget class="QPushButton" name="resetMeas">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>220</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <pointsize>14</pointsize>
@@ -648,6 +667,123 @@ border-width: 0</string>
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QProgressBar" name="BatCapacityBar">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QProgressBar {
+     background-color: rgb(136, 138, 133);
+ }</string>
+          </property>
+          <property name="value">
+           <number>0</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>10</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QLabel" name="label_11">
+            <property name="font">
+             <font>
+              <kerning>true</kerning>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);
+border-width: 0</string>
+            </property>
+            <property name="text">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Nominal&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;capacity&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="NominalCapacity">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(127, 127, 127)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_12">
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);
+border-width: 0</string>
+            </property>
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;mAh&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>

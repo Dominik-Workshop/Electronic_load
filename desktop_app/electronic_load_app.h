@@ -6,6 +6,8 @@
 #include <QMessageBox>
 #include <QString>
 #include <QtSerialPort/QSerialPort>
+#include <QElapsedTimer>
+
 
 #include "measurements.h"
 
@@ -15,7 +17,9 @@ class Electronic_load_app;
 }
 QT_END_NAMESPACE
 
-
+/**
+ * @brief The RXdata enum used to idex specific data from received data array
+ */
 enum RXdata{
     Command,
     MeasuredVoltage,
@@ -38,13 +42,17 @@ public:
     void processReceivedData();
 
 private slots:
-    void Read_Data();
+    void readData();
 
     void on_setCurrent_editingFinished();
     void on_cutoffVoltage_editingFinished();
     void on_load_on_offfButton_clicked();
     void on_resetMeas_clicked();
     void on_SaveButton_clicked();
+
+    void on_NominalCapacity_editingFinished();
+
+    void on_capacity_mAh_editingFinished();
 
 private:
     Ui::Electronic_load_app *ui;
@@ -53,6 +61,7 @@ private:
     bool Is_data_received = false;
     QString prevCurrent;
     QString prevCutoff;
+    QElapsedTimer timer;
 
     Measurements measurements;
 };
