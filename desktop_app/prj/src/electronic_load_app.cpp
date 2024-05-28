@@ -2,6 +2,7 @@
 #include "ui_electronic_load_app.h"
 #include <QDoubleValidator>
 #include <QVector>
+#include <QFileDialog>
 
 Electronic_load_app::Electronic_load_app(QWidget *parent)
     : QMainWindow(parent)
@@ -211,8 +212,22 @@ void Electronic_load_app::on_resetMeas_clicked(){
 }
 
 void Electronic_load_app::on_SaveButton_clicked(){
-    for(int i = 0; i < measurements.numberOfReadings; ++i){
-           qDebug()<< measurements.voltageReadings[i] << ", " << measurements.currentReadings[i];
+    //for(int i = 0; i < measurements.numberOfReadings; ++i){
+    //      qDebug()<< measurements.voltageReadings[i] << ", " << measurements.currentReadings[i];
+    //}
+    QString filter = "JPG files (*.jpg)";
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save file"), QDir::currentPath(), filter, &filter);
+    // Check if the file name ends with ".png". If not, append it.
+    if (!fileName.endsWith(".jpg", Qt::CaseInsensitive)) {
+        fileName += ".jpg";
+    }
+    QFile file(fileName);
+
+    if (!file.open(QIODevice::WriteOnly))
+    {
+       qDebug() << file.errorString();
+    } else {
+       ui->VoltagePlot->saveJpg(fileName);
     }
 }
 
