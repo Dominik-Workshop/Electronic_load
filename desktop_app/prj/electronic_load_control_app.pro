@@ -12,6 +12,7 @@ INCLUDEPATH += inc/
 VPATH += src/
 
 SOURCES += \
+    src/settingswindow.cpp \
     src/electronic_load_app.cpp \
     src/main.cpp \
     src/measurements.cpp \
@@ -21,9 +22,12 @@ HEADERS += \
     inc/electronic_load_app.h \
     inc/measurements.h \
     inc/qcustomplot.h \
+    inc/settingswidow.h \
+    inc/settingswindow.h
 
 FORMS += \
-    electronic_load_app.ui
+    electronic_load_app.ui \
+    settingswindow.ui
 
 TRANSLATIONS += polish.ts
 CONFIG += lrelease

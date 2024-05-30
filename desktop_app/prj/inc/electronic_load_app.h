@@ -10,6 +10,7 @@
 #include <QElapsedTimer>
 #include <QTimer>
 #include <QTranslator>
+#include "settingswindow.h"
 
 #include "measurements.h"
 
@@ -74,6 +75,8 @@ private:
     QStringList currentPorts;
 
     Measurements measurements;
+
+    SettingsWindow *settingsWindow;
 
     // QWidget interface
 protected:

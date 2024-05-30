@@ -336,9 +336,9 @@ void Electronic_load_app::on_portOpenButton_clicked(){
     connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
 }
 
-void Electronic_load_app::on_Settings_clicked()
-{
-
+void Electronic_load_app::on_Settings_clicked(){
+    settingsWindow = new SettingsWindow(this);
+    settingsWindow->show();
 }
 
 void Electronic_load_app::on_cmbLanguage_currentIndexChanged(int index)
