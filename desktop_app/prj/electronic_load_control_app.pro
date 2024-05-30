@@ -25,8 +25,7 @@ HEADERS += \
 FORMS += \
     electronic_load_app.ui
 
-TRANSLATIONS += \
-    electronic_load_control_app_en_US.ts
+TRANSLATIONS += polish.ts
 CONFIG += lrelease
 CONFIG += embed_translations
 
@@ -34,3 +33,6 @@ CONFIG += embed_translations
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resc.qrc

@@ -9,6 +9,7 @@
 #include <QtSerialPort/QSerialPortInfo>
 #include <QElapsedTimer>
 #include <QTimer>
+#include <QTranslator>
 
 #include "measurements.h"
 
@@ -39,7 +40,7 @@ class Electronic_load_app : public QMainWindow{
 public:
     Electronic_load_app(QWidget *parent = nullptr);
     ~Electronic_load_app();
-
+    QTranslator translator;
     void processReceivedData();
 
 private slots:
@@ -57,6 +58,8 @@ private slots:
 
     void on_portOpenButton_clicked();
 
+    void on_Settings_clicked();
+
 private:
     Ui::Electronic_load_app *ui;
     QSerialPort* COMPORT = nullptr;
@@ -69,5 +72,9 @@ private:
     QStringList currentPorts;
 
     Measurements measurements;
+
+    // QWidget interface
+protected:
+    void changeEvent(QEvent *);
 };
 #endif // ELECTRONIC_LOAD_APP_H

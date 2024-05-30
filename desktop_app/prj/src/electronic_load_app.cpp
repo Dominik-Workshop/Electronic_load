@@ -10,7 +10,7 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     , ui(new Ui::Electronic_load_app)
 {
     ui->setupUi(this);
-
+    translator.load(":/polish.qm");
     // Fill combo box with available ports at startup
     updateAvailablePorts();
 
@@ -66,6 +66,15 @@ Electronic_load_app::~Electronic_load_app(){
         COMPORT->close();
         delete COMPORT;
     }
+}
+
+
+void Electronic_load_app::changeEvent(QEvent *event){
+    if(event->type() == QEvent::LanguageChange){
+        ui->retranslateUi(this);
+    }
+    //this->setWindowTitle("multilang widget");
+    QWidget::changeEvent(event);
 }
 
 void Electronic_load_app::updateAvailablePorts()
@@ -321,4 +330,9 @@ void Electronic_load_app::on_portOpenButton_clicked(){
     }
 
     connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
+}
+
+void Electronic_load_app::on_Settings_clicked()
+{
+    qApp->installTranslator(&translator);
 }
