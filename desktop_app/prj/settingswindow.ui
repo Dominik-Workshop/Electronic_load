@@ -34,7 +34,7 @@ background-color: rgb(39, 39, 39);</string>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="portOpenButton">
         <property name="styleSheet">
          <string notr="true">color : rgb(255,255,255);
 background-color: rgb(39, 39, 39);</string>

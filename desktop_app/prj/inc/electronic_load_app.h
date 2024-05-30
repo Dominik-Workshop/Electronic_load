@@ -46,6 +46,7 @@ public:
 
 private slots:
     void readData();
+    void connectTheFrickingSlots();
     void updateAvailablePorts();
     void on_setCurrent_editingFinished();
     void on_cutoffVoltage_editingFinished();

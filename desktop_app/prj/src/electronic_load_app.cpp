@@ -12,7 +12,7 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     ui->setupUi(this);
     translator.load(":/polish.qm");
     //this->setWindowTitle("Electronic Load");
-
+    settingsWindow = new SettingsWindow(this, COMPORT);
     // Fill combo box with available ports at startup
     updateAvailablePorts();
 
@@ -21,28 +21,8 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     connect(portCheckTimer, &QTimer::timeout, this, &Electronic_load_app::updateAvailablePorts);
     portCheckTimer->start(1000); // Check every second
 
-    /*
-    foreach (auto &port, QSerialPortInfo::availablePorts()) {
-        qDebug() << port.portName();
-        ui->cmbPorts->addItem(port.portName());
-    }
-
-    COMPORT = new QSerialPort();
-    COMPORT->setPortName("ttyUSB0");
-    COMPORT->setBaudRate(QSerialPort::BaudRate::Baud9600);
-    COMPORT->setParity(QSerialPort::Parity::NoParity);
-    COMPORT->setDataBits(QSerialPort::DataBits::Data8);
-    COMPORT->setStopBits(QSerialPort::StopBits::OneStop);
-    COMPORT->setFlowControl(QSerialPort::FlowControl::NoFlowControl);
-    COMPORT->open(QIODevice::ReadWrite);
-
-    if(COMPORT->isOpen())
-        qDebug() << "Serial connnected";
-    else{
-        qDebug() << "Serial failed to connnect";
-        qDebug() << COMPORT->error();
-    }*/
-
+    //connect (settingsWindow, SIGNAL (dataReadyToRead()), this, SLOT(connectTheFrickingSlots()));
+    connect(settingsWindow, &SettingsWindow::dataReadyToRead, this, &Electronic_load_app::connectTheFrickingSlots, Qt::AutoConnection);
     //connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
 
     ui->cmbSaveAs->addItem("jpg");
@@ -70,6 +50,10 @@ Electronic_load_app::~Electronic_load_app(){
         COMPORT->close();
         delete COMPORT;
     }
+}
+void Electronic_load_app::connectTheFrickingSlots(){
+    qDebug() << "connextsa?";
+    connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
 }
 
 
@@ -106,7 +90,7 @@ void Electronic_load_app::readData(){
         }
         if(Is_data_received){
 
-            qDebug() << "data from serial: " << Data_From_Serial_Port;
+            //qDebug() << "data from serial: " << Data_From_Serial_Port;
             processReceivedData();
             measurements.calculateCapacity();
             ui->capacity_mAh->setText(QString::number(measurements.mAhCapacity, 'f', 3));
@@ -163,7 +147,6 @@ uint32_t calculateCRC(const uint8_t* data, size_t length) {
       crc = (crc >> 1) ^ (-(int)(crc & 1) & polynomial);
     }
   }
-
   return crc ^ 0xFFFFFFFF;
 }
 
@@ -172,45 +155,56 @@ uint32_t calculateCRC(const uint8_t* data, size_t length) {
  *
  */
 void Electronic_load_app::processReceivedData(){
-    QStringList parts = Data_From_Serial_Port.split(";");
-    QStringList parts2 = Data_From_Serial_Port.split(";");
+    QStringList parts = QString(Data_From_Serial_Port).split(";");
 
-    // Extract the received CRC checksum from the last part of the received data
-    uint32_t receivedCRC = parts2.back().toUInt();
+    if (parts.size() == 9 && (parts[0] == 'm')) {
+        bool ok;
+        qint16 receivedVoltage = parts[1].toInt(&ok);
+        qint16 receivedCurrent = parts[2].toInt(&ok);
+        qint16 receivedTemperature = parts[3].toInt(&ok);
+        qint16 receivedCutoffVoltage = parts[4].toInt(&ok);
+        qint16 receivedDischargeCurrent = parts[5].toInt(&ok);
+        qint16 receivedIsLoadOn = parts[6].toInt(&ok);
+        qint32 receivedTime = parts[7].toInt(&ok);
+        uint32_t receivedCRC = parts[8].toUInt(&ok);
 
-    // Remove the CRC part from the received data
-    parts2.removeLast();
+        if (!ok) {
+            qDebug() << "Error converting received data";
+        } else {
+            //qDebug() << "Received CRC (Decimal):" << receivedCRC;
 
-    // Remove the 'm' character from the beginning of the data
-    QByteArray data = parts2.join(";").toUtf8();
-    data.remove(0, 1);
+            // Prepare the data for CRC calculation
+            uint8_t message[6 * sizeof(qint16) + sizeof(qint32)];
+            size_t index = 0;
+            memcpy(&message[index], &receivedVoltage, sizeof(qint16));
+            index += sizeof(qint16);
+            memcpy(&message[index], &receivedCurrent, sizeof(qint16));
+            index += sizeof(qint16);
+            memcpy(&message[index], &receivedTemperature, sizeof(qint16));
+            index += sizeof(quint16);
+            memcpy(&message[index], &receivedCutoffVoltage, sizeof(qint16));
+            index += sizeof(qint16);
+            memcpy(&message[index], &receivedDischargeCurrent, sizeof(qint16));
+            index += sizeof(qint16);
+            memcpy(&message[index], &receivedIsLoadOn, sizeof(qint16));
+            index += sizeof(qint16);
+            memcpy(&message[index], &receivedTime, sizeof(qint32));
 
-    // Ensure there are no leading semicolons after removing 'm'
-    if (data.startsWith(';')) {
-        data.remove(0, 1);
-    }
+            // Calculate CRC checksum over the received voltage
+            uint32_t calculatedCRC = calculateCRC(message, sizeof(message));
 
-    // Print the received data and extracted CRC checksum for debugging
-    //qDebug() << "Received data: " << data;
-    //qDebug() << "Received CRC: " << receivedCRC;
+            //qDebug() << "Calculated CRC (Decimal):" << calculatedCRC;
 
-    // Calculate CRC checksum over the received data
-    //qDebug() << (data.constData());
-    uint32_t calculatedCRC = calculateCRC(reinterpret_cast<const uint8_t*>(data.constData()), data.size());
-
-    // Print the calculated CRC for debugging
-    //qDebug() << "Calculated CRC: " << calculatedCRC;
-
-    // Compare received CRC with calculated CRC
-    if (receivedCRC == calculatedCRC) {
-        qDebug() << "CRC checksum matches. Data integrity verified.";
-        // Now you can proceed with processing the received data
+            // Compare received CRC with calculated CRC
+            if (receivedCRC == calculatedCRC) {
+                qDebug() << "CRC Matched!";
+            } else {
+                qDebug() << "!!!!!!!CRC Mismatch!";
+            }
+        }
     } else {
-        qDebug() << "CRC checksum does not match. Data may be corrupted.";
+        qDebug() << "Invalid data format received";
     }
-
-
-
 
     if(parts[Command] == 'm'){
         if (parts.size() != 9) {

@@ -105,6 +105,77 @@ int transientResponseMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& 
 	return 0;
 }
 
+uint32_t calculateCRC(const uint8_t* data, size_t length) {
+  const uint32_t polynomial = 0xEDB88320;
+  uint32_t crc = 0xFFFFFFFF;
+
+  for (size_t i = 0; i < length; ++i) {
+    crc ^= data[i];
+    for (size_t j = 0; j < 8; ++j) {
+      crc = (crc >> 1) ^ (-(int)(crc & 1) & polynomial);
+    }
+  }
+
+  return crc ^ 0xFFFFFFFF;
+}
+
+/**
+ * @brief Sends load statistics including voltage, current, temperature,
+ * cutoff voltage, discharge current, load status, and total operating time
+ * over the serial communication.
+ *
+ * @param measurements Reference to the Measurements object containing load measurements.
+ * @param battery Reference to the Battery object containing battery-related information.
+ * @param isLoadOnBool Boolean indicating whether the load is turned on.
+ */
+void sendLoadStatisticsOverSerial(Measurements& measurements, Battery& battery, bool isLoadOnBool){
+	int16_t voltage_mV = static_cast<int16_t>(1000 * measurements.voltage);
+	int16_t current_mA = static_cast<int16_t>(1000 * measurements.current);
+	int16_t temperature = measurements.temperature;
+	int16_t cutoffVoltage_mV = static_cast<int16_t>(1000 * battery.cutoffVoltage.value);
+	int16_t dischargeCurrent_mA = static_cast<int16_t>(1000 * battery.dischargeCurrent.value);
+	int16_t isLoadOn = static_cast<int16_t>(isLoadOnBool);
+	long totalSeconds = measurements.timer.getTotalSeconds();
+
+	if(!isLoadOn)
+		current_mA = 0;
+
+	uint8_t message[6 * sizeof(int16_t) + sizeof(long)];
+	size_t index = 0;
+	memcpy(&message[index], &voltage_mV, sizeof(int16_t));
+	index += sizeof(int16_t);
+	memcpy(&message[index], &current_mA, sizeof(int16_t));
+	index += sizeof(int16_t);
+	memcpy(&message[index], &temperature, sizeof(int16_t));
+	index += sizeof(int16_t);
+	memcpy(&message[index], &cutoffVoltage_mV, sizeof(int16_t));
+	index += sizeof(int16_t);
+	memcpy(&message[index], &dischargeCurrent_mA, sizeof(int16_t));
+	index += sizeof(int16_t);
+	memcpy(&message[index], &isLoadOn, sizeof(int16_t));
+	index += sizeof(int16_t);
+	memcpy(&message[index], &totalSeconds, sizeof(long));
+
+	uint32_t crc = calculateCRC(message, sizeof(message));
+
+	Serial.print("m;");
+	Serial.print(voltage_mV);
+	Serial.print(";");
+	Serial.print(current_mA);
+	Serial.print(";");
+	Serial.print(temperature);
+	Serial.print(";");
+	Serial.print(cutoffVoltage_mV);
+	Serial.print(";");
+	Serial.print(dischargeCurrent_mA);
+	Serial.print(";");
+	Serial.print(isLoadOn);
+	Serial.print(";");
+	Serial.print(totalSeconds);
+	Serial.print(";");
+	Serial.println(crc);
+}
+
 int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& keypad, Encoder& encoder, Measurements& measurements, Controls& controls, Battery& battery){
 	float prevSetCurrent = battery.dischargeCurrent.value;
 	float prevCapacity = 0;
@@ -165,14 +236,21 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 				lcd.setCursor(14, 2);
 				battery.cutoffVoltage.display(lcd);
 			}
+			if(data == 'r'){
+				measurements.timer.stop();
+				measurements.timer.reset();
+				battery.capacity = 0;
+				prevCapacity = 0;
+				prevTime = 0;
+				if(controls.isLoadOn())
+					measurements.timer.start();
+			}
 		}
 
 		measurements.update();
-		Serial.print(measurements.voltage, 3);
-		Serial.print(";");
-		Serial.print(measurements.temperature);
-		Serial.print(";");
-		Serial.println(measurements.current, 3);
+
+		sendLoadStatisticsOverSerial(measurements, battery, controls.isLoadOn());
+
 		measurements.displayMeasurements(lcd, controls.isLoadOn());
 		controls.fanControll();
 		lcd.setCursor(7, 3);
@@ -213,11 +291,9 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 				userInput.time = millis();
 				while(userInput.time + 5000 > millis()){  //exit after 5s of inactivity
 					measurements.update();
-					Serial.print(measurements.voltage, 3);
-					Serial.print(";");
-					Serial.print(measurements.temperature);
-					Serial.print(";");
-					Serial.println(measurements.current, 3);
+
+					sendLoadStatisticsOverSerial(measurements, battery, controls.isLoadOn());
+					
 					measurements.displayMeasurements(lcd, controls.isLoadOn());
 					controls.fanControll();
 					lcd.setCursor(7, 3);
