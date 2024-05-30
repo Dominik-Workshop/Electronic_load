@@ -3,6 +3,7 @@
 #include <QDoubleValidator>
 #include <QVector>
 #include <QFileDialog>
+#include <QMessageBox>
 
 Electronic_load_app::Electronic_load_app(QWidget *parent)
     : QMainWindow(parent)
@@ -259,8 +260,12 @@ void Electronic_load_app::on_capacity_mAh_editingFinished()
     measurements.mAhCapacity = ui->capacity_mAh->text().toInt();
 }
 
-void Electronic_load_app::on_portOpenButton_clicked()
-{
+void Electronic_load_app::on_portOpenButton_clicked(){
+    if(COMPORT != nullptr){
+        COMPORT->close();
+        delete COMPORT;
+    }
+
     COMPORT = new QSerialPort();
     COMPORT->setPortName(ui->cmbPorts->currentText());
     COMPORT->setBaudRate(QSerialPort::BaudRate::Baud9600);
@@ -270,12 +275,24 @@ void Electronic_load_app::on_portOpenButton_clicked()
     COMPORT->setFlowControl(QSerialPort::FlowControl::NoFlowControl);
     COMPORT->open(QIODevice::ReadWrite);
 
-    if(COMPORT->isOpen())
-        qDebug() << "Serial connnected";
-    else{
-        qDebug() << "Serial failed to connnect";
+
+    if (COMPORT->isOpen()) {
+        QMessageBox msgBox;
+        msgBox.setText("Port opened successfully");
+        msgBox.setStyleSheet("QLabel{color: green;}"); // Change text color to green
+        msgBox.setWindowTitle("Result");
+        msgBox.exec();
+        qDebug() << "Serial connected";
+    } else {
+        QMessageBox msgBox;
+        msgBox.setText("Unable to open specified port");
+        msgBox.setStyleSheet("QLabel{color: red;}"); // Change text color to red
+        msgBox.setWindowTitle("Port error");
+        msgBox.exec();
+        qDebug() << "Serial failed to connect";
         qDebug() << COMPORT->error();
     }
+
 
     connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
 }

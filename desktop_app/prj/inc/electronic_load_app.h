@@ -59,7 +59,7 @@ private slots:
 
 private:
     Ui::Electronic_load_app *ui;
-    QSerialPort* COMPORT;
+    QSerialPort* COMPORT = nullptr;
     QString Data_From_Serial_Port;
     bool Is_data_received = false;
     QString prevCurrent;
