@@ -231,12 +231,12 @@ void Electronic_load_app::processReceivedData(){
         ui->measuredCurrent->setText(parts[MeasuredCurrent]);
 
         if(parts[IsLoadOn]=="1"){
-            ui->load_on_offfButton->setText("Load ON");
+            ui->load_on_offfButton->setText(QObject::tr("Load ON"));
             ui->load_on_offfButton->setStyleSheet("* { background-color: rgb(0,255,0) }");
         }
         else {
             ui->load_on_offfButton->setStyleSheet("* { background-color: rgb(255,0,0) }");
-            ui->load_on_offfButton->setText("Load OFF");
+            ui->load_on_offfButton->setText(QObject::tr("Load OFF"));
         }
     }
     if(measurements.mAhNominalCapacity != 0){

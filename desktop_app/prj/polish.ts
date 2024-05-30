@@ -26,7 +26,8 @@
     <message>
         <location filename="electronic_load_app.ui" line="212"/>
         <source>Load OFF</source>
-        <translation>Obciążenie OFF</translation>
+        <translation>Obciążenie
+wyłączone</translation>
     </message>
     <message>
         <location filename="electronic_load_app.ui" line="239"/>
@@ -97,45 +98,63 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="268"/>
+        <location filename="src/electronic_load_app.cpp" line="269"/>
         <source>Save file</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisz plik</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="src/electronic_load_app.cpp" line="56"/>
+        <location filename="src/electronic_load_app.cpp" line="348"/>
+        <location filename="src/electronic_load_app.cpp" line="356"/>
         <source>Time [s]</source>
         <translation>Czas [s]</translation>
     </message>
     <message>
         <location filename="src/electronic_load_app.cpp" line="57"/>
+        <location filename="src/electronic_load_app.cpp" line="349"/>
+        <location filename="src/electronic_load_app.cpp" line="357"/>
         <source>Voltage [V]</source>
         <translation>Napięcie [V]</translation>
     </message>
     <message>
         <location filename="src/electronic_load_app.cpp" line="58"/>
+        <location filename="src/electronic_load_app.cpp" line="350"/>
+        <location filename="src/electronic_load_app.cpp" line="358"/>
         <source>Current [A]</source>
         <translation>Prąd [A]</translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="135"/>
+        <location filename="src/electronic_load_app.cpp" line="136"/>
         <source>Voltage</source>
         <translation>Napięcie</translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="139"/>
+        <location filename="src/electronic_load_app.cpp" line="140"/>
         <source>Current</source>
         <translation>Prąd</translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="329"/>
+        <location filename="src/electronic_load_app.cpp" line="234"/>
+        <source>Load ON</source>
+        <translation>Obciążenie
+włączone</translation>
+    </message>
+    <message>
+        <location filename="src/electronic_load_app.cpp" line="239"/>
+        <source>Load OFF</source>
+        <translation>Obciążenie
+wyłączone</translation>
+    </message>
+    <message>
+        <location filename="src/electronic_load_app.cpp" line="330"/>
         <source>Unable to open specified port</source>
         <translation>Nie udało się otworzyć wybranego portu</translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="331"/>
+        <location filename="src/electronic_load_app.cpp" line="332"/>
         <source>Port error</source>
         <translation>Błąd portu</translation>
     </message>
