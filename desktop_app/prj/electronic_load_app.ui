@@ -102,6 +102,25 @@ background-color: rgb(39, 39, 39);</string>
          </widget>
         </item>
         <item>
+         <widget class="QComboBox" name="cmbLanguage">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color : rgb(255,255,255);
+background-color: rgb(39, 39, 39);</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>

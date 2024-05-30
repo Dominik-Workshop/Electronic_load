@@ -60,6 +60,8 @@ private slots:
 
     void on_Settings_clicked();
 
+    void on_cmbLanguage_currentIndexChanged(int index);
+
 private:
     Ui::Electronic_load_app *ui;
     QSerialPort* COMPORT = nullptr;

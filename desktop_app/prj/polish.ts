@@ -6,7 +6,7 @@
     <message>
         <location filename="electronic_load_app.ui" line="20"/>
         <source>Electronic_load_app</source>
-        <translation type="unfinished"></translation>
+        <translation>Elektroniczne obciążenie</translation>
     </message>
     <message>
         <location filename="electronic_load_app.ui" line="59"/>
@@ -42,7 +42,7 @@
         <location filename="electronic_load_app.ui" line="339"/>
         <location filename="electronic_load_app.ui" line="598"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;A&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="electronic_load_app.ui" line="364"/>
@@ -53,7 +53,7 @@
         <location filename="electronic_load_app.ui" line="419"/>
         <location filename="electronic_load_app.ui" line="569"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;V&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="electronic_load_app.ui" line="447"/>
@@ -63,23 +63,23 @@
     <message>
         <location filename="electronic_load_app.ui" line="672"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;mAh&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="electronic_load_app.ui" line="703"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wh&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="electronic_load_app.ui" line="731"/>
         <source>Reset measurement</source>
-        <translation type="unfinished">Resetuj pomiar</translation>
+        <translation>Resetuj pomiar</translation>
     </message>
     <message>
         <location filename="electronic_load_app.ui" line="816"/>
         <source>Nominal 
 capacity</source>
-        <translation type="unfinished">Pojemność 
+        <translation>Pojemność 
 nominalna</translation>
     </message>
     <message>

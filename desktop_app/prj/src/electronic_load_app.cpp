@@ -11,6 +11,8 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
 {
     ui->setupUi(this);
     translator.load(":/polish.qm");
+    //this->setWindowTitle("Electronic Load");
+
     // Fill combo box with available ports at startup
     updateAvailablePorts();
 
@@ -45,6 +47,8 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
 
     ui->cmbSaveAs->addItem("jpg");
     ui->cmbSaveAs->addItem("csv");
+    ui->cmbLanguage->addItem("ENG");
+    ui->cmbLanguage->addItem("PL");
 
     ui->capacity_mAh->setText(QString::number(measurements.mAhCapacity, 'f', 3));
     ui->capacity_Wh->setText(QString::number(measurements.WhCapacity, 'f', 3));
@@ -73,7 +77,6 @@ void Electronic_load_app::changeEvent(QEvent *event){
     if(event->type() == QEvent::LanguageChange){
         ui->retranslateUi(this);
     }
-    //this->setWindowTitle("multilang widget");
     QWidget::changeEvent(event);
 }
 
@@ -320,7 +323,7 @@ void Electronic_load_app::on_portOpenButton_clicked(){
         msgBox.setText("Port opened successfully");
         msgBox.setStyleSheet("QLabel{color: green;}"); // Change text color to green
         msgBox.setWindowTitle("Result");
-        msgBox.exec();
+        //msgBox.exec();
     } else {
         QMessageBox msgBox;
         msgBox.setText("Unable to open specified port");
@@ -334,5 +337,15 @@ void Electronic_load_app::on_portOpenButton_clicked(){
 
 void Electronic_load_app::on_Settings_clicked()
 {
-    qApp->installTranslator(&translator);
+
+}
+
+void Electronic_load_app::on_cmbLanguage_currentIndexChanged(int index)
+{
+    if(index == 0){
+        qApp->removeTranslator(&translator);
+    }
+    else {
+        qApp->installTranslator(&translator);
+    }
 }
