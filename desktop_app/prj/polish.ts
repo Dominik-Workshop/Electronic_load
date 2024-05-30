@@ -19,64 +19,64 @@
         <translation>Połącz</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="135"/>
+        <location filename="electronic_load_app.ui" line="154"/>
         <source>Save as</source>
         <translation>Zapisz jako</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="193"/>
+        <location filename="electronic_load_app.ui" line="212"/>
         <source>Load OFF</source>
         <translation>Obciążenie OFF</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="220"/>
+        <location filename="electronic_load_app.ui" line="239"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Set parameters&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Nastawy</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="281"/>
+        <location filename="electronic_load_app.ui" line="300"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Discharge current&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Prąd rozładowania</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="339"/>
-        <location filename="electronic_load_app.ui" line="598"/>
+        <location filename="electronic_load_app.ui" line="358"/>
+        <location filename="electronic_load_app.ui" line="617"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;A&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="364"/>
+        <location filename="electronic_load_app.ui" line="383"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Cut-off voltage&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Napięcie odcięcia</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="419"/>
-        <location filename="electronic_load_app.ui" line="569"/>
+        <location filename="electronic_load_app.ui" line="438"/>
+        <location filename="electronic_load_app.ui" line="588"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;V&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="447"/>
+        <location filename="electronic_load_app.ui" line="466"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Measurements&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Pomiary</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="672"/>
+        <location filename="electronic_load_app.ui" line="691"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;mAh&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="703"/>
+        <location filename="electronic_load_app.ui" line="722"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wh&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="731"/>
+        <location filename="electronic_load_app.ui" line="750"/>
         <source>Reset measurement</source>
         <translation>Resetuj pomiar</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="816"/>
+        <location filename="electronic_load_app.ui" line="835"/>
         <source>Nominal 
 capacity</source>
         <translation>Pojemność 
@@ -92,14 +92,52 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Pojemność nominalna</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="853"/>
+        <location filename="electronic_load_app.ui" line="872"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;mAh&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="265"/>
+        <location filename="src/electronic_load_app.cpp" line="268"/>
         <source>Save file</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="src/electronic_load_app.cpp" line="56"/>
+        <source>Time [s]</source>
+        <translation>Czas [s]</translation>
+    </message>
+    <message>
+        <location filename="src/electronic_load_app.cpp" line="57"/>
+        <source>Voltage [V]</source>
+        <translation>Napięcie [V]</translation>
+    </message>
+    <message>
+        <location filename="src/electronic_load_app.cpp" line="58"/>
+        <source>Current [A]</source>
+        <translation>Prąd [A]</translation>
+    </message>
+    <message>
+        <location filename="src/electronic_load_app.cpp" line="135"/>
+        <source>Voltage</source>
+        <translation>Napięcie</translation>
+    </message>
+    <message>
+        <location filename="src/electronic_load_app.cpp" line="139"/>
+        <source>Current</source>
+        <translation>Prąd</translation>
+    </message>
+    <message>
+        <location filename="src/electronic_load_app.cpp" line="329"/>
+        <source>Unable to open specified port</source>
+        <translation>Nie udało się otworzyć wybranego portu</translation>
+    </message>
+    <message>
+        <location filename="src/electronic_load_app.cpp" line="331"/>
+        <source>Port error</source>
+        <translation>Błąd portu</translation>
     </message>
 </context>
 </TS>

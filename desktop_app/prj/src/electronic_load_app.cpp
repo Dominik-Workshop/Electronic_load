@@ -53,11 +53,11 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     ui->capacity_mAh->setText(QString::number(measurements.mAhCapacity, 'f', 3));
     ui->capacity_Wh->setText(QString::number(measurements.WhCapacity, 'f', 3));
 
-    ui->VoltagePlot->xAxis->setLabel("Time [s]");
-    ui->VoltagePlot->yAxis->setLabel("Voltage [V]");
-    ui->VoltagePlot->yAxis2->setLabel("Current [A]");
+    ui->VoltagePlot->xAxis->setLabel(QObject::tr("Time [s]"));
+    ui->VoltagePlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
+    ui->VoltagePlot->yAxis2->setLabel(QObject::tr("Current [A]"));
     ui->VoltagePlot->yAxis2->setVisible(true);
-    ui->VoltagePlot->legend->setVisible(true);
+
     //ui->VoltagePlot->setInteraction(QCP::iRangeDrag, true);
     //ui->VoltagePlot->setInteraction(QCP::iRangeZoom, true);
     timer.start();
@@ -129,14 +129,15 @@ void Electronic_load_app::readData(){
 
             // Clear existing graph and update with new data
             ui->VoltagePlot->clearGraphs();
+            ui->VoltagePlot->legend->setVisible(true);
             ui->VoltagePlot->addGraph(ui->VoltagePlot->xAxis, ui->VoltagePlot->yAxis);
             ui->VoltagePlot->graph(0)->setPen(QPen(QColor(255, 100, 0)));
             ui->VoltagePlot->graph(0)->setData(x, y);
-            ui->VoltagePlot->graph(0)->setName("Voltage");
+            ui->VoltagePlot->graph(0)->setName(QObject::tr("Voltage"));
             ui->VoltagePlot->addGraph(ui->VoltagePlot->xAxis2, ui->VoltagePlot->yAxis2);
             ui->VoltagePlot->graph(1)->setPen(QPen(QColor(0, 100, 255)));
             ui->VoltagePlot->graph(1)->setData(x2, y2);
-            ui->VoltagePlot->graph(1)->setName("Current");
+            ui->VoltagePlot->graph(1)->setName(QObject::tr("Current"));
 
             ui->VoltagePlot->rescaleAxes();
             ui->VoltagePlot->replot();
@@ -326,9 +327,9 @@ void Electronic_load_app::on_portOpenButton_clicked(){
         //msgBox.exec();
     } else {
         QMessageBox msgBox;
-        msgBox.setText("Unable to open specified port");
+        msgBox.setText(QObject::tr("Unable to open specified port"));
         msgBox.setStyleSheet("QLabel{color: red;}"); // Change text color to red
-        msgBox.setWindowTitle("Port error");
+        msgBox.setWindowTitle(QObject::tr("Port error"));
         msgBox.exec();
     }
 
@@ -344,8 +345,18 @@ void Electronic_load_app::on_cmbLanguage_currentIndexChanged(int index)
 {
     if(index == 0){
         qApp->removeTranslator(&translator);
+        ui->VoltagePlot->xAxis->setLabel(QObject::tr("Time [s]"));
+        ui->VoltagePlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
+        ui->VoltagePlot->yAxis2->setLabel(QObject::tr("Current [A]"));
+        ui->VoltagePlot->replot();
+        ui->VoltagePlot->update();
     }
     else {
         qApp->installTranslator(&translator);
+        ui->VoltagePlot->xAxis->setLabel(QObject::tr("Time [s]"));
+        ui->VoltagePlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
+        ui->VoltagePlot->yAxis2->setLabel(QObject::tr("Current [A]"));
+        ui->VoltagePlot->replot();
+        ui->VoltagePlot->update();
     }
 }

@@ -64,7 +64,7 @@ background-color: rgb(39, 39, 39);</string>
          <widget class="QComboBox" name="cmbPorts">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>120</width>
             <height>40</height>
            </size>
           </property>
