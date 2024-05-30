@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QString>
 #include <QtSerialPort/QSerialPort>
+#include <QtSerialPort/QSerialPortInfo>
 #include <QElapsedTimer>
 
 
@@ -53,6 +54,8 @@ private slots:
     void on_NominalCapacity_editingFinished();
 
     void on_capacity_mAh_editingFinished();
+
+    void on_portOpenButton_clicked();
 
 private:
     Ui::Electronic_load_app *ui;

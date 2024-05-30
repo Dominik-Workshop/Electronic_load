@@ -10,6 +10,11 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
 {
     ui->setupUi(this);
 
+    foreach (auto &port, QSerialPortInfo::availablePorts()) {
+        qDebug() << port.portName();
+        ui->cmbPorts->addItem(port.portName());
+    }
+    /*
     COMPORT = new QSerialPort();
     COMPORT->setPortName("ttyUSB0");
     COMPORT->setBaudRate(QSerialPort::BaudRate::Baud9600);
@@ -24,9 +29,9 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     else{
         qDebug() << "Serial failed to connnect";
         qDebug() << COMPORT->error();
-    }
+    }*/
 
-    connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
+    //connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
 
     ui->capacity_mAh->setText(QString::number(measurements.mAhCapacity, 'f', 3));
     ui->capacity_Wh->setText(QString::number(measurements.WhCapacity, 'f', 1));
@@ -252,4 +257,25 @@ void Electronic_load_app::on_NominalCapacity_editingFinished(){
 void Electronic_load_app::on_capacity_mAh_editingFinished()
 {
     measurements.mAhCapacity = ui->capacity_mAh->text().toInt();
+}
+
+void Electronic_load_app::on_portOpenButton_clicked()
+{
+    COMPORT = new QSerialPort();
+    COMPORT->setPortName(ui->cmbPorts->currentText());
+    COMPORT->setBaudRate(QSerialPort::BaudRate::Baud9600);
+    COMPORT->setParity(QSerialPort::Parity::NoParity);
+    COMPORT->setDataBits(QSerialPort::DataBits::Data8);
+    COMPORT->setStopBits(QSerialPort::StopBits::OneStop);
+    COMPORT->setFlowControl(QSerialPort::FlowControl::NoFlowControl);
+    COMPORT->open(QIODevice::ReadWrite);
+
+    if(COMPORT->isOpen())
+        qDebug() << "Serial connnected";
+    else{
+        qDebug() << "Serial failed to connnect";
+        qDebug() << COMPORT->error();
+    }
+
+    connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
 }
