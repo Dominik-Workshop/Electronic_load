@@ -11,11 +11,20 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // Fill combo box with available ports at startup
+    updateAvailablePorts();
+
+    // Set up timer to periodically check for available ports
+    portCheckTimer = new QTimer(this);
+    connect(portCheckTimer, &QTimer::timeout, this, &Electronic_load_app::updateAvailablePorts);
+    portCheckTimer->start(1000); // Check every second
+
+    /*
     foreach (auto &port, QSerialPortInfo::availablePorts()) {
         qDebug() << port.portName();
         ui->cmbPorts->addItem(port.portName());
     }
-    /*
+
     COMPORT = new QSerialPort();
     COMPORT->setPortName("ttyUSB0");
     COMPORT->setBaudRate(QSerialPort::BaudRate::Baud9600);
@@ -34,8 +43,11 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
 
     //connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
 
+    ui->cmbSaveAs->addItem("jpg");
+    ui->cmbSaveAs->addItem("csv");
+
     ui->capacity_mAh->setText(QString::number(measurements.mAhCapacity, 'f', 3));
-    ui->capacity_Wh->setText(QString::number(measurements.WhCapacity, 'f', 1));
+    ui->capacity_Wh->setText(QString::number(measurements.WhCapacity, 'f', 3));
 
     ui->VoltagePlot->xAxis->setLabel("Time [s]");
     ui->VoltagePlot->yAxis->setLabel("Voltage [V]");
@@ -50,6 +62,24 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
 
 Electronic_load_app::~Electronic_load_app(){
     delete ui;
+    if(COMPORT != nullptr){
+        COMPORT->close();
+        delete COMPORT;
+    }
+}
+
+void Electronic_load_app::updateAvailablePorts()
+{
+    QStringList availablePorts;
+    foreach (const QSerialPortInfo &port, QSerialPortInfo::availablePorts()) {
+        availablePorts << port.portName();
+    }
+
+    if (availablePorts != currentPorts) {
+        currentPorts = availablePorts;
+        ui->cmbPorts->clear();
+        ui->cmbPorts->addItems(currentPorts);
+    }
 }
 
 /**
@@ -68,6 +98,7 @@ void Electronic_load_app::readData(){
             processReceivedData();
             measurements.calculateCapacity();
             ui->capacity_mAh->setText(QString::number(measurements.mAhCapacity, 'f', 3));
+            ui->capacity_Wh->setText(QString::number(measurements.WhCapacity, 'f', 3));
             Data_From_Serial_Port = "";
             Is_data_received = false;
 
@@ -275,24 +306,19 @@ void Electronic_load_app::on_portOpenButton_clicked(){
     COMPORT->setFlowControl(QSerialPort::FlowControl::NoFlowControl);
     COMPORT->open(QIODevice::ReadWrite);
 
-
     if (COMPORT->isOpen()) {
         QMessageBox msgBox;
         msgBox.setText("Port opened successfully");
         msgBox.setStyleSheet("QLabel{color: green;}"); // Change text color to green
         msgBox.setWindowTitle("Result");
         msgBox.exec();
-        qDebug() << "Serial connected";
     } else {
         QMessageBox msgBox;
         msgBox.setText("Unable to open specified port");
         msgBox.setStyleSheet("QLabel{color: red;}"); // Change text color to red
         msgBox.setWindowTitle("Port error");
         msgBox.exec();
-        qDebug() << "Serial failed to connect";
-        qDebug() << COMPORT->error();
     }
-
 
     connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
 }

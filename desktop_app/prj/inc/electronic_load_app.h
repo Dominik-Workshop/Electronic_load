@@ -8,7 +8,7 @@
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 #include <QElapsedTimer>
-
+#include <QTimer>
 
 #include "measurements.h"
 
@@ -44,7 +44,7 @@ public:
 
 private slots:
     void readData();
-
+    void updateAvailablePorts();
     void on_setCurrent_editingFinished();
     void on_cutoffVoltage_editingFinished();
     void on_load_on_offfButton_clicked();
@@ -65,6 +65,8 @@ private:
     QString prevCurrent;
     QString prevCutoff;
     QElapsedTimer timer;
+    QTimer *portCheckTimer;
+    QStringList currentPorts;
 
     Measurements measurements;
 };

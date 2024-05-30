@@ -65,8 +65,22 @@ void Measurements::resetMeasurements(){
     mAhCapacity = 0;
     WhCapacity = 0;
 }
-
+/*
 void Measurements::calculateCapacity(){
     if(numberOfReadings > 2)
         mAhCapacity += (1000*currentReadings[numberOfReadings-1] * (time[numberOfReadings-1] - time[numberOfReadings-2]) / 3600);
+}*/
+
+void Measurements::calculateCapacity() {
+    if (numberOfReadings > 1) {
+        float deltaTime = (time[numberOfReadings-1] - time[numberOfReadings-2]) / 3600.0; // Time difference in hours
+        float averageCurrent = (currentReadings[numberOfReadings-1] + currentReadings[numberOfReadings-2]) / 2.0; // Average current
+        float averageVoltage = (voltageReadings[numberOfReadings-1] + voltageReadings[numberOfReadings-2]) / 2.0; // Average voltage
+
+        // mAh capacity
+        mAhCapacity += 1000 * averageCurrent * deltaTime; // Current in mA
+
+        // Wh capacity
+        WhCapacity += averageVoltage * averageCurrent * deltaTime; // Energy in Wh
+    }
 }
