@@ -220,7 +220,7 @@ void Electronic_load_app::processReceivedData(){
             prevCutoff = QString(parts[SetCutofffVoltage]);
         }
 
-        measurements.addReading(parts[MeasuredVoltage].toFloat(), parts[MeasuredCurrent].toFloat(), timer.elapsed()/1000.0, parts[MeasuredTemperature].toInt());
+        measurements.addReading(parts[MeasuredVoltage].toFloat()/1000, parts[MeasuredCurrent].toFloat()/1000, timer.elapsed()/1000.0, parts[MeasuredTemperature].toInt());
         ui->measuredVoltage->setText(parts[MeasuredVoltage]);
         ui->measuredCurrent->setText(parts[MeasuredCurrent]);
 

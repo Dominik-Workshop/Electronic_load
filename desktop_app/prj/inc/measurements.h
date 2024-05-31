@@ -1,9 +1,11 @@
 /**
  * @file measurements.h
  * @author Dominik Workshop
- * @brief 
- * @version 1.0
- * @date 2024-04-21
+ * @brief Declaration of the Measurements class and
+ *        the Reading struct for storing and managing measurement data.
+ *
+ * @version 1.1
+ * @date 2024-05-31
  * 
  * @copyright Copyright (c) 2024
  * 

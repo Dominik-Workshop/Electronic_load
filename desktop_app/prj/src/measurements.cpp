@@ -1,9 +1,11 @@
 /**
  * @file measurements.cpp
  * @author Dominik Workshop
- * @brief
- * @version 1.0
- * @date 2024-04-21
+ * @brief Implementation of the Measurements class methods
+ *        for storing and managing measurement data.
+ *
+ * @version 1.1
+ * @date 2024-05-31
  *
  * @copyright Copyright (c) 2024
  *
@@ -23,9 +25,12 @@ Measurements::~Measurements(){
 }
 
 /**
- * @brief Adds voltage and current readings to the arrays
- * @param voltage
- * @param current
+ * @brief Adds a new reading to the readings vector
+ *
+ * @param voltage Voltage value in volts
+ * @param current Current value in amperes
+ * @param time Time value in seconds
+ * @param temperature Temperature value in degrees Celsius
  */
 void Measurements::addReading(float voltage, float current, float time, int temperature){
     Reading newReading = {voltage, current, time, temperature};
@@ -33,7 +38,7 @@ void Measurements::addReading(float voltage, float current, float time, int temp
 }
 
 /**
- * @brief Resets the measurement data arrays and capacity values
+ * @brief Resets the measurement data vector and capacity values
  */
 void Measurements::resetMeasurements(){
     readings.clear();
@@ -41,26 +46,23 @@ void Measurements::resetMeasurements(){
     mAhCapacity = 0;
     WhCapacity = 0;
 }
-/*
-void Measurements::calculateCapacity(){
-    if(numberOfReadings > 2)
-        mAhCapacity += (1000*currentReadings[numberOfReadings-1] * (time[numberOfReadings-1] - time[numberOfReadings-2]) / 3600);
-}*/
 
+/**
+ * @brief Calculates the battery capacity based on the readings.
+ */
 void Measurements::calculateCapacity() {
-    int numberOfReadings = readings.size();
-    if (numberOfReadings > 1) {
-        const Reading& lastReading = readings[numberOfReadings - 1];
-        const Reading& secondLastReading = readings[numberOfReadings - 2];
-
-        float deltaTime = (lastReading.time_s - secondLastReading.time_s) / 3600.0; // Time difference in hours
-        float averageCurrent = (lastReading.current_A + secondLastReading.current_A) / 2.0; // Average current
-        float averageVoltage = (lastReading.voltage_V + secondLastReading.voltage_V) / 2.0; // Average voltage
-
-        // mAh capacity
-        mAhCapacity += 1000 * averageCurrent * deltaTime; // Current in mA
-
-        // Wh capacity
-        WhCapacity += averageVoltage * averageCurrent * deltaTime; // Energy in Wh
+    if (readings.size() < 2) {
+        return; // Not enough data to calculate capacity
     }
+
+    int numberOfReadings = readings.size();
+    const Reading& lastReading = readings[numberOfReadings - 1];
+    const Reading& secondLastReading = readings[numberOfReadings - 2];
+
+    float deltaTime = (lastReading.time_s - secondLastReading.time_s) / 3600.0; // Time difference in hours
+    float averageCurrent = (lastReading.current_A + secondLastReading.current_A) / 2.0;
+    float averageVoltage = (lastReading.voltage_V + secondLastReading.voltage_V) / 2.0;
+
+    mAhCapacity += 1000 * averageCurrent * deltaTime;
+    WhCapacity += averageVoltage * averageCurrent * deltaTime;
 }
