@@ -1,0 +1,8 @@
+<map id="QCPStatisticalBox" name="QCPStatisticalBox">
+<area shape="rect" id="node1" title="A plottable representing a single statistical box in a plot." alt="" coords="114,319,253,345"/>
+<area shape="rect" id="node2" href="$class_q_c_p_abstract_plottable1_d.html" title=" " alt="" coords="83,229,283,271"/>
+<area shape="rect" id="node3" href="$class_q_c_p_abstract_plottable.html" title="The abstract base class for all data representing objects in a plot." alt="" coords="5,155,167,181"/>
+<area shape="rect" id="node4" href="$class_q_c_p_layerable.html" title="Base class for all drawable objects." alt="" coords="29,80,143,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="49,5,123,32"/>
+<area shape="rect" id="node6" href="$class_q_c_p_plottable_interface1_d.html" title="Defines an abstract interface for one&#45;dimensional plottables." alt="" coords="191,155,373,181"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="QCPPlottableLegendItem" name="QCPPlottableLegendItem">
+<area shape="rect" id="node1" title="A legend item representing a plottable with an icon and the plottable name." alt="" coords="5,304,189,331"/>
+<area shape="rect" id="node2" href="$class_q_c_p_abstract_legend_item.html" title="The abstract base class for all entries in a QCPLegend." alt="" coords="7,229,187,256"/>
+<area shape="rect" id="node3" href="$class_q_c_p_layout_element.html" title="The abstract base class for all objects that form the layout system." alt="" coords="24,155,171,181"/>
+<area shape="rect" id="node4" href="$class_q_c_p_layerable.html" title="Base class for all drawable objects." alt="" coords="41,80,154,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="60,5,135,32"/>
+</map>

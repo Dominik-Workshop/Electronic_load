@@ -1,0 +1,6 @@
+<map id="QCPItemLine" name="QCPItemLine">
+<area shape="rect" id="node1" title="A line from one point to another." alt="" coords="19,229,125,256"/>
+<area shape="rect" id="node2" href="$class_q_c_p_abstract_item.html" title="The abstract base class for all items in a plot." alt="" coords="5,155,139,181"/>
+<area shape="rect" id="node3" href="$class_q_c_p_layerable.html" title="Base class for all drawable objects." alt="" coords="15,80,129,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="35,5,109,32"/>
+</map>

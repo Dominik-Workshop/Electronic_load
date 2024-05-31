@@ -1,0 +1,23 @@
+<map id="QCPItemCurve" name="QCPItemCurve">
+<area shape="rect" id="node1" title="A curved line from one point to another." alt="" coords="713,720,831,747"/>
+<area shape="rect" id="node2" href="$class_q_c_p_abstract_item.html" title="The abstract base class for all items in a plot." alt="" coords="649,349,783,376"/>
+<area shape="rect" id="node21" href="$class_q_c_p_item_anchor.html" title="An anchor of an item to which positions can be attached to." alt="" coords="766,483,890,509"/>
+<area shape="rect" id="node3" href="$class_q_c_p_layerable.html" title="Base class for all drawable objects." alt="" coords="203,260,317,287"/>
+<area shape="rect" id="node7" href="$class_q_c_p_axis.html" title="Manages a single axis inside a QCustomPlot." alt="" coords="388,824,465,851"/>
+<area shape="rect" id="node9" href="$class_q_c_p_layout_element.html" title="The abstract base class for all objects that form the layout system." alt="" coords="299,349,445,376"/>
+<area shape="rect" id="node13" href="$class_q_c_p_grid.html" title="Responsible for drawing the grid of a QCPAxis." alt="" coords="313,913,389,940"/>
+<area shape="rect" id="node19" href="$class_q_c_p_selection_rect.html" title="Provides rect/rubber&#45;band data selection and range zoom interaction." alt="" coords="5,349,144,376"/>
+<area shape="rect" id="node4" title=" " alt="" coords="127,81,201,108"/>
+<area shape="rect" id="node18" href="$class_q_c_p_layer.html" title="A layer that may contain objects, to control the rendering order." alt="" coords="369,171,455,197"/>
+<area shape="rect" id="node5" href="$class_q_custom_plot.html" title="The central class of the library. This is the QWidget which displays the plot and interacts with the ..." alt="" coords="488,81,595,108"/>
+<area shape="rect" id="node14" href="$class_q_c_p_axis_painter_private.html" title=" " alt="" coords="515,720,685,747"/>
+<area shape="rect" id="node6" title=" " alt="" coords="502,5,581,32"/>
+<area shape="rect" id="node8" href="$class_q_c_p_axis_rect.html" title="Holds multiple axes and arranges them in a rectangular shape." alt="" coords="219,720,325,747"/>
+<area shape="rect" id="node10" href="$class_q_c_p_layout.html" title="The abstract base class for layouts." alt="" coords="381,483,475,509"/>
+<area shape="rect" id="node11" href="$class_q_c_p_layout_inset.html" title="A layout that places child elements aligned to the border or arbitrarily positioned." alt="" coords="377,587,503,613"/>
+<area shape="rect" id="node17" href="$class_q_c_p_layout_grid.html" title="A layout that arranges child elements in a grid." alt="" coords="927,587,1047,613"/>
+<area shape="rect" id="node12" href="$class_q_c_p_range.html" title="Represents the range an axis is encompassing." alt="" coords="349,720,440,747"/>
+<area shape="rect" id="node15" href="$class_q_c_p_line_ending.html" title="Handles the different ending decorations for line&#45;like items." alt="" coords="577,587,697,613"/>
+<area shape="rect" id="node16" href="$class_q_c_p_legend.html" title="Manages a legend inside a QCustomPlot." alt="" coords="1003,720,1099,747"/>
+<area shape="rect" id="node20" href="$class_q_c_p_item_position.html" title="Manages the position of an item." alt="" coords="772,587,903,613"/>
+</map>

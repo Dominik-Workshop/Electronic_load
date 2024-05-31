@@ -1,0 +1,45 @@
+<map id="QCPPolarAxisAngular::wheelEvent" name="QCPPolarAxisAngular::wheelEvent">
+<area shape="rect" id="node1" title=" " alt="" coords="5,271,165,312"/>
+<area shape="rect" id="node2" href="$class_q_custom_plot.html#a2c78c5fd2943c148ab76652801d3f2dc" title=" " alt="" coords="213,55,405,82"/>
+<area shape="rect" id="node3" href="$class_q_c_p_polar_axis_radial.html#ab459aff0627855ea45daa703efd3ba61" title=" " alt="" coords="234,107,385,148"/>
+<area shape="rect" id="node9" href="$class_q_c_p_polar_axis_angular.html#a577c03df0af3a329f0c4a9a3006a7f4b" title=" " alt="" coords="229,172,389,213"/>
+<area shape="rect" id="node10" href="$class_q_c_p_polar_axis_radial.html#ac871f9e1bf06743b61cd34c898ee0121" title=" " alt="" coords="234,237,385,279"/>
+<area shape="rect" id="node11" href="$class_q_c_p_polar_axis_radial.html#a190eb6782b22860a6fad40243b661d59" title=" " alt="" coords="234,303,385,344"/>
+<area shape="rect" id="node12" href="$class_q_custom_plot.html#aa4bfe7d70dbe67e81d877819b75ab9af" title=" " alt="" coords="233,393,386,419"/>
+<area shape="rect" id="node39" href="$class_q_c_p_polar_axis_radial.html#a4448749008af786d15e806c956d022ee" title=" " alt="" coords="234,468,385,509"/>
+<area shape="rect" id="node41" href="$class_q_c_p_polar_axis_angular.html#ae101a2ad79391909da0c0f1f08f9e872" title=" " alt="" coords="229,559,389,600"/>
+<area shape="rect" id="node4" href="$class_q_c_p_vector2_d.html#a2d3ff018ba2aca0ac0d15db35d45a4de" title=" " alt="" coords="492,122,645,149"/>
+<area shape="rect" id="node5" href="$class_q_c_p_polar_axis_angular.html#adb335933e6d4428f75d39cea1c75b6fe" title=" " alt="" coords="489,173,649,215"/>
+<area shape="rect" id="node7" href="$class_q_c_p_vector2_d.html#a10adb5ab031fe94f0b64a3c5aefb552e" title=" " alt="" coords="489,71,648,98"/>
+<area shape="rect" id="node8" href="$class_q_c_p_polar_axis_radial.html#a63f7e3aa1aaad57a1f9bee56fb8209a1" title=" " alt="" coords="493,5,644,47"/>
+<area shape="rect" id="node6" href="$class_q_c_p_range.html#a62326e7cc4316b96df6a60813230e63f" title=" " alt="" coords="765,97,889,123"/>
+<area shape="rect" id="node13" href="$class_q_c_p_layer.html#a4a8e0a86f31462299e7fc8e8158dd2c6" title=" " alt="" coords="463,442,675,469"/>
+<area shape="rect" id="node23" href="$class_q_custom_plot.html#a0a96244e7773b242ef23c32b7bdfb159" title=" " alt="" coords="753,341,901,367"/>
+<area shape="rect" id="node25" href="$class_q_custom_plot.html#a2685341f7242c3882f4cc5e379308d71" title=" " alt="" coords="453,391,684,418"/>
+<area shape="rect" id="node28" href="$class_q_custom_plot.html#a6e6693e2c249f65437382ffd93405e04" title=" " alt="" coords="467,265,671,291"/>
+<area shape="rect" id="node14" href="$class_q_c_p_layer.html#ab831a99c8d30b15ec4533ca341e8813b" title=" " alt="" coords="764,602,889,629"/>
+<area shape="rect" id="node15" href="$class_q_c_p_layerable.html#afdf83ddc6a265cbf4c89fe99d3d93473" title=" " alt="" coords="969,595,1175,636"/>
+<area shape="rect" id="node16" href="$class_q_c_p_layerable.html#acbcfc9ecc75433747b1978a77b1864b3" title=" " alt="" coords="985,493,1159,519"/>
+<area shape="rect" id="node18" href="$class_q_c_p_layerable.html#aecf2f7087482d4b6a78cb2770e5ed12d" title=" " alt="" coords="995,661,1149,687"/>
+<area shape="rect" id="node19" href="$class_q_c_p_layerable.html#ab054e88f15d485defcb95e7376f119e7" title=" " alt="" coords="971,762,1173,789"/>
+<area shape="rect" id="node21" href="$class_q_c_p_painter.html#a64908e6298d5bbd83457dc987cc3a022" title=" " alt="" coords="997,543,1147,570"/>
+<area shape="rect" id="node22" href="$class_q_c_p_painter.html#a8fd6821ee6fecbfa04444c9062912abd" title=" " alt="" coords="1005,711,1139,738"/>
+<area shape="rect" id="node17" href="$class_q_custom_plot.html#a19842409b18f556b256d05e97fffc670" title=" " alt="" coords="1250,442,1422,469"/>
+<area shape="rect" id="node20" href="$class_q_c_p_layer.html#ad1cc2d6b32d2abb33c7f449b964e068c" title=" " alt="" coords="1268,762,1404,789"/>
+<area shape="rect" id="node24" href="$class_q_c_p_layer.html#a37806f662b50b588fb1029a14fc5ef50" title=" " alt="" coords="1007,341,1137,367"/>
+<area shape="rect" id="node26" href="$class_q_custom_plot.html#a943b57596a1adf7f0e75c3b50e407ae6" title=" " alt="" coords="732,493,921,535"/>
+<area shape="rect" id="node27" href="$class_q_c_p_layer.html#a44ae50b011b19f3dd46a38d8e2e2c1b6" title=" " alt="" coords="761,442,892,469"/>
+<area shape="rect" id="node29" href="$class_q_c_p_layout.html#a48ecc9c98ea90b547c3e27a931a8f7bd" title=" " alt="" coords="753,239,900,266"/>
+<area shape="rect" id="node30" href="$class_q_c_p_layout.html#afa73ca7d859f8a3ee5c73c9b353d2a56" title=" " alt="" coords="987,239,1157,266"/>
+<area shape="rect" id="node31" href="$class_q_c_p_layout.html#a39d3e9ef5d9b82ab1885ba1cb9597e56" title=" " alt="" coords="975,290,1169,317"/>
+<area shape="rect" id="node32" href="$class_q_c_p_layout_element.html#a929c2ec62e0e0e1d8418eaa802e2af9b" title=" " alt="" coords="972,138,1172,165"/>
+<area shape="rect" id="node38" href="$class_q_c_p_layout.html#a165c77f6287ac92e8d03017ad913378b" title=" " alt="" coords="977,189,1167,215"/>
+<area shape="rect" id="node33" href="$class_q_c_p_layout_element.html#a005c9f0fe84bc1591a2cf2c46fd477b4" title=" " alt="" coords="1229,101,1443,143"/>
+<area shape="rect" id="node34" href="$namespace_q_c_p.html#a23a2679d3495c444acc26acc61e35b5b" title=" " alt="" coords="1521,79,1681,106"/>
+<area shape="rect" id="node35" href="$class_q_c_p_layout_element.html#a8f450b1f3f992ad576fce2c63d8b79cf" title=" " alt="" coords="1223,167,1449,194"/>
+<area shape="rect" id="node37" href="$namespace_q_c_p.html#afbf6e3084c108f2bb4372107945ee82f" title=" " alt="" coords="1257,218,1415,245"/>
+<area shape="rect" id="node36" href="$class_q_c_p_layout_element.html#af4ac9450aa2d60863bf3a8ea0c940c9d" title=" " alt="" coords="1497,167,1705,194"/>
+<area shape="rect" id="node40" href="$class_q_c_p_polar_axis_radial.html#a9b61a998e6ef4a46dd26bf0fcfd70640" title=" " alt="" coords="493,493,644,535"/>
+<area shape="rect" id="node42" href="$class_q_c_p_polar_axis_angular.html#a227fdd60af1fae73e02262539736e5f2" title=" " alt="" coords="489,559,649,600"/>
+<area shape="rect" id="node43" href="$class_q_c_p_polar_axis_angular.html#a6f9155eec81c0e3f9194a78dda3a70da" title=" " alt="" coords="489,624,649,665"/>
+</map>

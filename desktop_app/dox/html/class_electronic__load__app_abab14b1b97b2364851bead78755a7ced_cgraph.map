@@ -1,0 +1,5 @@
+<map id="Electronic_load_app::processReceivedData" name="Electronic_load_app::processReceivedData">
+<area shape="rect" id="node1" title="Check CRC and process receided data." alt="" coords="5,23,176,65"/>
+<area shape="rect" id="node2" href="$class_measurements.html#abce2374d97873e2c75a6260c4992acd0" title="Adds a new reading to the readings vector." alt="" coords="224,5,428,32"/>
+<area shape="rect" id="node3" href="$electronic__load__app_8cpp.html#ab85da656447bb49095ed9598bb963a44" title="calculateCRC" alt="" coords="272,56,380,83"/>
+</map>
