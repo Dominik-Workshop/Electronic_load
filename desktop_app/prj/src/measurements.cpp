@@ -16,9 +16,9 @@
 #include "measurements.h"
 
 Measurements::Measurements(){
-    mAhCapacity = 0;
-    WhCapacity = 0;
-    mAhNominalCapacity = 0;
+    capacity_mAh = 0;
+    capacity_Wh = 0;
+    nominalCapacity_mAh = 0;
 }
 
 Measurements::~Measurements(){
@@ -43,8 +43,8 @@ void Measurements::addReading(float voltage, float current, float time, int temp
 void Measurements::resetMeasurements(){
     readings.clear();
 
-    mAhCapacity = 0;
-    WhCapacity = 0;
+    capacity_mAh = 0;
+    capacity_Wh = 0;
 }
 
 /**
@@ -59,10 +59,10 @@ void Measurements::calculateCapacity() {
     const Reading& lastReading = readings[numberOfReadings - 1];
     const Reading& secondLastReading = readings[numberOfReadings - 2];
 
-    float deltaTime = (lastReading.time_s - secondLastReading.time_s) / 3600.0; // Time difference in hours
-    float averageCurrent = (lastReading.current_A + secondLastReading.current_A) / 2.0;
-    float averageVoltage = (lastReading.voltage_V + secondLastReading.voltage_V) / 2.0;
+    float deltaTime_h = (lastReading.time_s - secondLastReading.time_s) / 3600.0;
+    float averageCurrent_A = (lastReading.current_A + secondLastReading.current_A) / 2.0;
+    float averageVoltage_V = (lastReading.voltage_V + secondLastReading.voltage_V) / 2.0;
 
-    mAhCapacity += 1000 * averageCurrent * deltaTime;
-    WhCapacity += averageVoltage * averageCurrent * deltaTime;
+    capacity_mAh += 1000 * averageCurrent_A * deltaTime_h;
+    capacity_Wh += averageVoltage_V * averageCurrent_A * deltaTime_h;
 }

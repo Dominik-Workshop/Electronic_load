@@ -42,9 +42,9 @@ public:
 
     std::vector<Reading> readings;
 
-    float mAhCapacity;
-    float WhCapacity;
-    int mAhNominalCapacity;
+    float capacity_mAh;
+    float capacity_Wh;
+    int nominalCapacity_mAh;
 private:
 };
 

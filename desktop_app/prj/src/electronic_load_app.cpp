@@ -32,8 +32,8 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     ui->cmbLanguage->addItem("ENG");
     ui->cmbLanguage->addItem("PL");
 
-    ui->capacity_mAh->setText(QString::number(measurements.mAhCapacity, 'f', 3));
-    ui->capacity_Wh->setText(QString::number(measurements.WhCapacity, 'f', 3));
+    ui->capacity_mAh->setText(QString::number(measurements.capacity_mAh, 'f', 3));
+    ui->capacity_Wh->setText(QString::number(measurements.capacity_Wh, 'f', 3));
 
     ui->VoltagePlot->xAxis->setLabel(QObject::tr("Time [s]"));
     ui->VoltagePlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
@@ -94,8 +94,8 @@ void Electronic_load_app::readData(){
             //qDebug() << "data from serial: " << Data_From_Serial_Port;
             processReceivedData();
             measurements.calculateCapacity();
-            ui->capacity_mAh->setText(QString::number(measurements.mAhCapacity, 'f', 3));
-            ui->capacity_Wh->setText(QString::number(measurements.WhCapacity, 'f', 3));
+            ui->capacity_mAh->setText(QString::number(measurements.capacity_mAh, 'f', 3));
+            ui->capacity_Wh->setText(QString::number(measurements.capacity_Wh, 'f', 3));
             Data_From_Serial_Port = "";
             Is_data_received = false;
 
@@ -124,6 +124,11 @@ void Electronic_load_app::readData(){
             ui->VoltagePlot->graph(1)->setName(QObject::tr("Current"));
 
             ui->VoltagePlot->rescaleAxes();
+
+            // Set axis ranges to start from 0
+            //ui->VoltagePlot->yAxis->setRange(0, *std::max_element(y.constBegin(), y.constEnd()));
+            //ui->VoltagePlot->yAxis2->setRange(0, *std::max_element(y2.constBegin(), y2.constEnd()));
+
             ui->VoltagePlot->replot();
             ui->VoltagePlot->update();
 
@@ -156,73 +161,79 @@ uint32_t calculateCRC(const uint8_t* data, size_t length) {
  */
 void Electronic_load_app::processReceivedData(){
     QStringList parts = QString(Data_From_Serial_Port).split(";");
+    if (parts.size() != 9) {
+        qDebug() << "Invalid data format. Expected 9 parts separated by semicolons.";
+        return;
+    }
 
-    if (parts.size() == 9 && (parts[0] == 'm')) {
+    if (parts[Command] == 'm') {
         bool ok;
-        qint16 receivedVoltage = parts[1].toInt(&ok);
-        qint16 receivedCurrent = parts[2].toInt(&ok);
-        qint16 receivedTemperature = parts[3].toInt(&ok);
-        qint16 receivedCutoffVoltage = parts[4].toInt(&ok);
-        qint16 receivedDischargeCurrent = parts[5].toInt(&ok);
-        qint16 receivedIsLoadOn = parts[6].toInt(&ok);
-        qint32 receivedTime = parts[7].toInt(&ok);
-        uint32_t receivedCRC = parts[8].toUInt(&ok);
+        qint16 receivedVoltage = parts[MeasuredVoltage].toInt(&ok);
+        qint16 receivedCurrent = parts[MeasuredCurrent].toInt(&ok);
+        qint16 receivedTemperature = parts[MeasuredTemperature].toInt(&ok);
+        qint16 receivedCutoffVoltage = parts[SetCutofffVoltage].toInt(&ok);
+        qint16 receivedDischargeCurrent = parts[SetCurret].toInt(&ok);
+        qint16 receivedIsLoadOn = parts[IsLoadOn].toInt(&ok);
+        qint32 receivedTime = parts[Time].toInt(&ok);
+        uint32_t receivedCRC = parts[CRC].toUInt(&ok);
 
         if (!ok) {
             qDebug() << "Error converting received data";
-        } else {
-            //qDebug() << "Received CRC (Decimal):" << receivedCRC;
-
-            // Prepare the data for CRC calculation
-            uint8_t message[6 * sizeof(qint16) + sizeof(qint32)];
-            size_t index = 0;
-            memcpy(&message[index], &receivedVoltage, sizeof(qint16));
-            index += sizeof(qint16);
-            memcpy(&message[index], &receivedCurrent, sizeof(qint16));
-            index += sizeof(qint16);
-            memcpy(&message[index], &receivedTemperature, sizeof(qint16));
-            index += sizeof(quint16);
-            memcpy(&message[index], &receivedCutoffVoltage, sizeof(qint16));
-            index += sizeof(qint16);
-            memcpy(&message[index], &receivedDischargeCurrent, sizeof(qint16));
-            index += sizeof(qint16);
-            memcpy(&message[index], &receivedIsLoadOn, sizeof(qint16));
-            index += sizeof(qint16);
-            memcpy(&message[index], &receivedTime, sizeof(qint32));
-
-            // Calculate CRC checksum over the received voltage
-            uint32_t calculatedCRC = calculateCRC(message, sizeof(message));
-
-            //qDebug() << "Calculated CRC (Decimal):" << calculatedCRC;
-
-            // Compare received CRC with calculated CRC
-            if (receivedCRC == calculatedCRC) {
-                qDebug() << "CRC Matched!";
-            } else {
-                qDebug() << "!!!!!!!CRC Mismatch!";
-            }
-        }
-    } else {
-        qDebug() << "Invalid data format received";
-    }
-
-    if(parts[Command] == 'm'){
-        if (parts.size() != 9) {
-            qDebug() << "Invalid data format. Expected 9 parts separated by semicolons.";
             return;
         }
-        if(prevCurrent != parts[SetCurret]){
-            ui->setCurrent->setText(parts[SetCurret]);
-            prevCurrent = QString(parts[SetCurret]);
-        }
-        if(prevCutoff != parts[SetCutofffVoltage]){
-            ui->cutoffVoltage->setText(parts[SetCutofffVoltage]);
-            prevCutoff = QString(parts[SetCutofffVoltage]);
+
+        // Prepare the data for CRC calculation
+        uint8_t message[6 * sizeof(qint16) + sizeof(qint32)];
+        size_t index = 0;
+        memcpy(&message[index], &receivedVoltage, sizeof(qint16));
+        index += sizeof(qint16);
+        memcpy(&message[index], &receivedCurrent, sizeof(qint16));
+        index += sizeof(qint16);
+        memcpy(&message[index], &receivedTemperature, sizeof(qint16));
+        index += sizeof(quint16);
+        memcpy(&message[index], &receivedCutoffVoltage, sizeof(qint16));
+        index += sizeof(qint16);
+        memcpy(&message[index], &receivedDischargeCurrent, sizeof(qint16));
+        index += sizeof(qint16);
+        memcpy(&message[index], &receivedIsLoadOn, sizeof(qint16));
+        index += sizeof(qint16);
+        memcpy(&message[index], &receivedTime, sizeof(qint32));
+
+        uint32_t calculatedCRC = calculateCRC(message, sizeof(message));
+
+        //qDebug() << "Received CRC (Decimal):" << receivedCRC;
+        //qDebug() << "Calculated CRC (Decimal):" << calculatedCRC;
+
+        if (receivedCRC == calculatedCRC) {
+            qDebug() << "CRC Matched!";
+        } else {
+            qDebug() << "!!!!!!!CRC Mismatch!!!!!!!";
+            return;
         }
 
-        measurements.addReading(parts[MeasuredVoltage].toFloat()/1000, parts[MeasuredCurrent].toFloat()/1000, timer.elapsed()/1000.0, parts[MeasuredTemperature].toInt());
-        ui->measuredVoltage->setText(parts[MeasuredVoltage]);
-        ui->measuredCurrent->setText(parts[MeasuredCurrent]);
+        // Update the set current and cutoff voltage if changed
+        float setCurrent = parts[SetCurret].toFloat() / 1000;
+        float setCutoffVoltage = parts[SetCutofffVoltage].toFloat() / 1000;
+
+        if (prevCurrent != parts[SetCurret]) {
+            ui->setCurrent->setText(QString::number(setCurrent, 'f', 3));
+            prevCurrent = parts[SetCurret];
+        }
+        if (prevCutoff != parts[SetCutofffVoltage]) {
+            ui->cutoffVoltage->setText(QString::number(setCutoffVoltage, 'f', 3));
+            prevCutoff = parts[SetCutofffVoltage];
+        }
+
+        // Add reading to measurements and update UI
+        float measuredVoltage = parts[MeasuredVoltage].toFloat() / 1000;
+        float measuredCurrent = parts[MeasuredCurrent].toFloat() / 1000;
+        int measuredTemperature = parts[MeasuredTemperature].toInt();
+        float elapsedTime = timer.elapsed() / 1000.0;
+
+        measurements.addReading(measuredVoltage, measuredCurrent, elapsedTime, measuredTemperature);
+
+        ui->measuredVoltage->setText(QString::number(measuredVoltage, 'f', 3));
+        ui->measuredCurrent->setText(QString::number(measuredCurrent, 'f', 3));
 
         if(parts[IsLoadOn]=="1"){
             ui->load_on_offfButton->setText(QObject::tr("Load ON"));
@@ -233,8 +244,10 @@ void Electronic_load_app::processReceivedData(){
             ui->load_on_offfButton->setText(QObject::tr("Load OFF"));
         }
     }
-    if(measurements.mAhNominalCapacity != 0){
-        ui->BatCapacityBar->setValue(100 * measurements.mAhCapacity/measurements.mAhNominalCapacity);
+
+    if(measurements.nominalCapacity_mAh != 0){
+        int capacityPercentage = 100 * measurements.capacity_mAh / measurements.nominalCapacity_mAh;
+        ui->BatCapacityBar->setValue(capacityPercentage);
     }
 }
 
@@ -254,19 +267,40 @@ void Electronic_load_app::on_resetMeas_clicked(){
 }
 
 void Electronic_load_app::on_SaveButton_clicked(){
-    QString filter = "JPG files (*.jpg)";
+    QString selectedFilter = ui->cmbSaveAs->currentText();
+    QString filter = selectedFilter == "csv" ? "CSV files (*.csv)" : "JPG files (*.jpg)";
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save file"), QDir::currentPath(), filter, &filter);
-    // Check if the file name ends with ".png". If not, append it.
-    if (!fileName.endsWith(".jpg", Qt::CaseInsensitive)) {
-        fileName += ".jpg";
-    }
-    QFile file(fileName);
 
-    if (!file.open(QIODevice::WriteOnly))
-    {
-       qDebug() << file.errorString();
-    } else {
-       ui->VoltagePlot->saveJpg(fileName);
+    if (selectedFilter == "jpg") {
+        // Check if the file name ends with ".jpg". If not, append it.
+        if (!fileName.endsWith(".jpg", Qt::CaseInsensitive)) {
+            fileName += ".jpg";
+        }
+        QFile file(fileName);
+
+        if (!file.open(QIODevice::WriteOnly))
+        {
+           qDebug() << file.errorString();
+        } else {
+           ui->VoltagePlot->saveJpg(fileName);
+        }
+    } else if (selectedFilter == "csv") {
+        // Check if the file name ends with ".csv". If not, append it.
+        if (!fileName.endsWith(".csv", Qt::CaseInsensitive)) {
+            fileName += ".csv";
+        }
+        QFile file(fileName);
+
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+           qDebug() << file.errorString();
+        } else {
+            QTextStream out(&file);
+            out << "Time [s],Voltage [V],Current [A],Temperature [C]\n";
+            for (const auto &reading : measurements.readings) {
+                out << reading.time_s << "," << reading.voltage_V << "," << reading.current_A << "," << reading.temperature_C << "\n";
+            }
+        }
     }
 }
 
@@ -285,7 +319,7 @@ void Electronic_load_app::on_cutoffVoltage_editingFinished(){
 }
 
 void Electronic_load_app::on_NominalCapacity_editingFinished(){
-    measurements.mAhNominalCapacity = ui->NominalCapacity->text().toInt();
+    measurements.nominalCapacity_mAh = ui->NominalCapacity->text().toInt();
 }
 
 void Electronic_load_app::on_portOpenButton_clicked(){
