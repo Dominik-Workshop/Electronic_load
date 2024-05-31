@@ -635,7 +635,7 @@ background-color: rgb(39, 39, 39);</string>
           <string notr="true">background-color: rgb(127, 127, 127)</string>
          </property>
          <property name="readOnly">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
         </widget>
         <widget class="QLineEdit" name="capacity_Wh">

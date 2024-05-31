@@ -10,9 +10,11 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     , ui(new Ui::Electronic_load_app)
 {
     ui->setupUi(this);
-    translator.load(":/polish.qm");
+
     //this->setWindowTitle("Electronic Load");
+    translator.load(":/polish.qm");    
     settingsWindow = new SettingsWindow(this, COMPORT);
+
     // Fill combo box with available ports at startup
     updateAvailablePorts();
 
@@ -51,11 +53,11 @@ Electronic_load_app::~Electronic_load_app(){
         delete COMPORT;
     }
 }
+
 void Electronic_load_app::connectTheFrickingSlots(){
     qDebug() << "connextsa?";
     connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
 }
-
 
 void Electronic_load_app::changeEvent(QEvent *event){
     if(event->type() == QEvent::LanguageChange){
@@ -64,8 +66,7 @@ void Electronic_load_app::changeEvent(QEvent *event){
     QWidget::changeEvent(event);
 }
 
-void Electronic_load_app::updateAvailablePorts()
-{
+void Electronic_load_app::updateAvailablePorts(){
     QStringList availablePorts;
     foreach (const QSerialPortInfo &port, QSerialPortInfo::availablePorts()) {
         availablePorts << port.portName();
@@ -109,7 +110,6 @@ void Electronic_load_app::readData(){
                 x2[i] = measurements.readings[i].time_s; // Assuming x-axis is index based
                 y2[i] = measurements.readings[i].current_A;
             }
-
 
             // Clear existing graph and update with new data
             ui->VoltagePlot->clearGraphs();
@@ -236,8 +236,6 @@ void Electronic_load_app::processReceivedData(){
     if(measurements.mAhNominalCapacity != 0){
         ui->BatCapacityBar->setValue(100 * measurements.mAhCapacity/measurements.mAhNominalCapacity);
     }
-
-
 }
 
 void Electronic_load_app::on_load_on_offfButton_clicked(){
@@ -256,9 +254,6 @@ void Electronic_load_app::on_resetMeas_clicked(){
 }
 
 void Electronic_load_app::on_SaveButton_clicked(){
-    //for(int i = 0; i < measurements.numberOfReadings; ++i){
-    //      qDebug()<< measurements.voltageReadings[i] << ", " << measurements.currentReadings[i];
-    //}
     QString filter = "JPG files (*.jpg)";
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save file"), QDir::currentPath(), filter, &filter);
     // Check if the file name ends with ".png". If not, append it.
@@ -291,11 +286,6 @@ void Electronic_load_app::on_cutoffVoltage_editingFinished(){
 
 void Electronic_load_app::on_NominalCapacity_editingFinished(){
     measurements.mAhNominalCapacity = ui->NominalCapacity->text().toInt();
-}
-
-void Electronic_load_app::on_capacity_mAh_editingFinished()
-{
-    measurements.mAhCapacity = ui->capacity_mAh->text().toInt();
 }
 
 void Electronic_load_app::on_portOpenButton_clicked(){

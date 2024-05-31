@@ -10,8 +10,8 @@
 #include <QElapsedTimer>
 #include <QTimer>
 #include <QTranslator>
-#include "settingswindow.h"
 
+#include "settingswindow.h"
 #include "measurements.h"
 
 QT_BEGIN_NAMESPACE
@@ -48,18 +48,15 @@ private slots:
     void readData();
     void connectTheFrickingSlots();
     void updateAvailablePorts();
+
     void on_setCurrent_editingFinished();
     void on_cutoffVoltage_editingFinished();
+    void on_NominalCapacity_editingFinished();
+
     void on_load_on_offfButton_clicked();
     void on_resetMeas_clicked();
     void on_SaveButton_clicked();
-
-    void on_NominalCapacity_editingFinished();
-
-    void on_capacity_mAh_editingFinished();
-
     void on_portOpenButton_clicked();
-
     void on_Settings_clicked();
 
     void on_cmbLanguage_currentIndexChanged(int index);
