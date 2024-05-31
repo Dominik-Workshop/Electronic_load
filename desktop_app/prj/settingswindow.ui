@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>406</width>
+    <height>132</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,13 +18,41 @@
     <rect>
      <x>9</x>
      <y>9</y>
-     <width>381</width>
-     <height>281</height>
+     <width>391</width>
+     <height>111</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color : rgb(255,255,255);</string>
+        </property>
+        <property name="text">
+         <string>Serial port</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QComboBox" name="cmbPorts">
         <property name="styleSheet">
@@ -50,6 +78,18 @@ background-color: rgb(39, 39, 39);</string>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QLabel" name="label">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true">color : rgb(255,255,255);</string>
         </property>

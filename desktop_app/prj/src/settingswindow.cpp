@@ -8,6 +8,8 @@ SettingsWindow::SettingsWindow(QWidget *parent, QSerialPort *port) :
 {
     ui->setupUi(this);
 
+    this->setWindowTitle("Settings");
+
     // Fill combo box with available ports at startup
     updateAvailablePorts();
 
