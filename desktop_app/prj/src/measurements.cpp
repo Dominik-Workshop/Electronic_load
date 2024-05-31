@@ -14,21 +14,12 @@
 #include "measurements.h"
 
 Measurements::Measurements(){
-    voltageReadings = nullptr;
-    currentReadings = nullptr;
-    time = nullptr;
-    numberOfReadings = 0;
-    arrayCapacity = 10;
-
     mAhCapacity = 0;
     WhCapacity = 0;
     mAhNominalCapacity = 0;
 }
 
 Measurements::~Measurements(){
-    free(voltageReadings);
-    free(currentReadings);
-    free(time);
 }
 
 /**
@@ -36,31 +27,16 @@ Measurements::~Measurements(){
  * @param voltage
  * @param current
  */
-void Measurements::addReadings(float voltage, float current, float time_){
-    if (numberOfReadings >= arrayCapacity)
-        arrayCapacity += 10;
-
-    voltageReadings = (float*)realloc(voltageReadings, (arrayCapacity * sizeof(float)));
-    currentReadings = (float*)realloc(currentReadings, (arrayCapacity * sizeof(float)));
-    time = (float*)realloc(time, (arrayCapacity * sizeof(float)));
-    voltageReadings[numberOfReadings] = voltage;
-    currentReadings[numberOfReadings] = current;
-    time[numberOfReadings] = time_;
-    ++numberOfReadings;
+void Measurements::addReading(float voltage, float current, float time, int temperature){
+    Reading newReading = {voltage, current, time, temperature};
+    readings.push_back(newReading);
 }
 
 /**
  * @brief Resets the measurement data arrays and capacity values
  */
 void Measurements::resetMeasurements(){
-    free(voltageReadings);
-    free(currentReadings);
-    free(time);
-    voltageReadings = nullptr;
-    currentReadings = nullptr;
-    time = nullptr;
-    numberOfReadings = 0;
-    arrayCapacity = 10;
+    readings.clear();
 
     mAhCapacity = 0;
     WhCapacity = 0;
@@ -72,10 +48,14 @@ void Measurements::calculateCapacity(){
 }*/
 
 void Measurements::calculateCapacity() {
+    int numberOfReadings = readings.size();
     if (numberOfReadings > 1) {
-        float deltaTime = (time[numberOfReadings-1] - time[numberOfReadings-2]) / 3600.0; // Time difference in hours
-        float averageCurrent = (currentReadings[numberOfReadings-1] + currentReadings[numberOfReadings-2]) / 2.0; // Average current
-        float averageVoltage = (voltageReadings[numberOfReadings-1] + voltageReadings[numberOfReadings-2]) / 2.0; // Average voltage
+        const Reading& lastReading = readings[numberOfReadings - 1];
+        const Reading& secondLastReading = readings[numberOfReadings - 2];
+
+        float deltaTime = (lastReading.time_s - secondLastReading.time_s) / 3600.0; // Time difference in hours
+        float averageCurrent = (lastReading.current_A + secondLastReading.current_A) / 2.0; // Average current
+        float averageVoltage = (lastReading.voltage_V + secondLastReading.voltage_V) / 2.0; // Average voltage
 
         // mAh capacity
         mAhCapacity += 1000 * averageCurrent * deltaTime; // Current in mA

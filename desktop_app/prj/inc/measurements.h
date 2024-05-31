@@ -12,27 +12,38 @@
 #ifndef MEASUREMENTS_H
 #define MEASUREMENTS_H
 
+#include <vector>
+
+/**
+ * @brief Struct for storing measured voltage, current,
+ * tepmerature of the load's heatsink and time of the measurement
+ *
+ */
+struct Reading{
+    float voltage_V;
+    float current_A;
+    float time_s;
+    int temperature_C;
+};
+
 /**
  * @brief Class for storing measurement data
+ *
  */
 class Measurements{
 public:
     Measurements();
     ~Measurements();
-    void addReadings(float voltage, float current, float time);
+    void addReading(float voltage, float current, float time, int temperature);
     void resetMeasurements();
     void calculateCapacity();
-    float* voltageReadings;
-    float* currentReadings;
-    float* time;
-    float temperature;
+
+    std::vector<Reading> readings;
+
     float mAhCapacity;
     float WhCapacity;
     int mAhNominalCapacity;
-    int numberOfReadings; //Number of readings stored
 private:
-    int arrayCapacity; // Capacity for the readings
-
 };
 
 #endif // MEASUREMENTS_H

@@ -99,15 +99,15 @@ void Electronic_load_app::readData(){
             Is_data_received = false;
 
 
-            QVector<double> x(measurements.numberOfReadings), y(measurements.numberOfReadings);
-            for (int i = 0; i < measurements.numberOfReadings; ++i) {
-                x[i] = measurements.time[i]; // Assuming x-axis is index based
-                y[i] = measurements.voltageReadings[i];
+            QVector<double> x(measurements.readings.size()), y(measurements.readings.size());
+            for (unsigned long i = 0; i < measurements.readings.size(); ++i) {
+                x[i] = measurements.readings[i].time_s; // Assuming x-axis is index based
+                y[i] = measurements.readings[i].voltage_V;
             }
-            QVector<double> x2(measurements.numberOfReadings), y2(measurements.numberOfReadings);
-            for (int i = 0; i < measurements.numberOfReadings; ++i) {
-                x2[i] = measurements.time[i]; // Assuming x-axis is index based
-                y2[i] = measurements.currentReadings[i];
+            QVector<double> x2(measurements.readings.size()), y2(measurements.readings.size());
+            for (unsigned long i = 0; i < measurements.readings.size(); ++i) {
+                x2[i] = measurements.readings[i].time_s; // Assuming x-axis is index based
+                y2[i] = measurements.readings[i].current_A;
             }
 
 
@@ -220,7 +220,7 @@ void Electronic_load_app::processReceivedData(){
             prevCutoff = QString(parts[SetCutofffVoltage]);
         }
 
-        measurements.addReadings(parts[MeasuredVoltage].toFloat(), parts[MeasuredCurrent].toFloat(), timer.elapsed()/1000.0);
+        measurements.addReading(parts[MeasuredVoltage].toFloat(), parts[MeasuredCurrent].toFloat(), timer.elapsed()/1000.0, parts[MeasuredTemperature].toInt());
         ui->measuredVoltage->setText(parts[MeasuredVoltage]);
         ui->measuredCurrent->setText(parts[MeasuredCurrent]);
 
