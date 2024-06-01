@@ -27,7 +27,7 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QCustomPlot" name="VoltagePlot" native="true">
+       <widget class="QCustomPlot" name="VoltageAndCurrentPlot" native="true">
         <property name="minimumSize">
          <size>
           <width>500</width>

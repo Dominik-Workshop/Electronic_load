@@ -24,7 +24,7 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     portCheckTimer->start(1000); // Check every second
 
     //connect (settingsWindow, SIGNAL (dataReadyToRead()), this, SLOT(connectTheFrickingSlots()));
-    connect(settingsWindow, &SettingsWindow::dataReadyToRead, this, &Electronic_load_app::connectTheFrickingSlots, Qt::AutoConnection);
+    //connect(settingsWindow, &SettingsWindow::dataReadyToRead, this, &Electronic_load_app::connectTheFrickingSlots, Qt::AutoConnection);
     //connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
 
     ui->cmbSaveAs->addItem("jpg");
@@ -35,10 +35,10 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     ui->capacity_mAh->setText(QString::number(measurements.capacity_mAh, 'f', 3));
     ui->capacity_Wh->setText(QString::number(measurements.capacity_Wh, 'f', 3));
 
-    ui->VoltagePlot->xAxis->setLabel(QObject::tr("Time [s]"));
-    ui->VoltagePlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
-    ui->VoltagePlot->yAxis2->setLabel(QObject::tr("Current [A]"));
-    ui->VoltagePlot->yAxis2->setVisible(true);
+    ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
+    ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
+    ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
+    ui->VoltageAndCurrentPlot->yAxis2->setVisible(true);
 
     //ui->VoltagePlot->setInteraction(QCP::iRangeDrag, true);
     //ui->VoltagePlot->setInteraction(QCP::iRangeZoom, true);
@@ -79,6 +79,40 @@ void Electronic_load_app::updateAvailablePorts(){
     }
 }
 
+void Electronic_load_app::plotVoltageAndCurrent(){
+    QVector<double> x(measurements.readings.size()), y(measurements.readings.size());
+    for (unsigned long i = 0; i < measurements.readings.size(); ++i) {
+        x[i] = measurements.readings[i].time_s; // Assuming x-axis is index based
+        y[i] = measurements.readings[i].voltage_V;
+    }
+    QVector<double> x2(measurements.readings.size()), y2(measurements.readings.size());
+    for (unsigned long i = 0; i < measurements.readings.size(); ++i) {
+        x2[i] = measurements.readings[i].time_s; // Assuming x-axis is index based
+        y2[i] = measurements.readings[i].current_A;
+    }
+
+    // Clear existing graph and update with new data
+    ui->VoltageAndCurrentPlot->clearGraphs();
+    ui->VoltageAndCurrentPlot->legend->setVisible(true);
+    ui->VoltageAndCurrentPlot->addGraph(ui->VoltageAndCurrentPlot->xAxis, ui->VoltageAndCurrentPlot->yAxis);
+    ui->VoltageAndCurrentPlot->graph(0)->setPen(QPen(QColor(255, 100, 0)));
+    ui->VoltageAndCurrentPlot->graph(0)->setData(x, y);
+    ui->VoltageAndCurrentPlot->graph(0)->setName(QObject::tr("Voltage"));
+    ui->VoltageAndCurrentPlot->addGraph(ui->VoltageAndCurrentPlot->xAxis2, ui->VoltageAndCurrentPlot->yAxis2);
+    ui->VoltageAndCurrentPlot->graph(1)->setPen(QPen(QColor(0, 100, 255)));
+    ui->VoltageAndCurrentPlot->graph(1)->setData(x2, y2);
+    ui->VoltageAndCurrentPlot->graph(1)->setName(QObject::tr("Current"));
+
+    ui->VoltageAndCurrentPlot->rescaleAxes();
+
+    // Set axis ranges to start from 0
+    //ui->VoltagePlot->yAxis->setRange(0, *std::max_element(y.constBegin(), y.constEnd()));
+    //ui->VoltagePlot->yAxis2->setRange(0, *std::max_element(y2.constBegin(), y2.constEnd()));
+
+    ui->VoltageAndCurrentPlot->replot();
+    ui->VoltageAndCurrentPlot->update();
+}
+
 /**
  * @brief Read data from serial port
  */
@@ -100,37 +134,7 @@ void Electronic_load_app::readData(){
             Is_data_received = false;
 
 
-            QVector<double> x(measurements.readings.size()), y(measurements.readings.size());
-            for (unsigned long i = 0; i < measurements.readings.size(); ++i) {
-                x[i] = measurements.readings[i].time_s; // Assuming x-axis is index based
-                y[i] = measurements.readings[i].voltage_V;
-            }
-            QVector<double> x2(measurements.readings.size()), y2(measurements.readings.size());
-            for (unsigned long i = 0; i < measurements.readings.size(); ++i) {
-                x2[i] = measurements.readings[i].time_s; // Assuming x-axis is index based
-                y2[i] = measurements.readings[i].current_A;
-            }
-
-            // Clear existing graph and update with new data
-            ui->VoltagePlot->clearGraphs();
-            ui->VoltagePlot->legend->setVisible(true);
-            ui->VoltagePlot->addGraph(ui->VoltagePlot->xAxis, ui->VoltagePlot->yAxis);
-            ui->VoltagePlot->graph(0)->setPen(QPen(QColor(255, 100, 0)));
-            ui->VoltagePlot->graph(0)->setData(x, y);
-            ui->VoltagePlot->graph(0)->setName(QObject::tr("Voltage"));
-            ui->VoltagePlot->addGraph(ui->VoltagePlot->xAxis2, ui->VoltagePlot->yAxis2);
-            ui->VoltagePlot->graph(1)->setPen(QPen(QColor(0, 100, 255)));
-            ui->VoltagePlot->graph(1)->setData(x2, y2);
-            ui->VoltagePlot->graph(1)->setName(QObject::tr("Current"));
-
-            ui->VoltagePlot->rescaleAxes();
-
-            // Set axis ranges to start from 0
-            //ui->VoltagePlot->yAxis->setRange(0, *std::max_element(y.constBegin(), y.constEnd()));
-            //ui->VoltagePlot->yAxis2->setRange(0, *std::max_element(y2.constBegin(), y2.constEnd()));
-
-            ui->VoltagePlot->replot();
-            ui->VoltagePlot->update();
+            plotVoltageAndCurrent();
 
         }
     }
@@ -252,7 +256,7 @@ void Electronic_load_app::processReceivedData(){
 }
 
 void Electronic_load_app::on_load_on_offfButton_clicked(){
-    if(COMPORT->isOpen()){
+    if(COMPORT != nullptr && COMPORT->isOpen()){
         COMPORT->write("o");
     }
 }
@@ -271,6 +275,10 @@ void Electronic_load_app::on_SaveButton_clicked(){
     QString filter = selectedFilter == "csv" ? "CSV files (*.csv)" : "JPG files (*.jpg)";
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save file"), QDir::currentPath(), filter, &filter);
 
+    if (fileName.isEmpty()) {
+        return; // Do nothing if Cancel was pressed
+    }
+
     if (selectedFilter == "jpg") {
         // Check if the file name ends with ".jpg". If not, append it.
         if (!fileName.endsWith(".jpg", Qt::CaseInsensitive)) {
@@ -282,7 +290,7 @@ void Electronic_load_app::on_SaveButton_clicked(){
         {
            qDebug() << file.errorString();
         } else {
-           ui->VoltagePlot->saveJpg(fileName);
+           ui->VoltageAndCurrentPlot->saveJpg(fileName);
         }
     } else if (selectedFilter == "csv") {
         // Check if the file name ends with ".csv". If not, append it.
@@ -303,18 +311,62 @@ void Electronic_load_app::on_SaveButton_clicked(){
         }
     }
 }
-
+/*
 void Electronic_load_app::on_setCurrent_editingFinished(){
-    if(COMPORT->isOpen()){
+    if(COMPORT != nullptr && COMPORT->isOpen()){
         COMPORT->write("a");
         COMPORT->write(ui->setCurrent->text().toLatin1()+ char(10));
     }
-}
+}*/
 
+void Electronic_load_app::on_setCurrent_editingFinished(){
+    if (COMPORT != nullptr && COMPORT->isOpen()) {
+        QString currentText = ui->setCurrent->text();
+        if (!currentText.isEmpty()) {
+            try {
+                QByteArray currentData = currentText.toLatin1() + char(10);
+                COMPORT->write("a");
+                COMPORT->write(currentData);
+                qDebug() << "Set current value sent: " << currentText;
+            } catch (const std::exception &e) {
+                qDebug() << "Exception occurred while writing to COMPORT: " << e.what();
+            } catch (...) {
+                qDebug() << "Unknown exception occurred while writing to COMPORT.";
+            }
+        } else {
+            qDebug() << "Current text is empty.";
+        }
+    } else {
+        qDebug() << "COMPORT is not initialized or not open.";
+    }
+}
+/*
 void Electronic_load_app::on_cutoffVoltage_editingFinished(){
     if(COMPORT->isOpen()){
         COMPORT->write("c");
         COMPORT->write(ui->cutoffVoltage->text().toLatin1()+ char(10));
+    }
+}*/
+
+void Electronic_load_app::on_cutoffVoltage_editingFinished(){
+    if (COMPORT != nullptr && COMPORT->isOpen()) {
+        QString voltageText = ui->cutoffVoltage->text();
+        if (!voltageText.isEmpty()) {
+            try {
+                QByteArray voltageData = voltageText.toLatin1() + char(10);
+                COMPORT->write("c");
+                COMPORT->write(voltageData);
+                qDebug() << "Set cutoff voltage value sent: " << voltageText;
+            } catch (const std::exception &e) {
+                qDebug() << "Exception occurred while writing to COMPORT: " << e.what();
+            } catch (...) {
+                qDebug() << "Unknown exception occurred while writing to COMPORT.";
+            }
+        } else {
+            qDebug() << "Cutoff voltage text is empty.";
+        }
+    } else {
+        qDebug() << "COMPORT is not initialized or not open.";
     }
 }
 
@@ -363,18 +415,18 @@ void Electronic_load_app::on_cmbLanguage_currentIndexChanged(int index)
 {
     if(index == 0){
         qApp->removeTranslator(&translator);
-        ui->VoltagePlot->xAxis->setLabel(QObject::tr("Time [s]"));
-        ui->VoltagePlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
-        ui->VoltagePlot->yAxis2->setLabel(QObject::tr("Current [A]"));
-        ui->VoltagePlot->replot();
-        ui->VoltagePlot->update();
+        ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
+        ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
+        ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
+        ui->VoltageAndCurrentPlot->replot();
+        ui->VoltageAndCurrentPlot->update();
     }
     else {
         qApp->installTranslator(&translator);
-        ui->VoltagePlot->xAxis->setLabel(QObject::tr("Time [s]"));
-        ui->VoltagePlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
-        ui->VoltagePlot->yAxis2->setLabel(QObject::tr("Current [A]"));
-        ui->VoltagePlot->replot();
-        ui->VoltagePlot->update();
+        ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
+        ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
+        ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
+        ui->VoltageAndCurrentPlot->replot();
+        ui->VoltageAndCurrentPlot->update();
     }
 }
