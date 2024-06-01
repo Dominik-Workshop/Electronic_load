@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>polish.qm</file>
+	<file>./icon.png</file>
     </qresource>
 </RCC>
