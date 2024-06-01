@@ -12,7 +12,7 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     ui->setupUi(this);
 
     //this->setWindowTitle("Electronic Load");
-    this->setWindowIcon(QIcon(":/load_icon.ico"));
+    this->setWindowIcon(QIcon(":/icon.png"));
     translator.load(":/polish.qm");    
     settingsWindow = new SettingsWindow(this, serialPort);
 
