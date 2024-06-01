@@ -12,8 +12,9 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     ui->setupUi(this);
 
     //this->setWindowTitle("Electronic Load");
+    this->setWindowIcon(QIcon(":/load_icon.ico"));
     translator.load(":/polish.qm");    
-    settingsWindow = new SettingsWindow(this, COMPORT);
+    settingsWindow = new SettingsWindow(this, serialPort);
 
     // Fill combo box with available ports at startup
     updateAvailablePorts();
@@ -48,15 +49,15 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
 
 Electronic_load_app::~Electronic_load_app(){
     delete ui;
-    if(COMPORT != nullptr){
-        COMPORT->close();
-        delete COMPORT;
+    if(serialPort != nullptr){
+        serialPort->close();
+        delete serialPort;
     }
 }
 
 void Electronic_load_app::connectTheFrickingSlots(){
     qDebug() << "connextsa?";
-    connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
+    connect(serialPort, SIGNAL(readyRead()), this, SLOT(readData()));
 }
 
 void Electronic_load_app::changeEvent(QEvent *event){
@@ -117,21 +118,21 @@ void Electronic_load_app::plotVoltageAndCurrent(){
  * @brief Read data from serial port
  */
 void Electronic_load_app::readData(){
-    if(COMPORT->isOpen()){
-        while(COMPORT->bytesAvailable()){
-            Data_From_Serial_Port += COMPORT->readAll();
-            if(Data_From_Serial_Port.at(Data_From_Serial_Port.length()-1) == char(10))
-                Is_data_received = true;
+    if(serialPort->isOpen()){
+        while(serialPort->bytesAvailable()){
+            dataFromSerialPort += serialPort->readAll();
+            if(dataFromSerialPort.at(dataFromSerialPort.length()-1) == char(10))
+                isDataFromSerialPortReceived = true;
         }
-        if(Is_data_received){
+        if(isDataFromSerialPortReceived){
 
             //qDebug() << "data from serial: " << Data_From_Serial_Port;
             processReceivedData();
             measurements.calculateCapacity();
             ui->capacity_mAh->setText(QString::number(measurements.capacity_mAh, 'f', 3));
             ui->capacity_Wh->setText(QString::number(measurements.capacity_Wh, 'f', 3));
-            Data_From_Serial_Port = "";
-            Is_data_received = false;
+            dataFromSerialPort = "";
+            isDataFromSerialPortReceived = false;
 
 
             plotVoltageAndCurrent();
@@ -164,7 +165,7 @@ uint32_t calculateCRC(const uint8_t* data, size_t length) {
  *
  */
 void Electronic_load_app::processReceivedData(){
-    QStringList parts = QString(Data_From_Serial_Port).split(";");
+    QStringList parts = QString(dataFromSerialPort).split(";");
     if (parts.size() != 9) {
         qDebug() << "Invalid data format. Expected 9 parts separated by semicolons.";
         return;
@@ -256,16 +257,16 @@ void Electronic_load_app::processReceivedData(){
 }
 
 void Electronic_load_app::on_load_on_offfButton_clicked(){
-    if(COMPORT != nullptr && COMPORT->isOpen()){
-        COMPORT->write("o");
+    if(serialPort != nullptr && serialPort->isOpen()){
+        serialPort->write("o");
     }
 }
 
 void Electronic_load_app::on_resetMeas_clicked(){
     measurements.resetMeasurements();
-    if(COMPORT->isOpen()){
-        COMPORT->write("r");
-        COMPORT->write(ui->setCurrent->text().toLatin1()+ char(10));
+    if(serialPort->isOpen()){
+        serialPort->write("r");
+        serialPort->write(ui->setCurrent->text().toLatin1()+ char(10));
     }
     timer.restart();
 }
@@ -320,13 +321,13 @@ void Electronic_load_app::on_setCurrent_editingFinished(){
 }*/
 
 void Electronic_load_app::on_setCurrent_editingFinished(){
-    if (COMPORT != nullptr && COMPORT->isOpen()) {
+    if (serialPort != nullptr && serialPort->isOpen()) {
         QString currentText = ui->setCurrent->text();
         if (!currentText.isEmpty()) {
             try {
                 QByteArray currentData = currentText.toLatin1() + char(10);
-                COMPORT->write("a");
-                COMPORT->write(currentData);
+                serialPort->write("a");
+                serialPort->write(currentData);
                 qDebug() << "Set current value sent: " << currentText;
             } catch (const std::exception &e) {
                 qDebug() << "Exception occurred while writing to COMPORT: " << e.what();
@@ -349,13 +350,13 @@ void Electronic_load_app::on_cutoffVoltage_editingFinished(){
 }*/
 
 void Electronic_load_app::on_cutoffVoltage_editingFinished(){
-    if (COMPORT != nullptr && COMPORT->isOpen()) {
+    if (serialPort != nullptr && serialPort->isOpen()) {
         QString voltageText = ui->cutoffVoltage->text();
         if (!voltageText.isEmpty()) {
             try {
                 QByteArray voltageData = voltageText.toLatin1() + char(10);
-                COMPORT->write("c");
-                COMPORT->write(voltageData);
+                serialPort->write("c");
+                serialPort->write(voltageData);
                 qDebug() << "Set cutoff voltage value sent: " << voltageText;
             } catch (const std::exception &e) {
                 qDebug() << "Exception occurred while writing to COMPORT: " << e.what();
@@ -375,21 +376,21 @@ void Electronic_load_app::on_NominalCapacity_editingFinished(){
 }
 
 void Electronic_load_app::on_portOpenButton_clicked(){
-    if(COMPORT != nullptr){
-        COMPORT->close();
-        delete COMPORT;
+    if(serialPort != nullptr){
+        serialPort->close();
+        delete serialPort;
     }
 
-    COMPORT = new QSerialPort();
-    COMPORT->setPortName(ui->cmbPorts->currentText());
-    COMPORT->setBaudRate(QSerialPort::BaudRate::Baud9600);
-    COMPORT->setParity(QSerialPort::Parity::NoParity);
-    COMPORT->setDataBits(QSerialPort::DataBits::Data8);
-    COMPORT->setStopBits(QSerialPort::StopBits::OneStop);
-    COMPORT->setFlowControl(QSerialPort::FlowControl::NoFlowControl);
-    COMPORT->open(QIODevice::ReadWrite);
+    serialPort = new QSerialPort();
+    serialPort->setPortName(ui->cmbPorts->currentText());
+    serialPort->setBaudRate(QSerialPort::BaudRate::Baud9600);
+    serialPort->setParity(QSerialPort::Parity::NoParity);
+    serialPort->setDataBits(QSerialPort::DataBits::Data8);
+    serialPort->setStopBits(QSerialPort::StopBits::OneStop);
+    serialPort->setFlowControl(QSerialPort::FlowControl::NoFlowControl);
+    serialPort->open(QIODevice::ReadWrite);
 
-    if (COMPORT->isOpen()) {
+    if (serialPort->isOpen()) {
         QMessageBox msgBox;
         msgBox.setText("Port opened successfully");
         msgBox.setStyleSheet("QLabel{color: green;}"); // Change text color to green
@@ -403,7 +404,7 @@ void Electronic_load_app::on_portOpenButton_clicked(){
         msgBox.exec();
     }
 
-    connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
+    connect(serialPort, SIGNAL(readyRead()), this, SLOT(readData()));
 }
 
 void Electronic_load_app::on_Settings_clicked(){

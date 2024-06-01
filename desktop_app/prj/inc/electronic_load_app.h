@@ -64,9 +64,9 @@ private slots:
 
 private:
     Ui::Electronic_load_app *ui;
-    QSerialPort* COMPORT = nullptr;
-    QString Data_From_Serial_Port;
-    bool Is_data_received = false;
+    QSerialPort* serialPort = nullptr;
+    QString dataFromSerialPort;
+    bool isDataFromSerialPortReceived = false;
     QString prevCurrent;
     QString prevCutoff;
     QElapsedTimer timer;
