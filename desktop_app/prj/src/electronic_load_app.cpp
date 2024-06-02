@@ -17,8 +17,6 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     // Max two digits before decimal place, max three digits after decimal place, positive
     QRegExp rx("^\\d{0,2}(\\.\\d{1,3})?$");
     QRegExpValidator *rxv = new QRegExpValidator(rx, this);
-
-    // Set the validator on your QLineEdit widgets
     ui->setCurrent->setValidator(rxv);
     ui->cutoffVoltage->setValidator(rxv);
 
@@ -50,13 +48,6 @@ Electronic_load_app::~Electronic_load_app(){
     }
 }
 
-void Electronic_load_app::changeEvent(QEvent *event){
-    if(event->type() == QEvent::LanguageChange){
-        ui->retranslateUi(this);
-    }
-    QWidget::changeEvent(event);
-}
-
 /**
  * @brief Checks available ports and fills the combo box with them
  */
@@ -73,36 +64,36 @@ void Electronic_load_app::updateAvailablePorts(){
     }
 }
 
-void Electronic_load_app::plotVoltageAndCurrent(){
-    unsigned int lenght = measurements.readings.size();
-    QVector<double> x(lenght), y1(lenght), y2(lenght);
-    for (unsigned long i = 0; i < lenght; ++i) {
-        x[i] = measurements.readings[i].time_s;
-        y1[i] = measurements.readings[i].voltage_V;
-        y2[i] = measurements.readings[i].current_A;
+void Electronic_load_app::on_portOpenButton_clicked(){
+    if(serialPort != nullptr){
+        serialPort->close();
+        delete serialPort;
     }
 
-    // Clear existing graph and update with new data
-    ui->VoltageAndCurrentPlot->clearGraphs();
-    ui->VoltageAndCurrentPlot->legend->setVisible(true);
-    ui->VoltageAndCurrentPlot->addGraph(ui->VoltageAndCurrentPlot->xAxis, ui->VoltageAndCurrentPlot->yAxis);
-    ui->VoltageAndCurrentPlot->graph(0)->setPen(QPen(QColor(255, 100, 0)));
-    ui->VoltageAndCurrentPlot->graph(0)->setData(x, y1);
-    ui->VoltageAndCurrentPlot->graph(0)->setName(QObject::tr("Voltage"));
-    ui->VoltageAndCurrentPlot->addGraph(ui->VoltageAndCurrentPlot->xAxis2, ui->VoltageAndCurrentPlot->yAxis2);
-    ui->VoltageAndCurrentPlot->graph(1)->setPen(QPen(QColor(0, 100, 255)));
-    ui->VoltageAndCurrentPlot->graph(1)->setData(x, y2);
-    ui->VoltageAndCurrentPlot->graph(1)->setName(QObject::tr("Current"));
+    serialPort = new QSerialPort();
+    serialPort->setPortName(ui->cmbPorts->currentText());
+    serialPort->setBaudRate(QSerialPort::BaudRate::Baud9600);
+    serialPort->setParity(QSerialPort::Parity::NoParity);
+    serialPort->setDataBits(QSerialPort::DataBits::Data8);
+    serialPort->setStopBits(QSerialPort::StopBits::OneStop);
+    serialPort->setFlowControl(QSerialPort::FlowControl::NoFlowControl);
+    serialPort->open(QIODevice::ReadWrite);
 
-    ui->VoltageAndCurrentPlot->rescaleAxes();
-
-    if(ui->actionPlot_from_zero->isChecked()){    // Set axis ranges to start from 0
-        ui->VoltageAndCurrentPlot->yAxis->setRange(0, *std::max_element(y1.constBegin(), y1.constEnd()) + 0.1);
-        ui->VoltageAndCurrentPlot->yAxis2->setRange(0, *std::max_element(y2.constBegin(), y2.constEnd())+ 0.01);
+    if (serialPort->isOpen()) {
+        QMessageBox msgBox;
+        msgBox.setText("Port opened successfully");
+        msgBox.setStyleSheet("QLabel{color: green;}"); // Change text color to green
+        msgBox.setWindowTitle("Result");
+        msgBox.exec();
+    } else {
+        QMessageBox msgBox;
+        msgBox.setText(QObject::tr("Unable to open specified port"));
+        msgBox.setStyleSheet("QLabel{color: red;}"); // Change text color to red
+        msgBox.setWindowTitle(QObject::tr("Port error"));
+        msgBox.exec();
     }
 
-    ui->VoltageAndCurrentPlot->replot();
-    ui->VoltageAndCurrentPlot->update();
+    connect(serialPort, SIGNAL(readyRead()), this, SLOT(readData()));
 }
 
 /**
@@ -159,7 +150,7 @@ void Electronic_load_app::checkAndPlotVoltageAndCurrent() {
  * @param length
  * @return
  */
-uint32_t calculateCRC(const uint8_t* data, size_t length) {
+uint32_t calculateCRC32(const uint8_t* data, size_t length) {
   const uint32_t polynomial = 0xEDB88320;
   uint32_t crc = 0xFFFFFFFF;
 
@@ -216,7 +207,7 @@ void Electronic_load_app::processReceivedData(){
         index += sizeof(quint16);
         memcpy(&message[index], &receivedTime, sizeof(qint32));
 
-        uint32_t calculatedCRC = calculateCRC(message, sizeof(message));
+        uint32_t calculatedCRC = calculateCRC32(message, sizeof(message));
 
         //qDebug() << "Received CRC (Decimal):" << receivedCRC;
         //qDebug() << "Calculated CRC (Decimal):" << calculatedCRC;
@@ -229,16 +220,16 @@ void Electronic_load_app::processReceivedData(){
         }
 
         // Update the set current and cutoff voltage if changed
-        setCurrent = parts[SetCurret].toFloat() / 1000;
-        setCutoffVoltage = parts[SetCutofffVoltage].toFloat() / 1000;
+        setCurrent_A = parts[SetCurret].toFloat() / 1000;
+        setCutoffVoltage_V = parts[SetCutofffVoltage].toFloat() / 1000;
         //qDebug() << setCurrent << " flag " << setCurrentEdited_flag;
         if(!setCurrentEdited_flag){
             setCurrentEdited_flag = false;
-            ui->setCurrent->setText(QString::number(setCurrent, 'f', 3));
+            ui->setCurrent->setText(QString::number(setCurrent_A, 'f', 3));
         }
 
         if (!setCutoffVoltageEdited_flag) {
-            ui->cutoffVoltage->setText(QString::number(setCutoffVoltage, 'f', 3));
+            ui->cutoffVoltage->setText(QString::number(setCutoffVoltage_V, 'f', 3));
         }
 
         // Add reading to measurements and update UI
@@ -265,7 +256,9 @@ void Electronic_load_app::processReceivedData(){
 
     if(measurements.nominalCapacity_mAh != 0){
         int capacityPercentage = 100 * measurements.capacity_mAh / measurements.nominalCapacity_mAh;
+        ui->batteryPercentageLabel->setText(QString::number(capacityPercentage) + "%");
         ui->BatCapacityBar->setValue(capacityPercentage);
+        ui->BatCapacityBar->update();
     }
 }
 
@@ -275,6 +268,9 @@ void Electronic_load_app::on_load_on_offfButton_clicked(){
     }
 }
 
+/**
+ * @brief Clears measurements
+ */
 void Electronic_load_app::on_resetMeas_clicked(){
     measurements.resetMeasurements();
     if(serialPort->isOpen()){
@@ -282,11 +278,16 @@ void Electronic_load_app::on_resetMeas_clicked(){
         serialPort->write(ui->setCurrent->text().toLatin1()+ char(10));
     }
     if (ui->actionStop_when_load_off->isChecked() && !isLoadOn){
-        plotVoltageAndCurrent();
+        ui->VoltageAndCurrentPlot->clearGraphs();
+        ui->VoltageAndCurrentPlot->replot();
+        ui->VoltageAndCurrentPlot->update();
     }
     elapsedTimer.restart();
 }
 
+/**
+ * @brief Saves the voltage and current plot as jpg or csv
+ */
 void Electronic_load_app::on_SaveButton_clicked(){
     QString selectedFilter = ui->cmbSaveAs->currentText();
     QString filter = selectedFilter == "csv" ? "CSV files (*.csv)" : "JPG files (*.jpg)";
@@ -359,66 +360,44 @@ void Electronic_load_app::on_NominalCapacity_editingFinished(){
     measurements.nominalCapacity_mAh = ui->NominalCapacity->text().toInt();
 }
 
-void Electronic_load_app::on_portOpenButton_clicked(){
-    if(serialPort != nullptr){
-        serialPort->close();
-        delete serialPort;
+/**
+ * @brief Plots voltage and current graphs from measurements class instance
+ */
+void Electronic_load_app::plotVoltageAndCurrent(){
+    unsigned int lenght = measurements.readings.size();
+    QVector<double> x(lenght), y1(lenght), y2(lenght);
+    for (unsigned long i = 0; i < lenght; ++i) {
+        x[i] = measurements.readings[i].time_s;
+        y1[i] = measurements.readings[i].voltage_V;
+        y2[i] = measurements.readings[i].current_A;
     }
 
-    serialPort = new QSerialPort();
-    serialPort->setPortName(ui->cmbPorts->currentText());
-    serialPort->setBaudRate(QSerialPort::BaudRate::Baud9600);
-    serialPort->setParity(QSerialPort::Parity::NoParity);
-    serialPort->setDataBits(QSerialPort::DataBits::Data8);
-    serialPort->setStopBits(QSerialPort::StopBits::OneStop);
-    serialPort->setFlowControl(QSerialPort::FlowControl::NoFlowControl);
-    serialPort->open(QIODevice::ReadWrite);
+    // Clear existing graph and update with new data
+    ui->VoltageAndCurrentPlot->clearGraphs();
+    ui->VoltageAndCurrentPlot->legend->setVisible(true);
+    ui->VoltageAndCurrentPlot->addGraph(ui->VoltageAndCurrentPlot->xAxis, ui->VoltageAndCurrentPlot->yAxis);
+    ui->VoltageAndCurrentPlot->graph(0)->setPen(QPen(QColor(255, 100, 0)));
+    ui->VoltageAndCurrentPlot->graph(0)->setData(x, y1);
+    ui->VoltageAndCurrentPlot->graph(0)->setName(QObject::tr("Voltage"));
+    ui->VoltageAndCurrentPlot->addGraph(ui->VoltageAndCurrentPlot->xAxis2, ui->VoltageAndCurrentPlot->yAxis2);
+    ui->VoltageAndCurrentPlot->graph(1)->setPen(QPen(QColor(0, 100, 255)));
+    ui->VoltageAndCurrentPlot->graph(1)->setData(x, y2);
+    ui->VoltageAndCurrentPlot->graph(1)->setName(QObject::tr("Current"));
 
-    if (serialPort->isOpen()) {
-        QMessageBox msgBox;
-        msgBox.setText("Port opened successfully");
-        msgBox.setStyleSheet("QLabel{color: green;}"); // Change text color to green
-        msgBox.setWindowTitle("Result");
-        msgBox.exec();
-    } else {
-        QMessageBox msgBox;
-        msgBox.setText(QObject::tr("Unable to open specified port"));
-        msgBox.setStyleSheet("QLabel{color: red;}"); // Change text color to red
-        msgBox.setWindowTitle(QObject::tr("Port error"));
-        msgBox.exec();
+    ui->VoltageAndCurrentPlot->rescaleAxes();
+
+    if(ui->actionPlot_from_zero->isChecked()){    // Set axis ranges to start from 0
+        ui->VoltageAndCurrentPlot->yAxis->setRange(0, *std::max_element(y1.constBegin(), y1.constEnd()) + 0.1);
+        ui->VoltageAndCurrentPlot->yAxis2->setRange(0, *std::max_element(y2.constBegin(), y2.constEnd())+ 0.01);
     }
 
-    connect(serialPort, SIGNAL(readyRead()), this, SLOT(readData()));
-}
-
-void Electronic_load_app::on_actionPL_triggered(){
-    qApp->installTranslator(&translator_PL);
-    ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
-    ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
-    ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
     ui->VoltageAndCurrentPlot->replot();
     ui->VoltageAndCurrentPlot->update();
 }
 
-void Electronic_load_app::on_actionEN_triggered(){
-    qApp->removeTranslator(&translator_PL);
-    qApp->removeTranslator(&translator_DE);
-    ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
-    ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
-    ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
-    ui->VoltageAndCurrentPlot->replot();
-    ui->VoltageAndCurrentPlot->update();
-}
-
-void Electronic_load_app::on_actionDE_triggered(){
-    qApp->installTranslator(&translator_DE);
-    ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
-    ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
-    ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
-    ui->VoltageAndCurrentPlot->replot();
-    ui->VoltageAndCurrentPlot->update();
-}
-
+/**
+ * @brief Shows message box containing information about this app
+ */
 void Electronic_load_app::on_actionAbout_triggered(){
     QMessageBox msgBox;
     msgBox.setText("This app, designed for the "
@@ -431,4 +410,48 @@ void Electronic_load_app::on_actionAbout_triggered(){
     msgBox.setStyleSheet("QLabel{color: black;}");
     msgBox.setWindowTitle(QObject::tr("About"));
     msgBox.exec();
+}
+
+void Electronic_load_app::changeEvent(QEvent *event){
+    if(event->type() == QEvent::LanguageChange){
+        ui->retranslateUi(this);
+    }
+    QWidget::changeEvent(event);
+}
+
+/**
+ * @brief Changes app's language to polish
+ */
+void Electronic_load_app::on_actionPL_triggered(){
+    qApp->installTranslator(&translator_PL);
+    ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
+    ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
+    ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
+    ui->VoltageAndCurrentPlot->replot();
+    ui->VoltageAndCurrentPlot->update();
+}
+
+/**
+ * @brief Changes app's language to english
+ */
+void Electronic_load_app::on_actionEN_triggered(){
+    qApp->removeTranslator(&translator_PL);
+    qApp->removeTranslator(&translator_DE);
+    ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
+    ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
+    ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
+    ui->VoltageAndCurrentPlot->replot();
+    ui->VoltageAndCurrentPlot->update();
+}
+
+/**
+ * @brief Changes app's language to german
+ */
+void Electronic_load_app::on_actionDE_triggered(){
+    qApp->installTranslator(&translator_DE);
+    ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
+    ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
+    ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
+    ui->VoltageAndCurrentPlot->replot();
+    ui->VoltageAndCurrentPlot->update();
 }

@@ -41,14 +41,13 @@ public:
     ~Electronic_load_app();
     QTranslator translator_PL;
     QTranslator translator_DE;
+    void checkAndPlotVoltageAndCurrent();
     void processReceivedData();
-    void plotVoltageAndCurrent();
     void readAllDataFromSerialPort();
     void processData();
     void updateCapacityUI();
     void clearDataFromSerialPort();
-    void checkAndPlotVoltageAndCurrent();
-
+    void plotVoltageAndCurrent();
 
 private slots:
     void readData();
@@ -63,14 +62,14 @@ private slots:
     void on_SaveButton_clicked();
     void on_portOpenButton_clicked();
 
-    void on_actionPL_triggered();
-    void on_actionEN_triggered();
-    void on_actionDE_triggered();
-
     void on_actionAbout_triggered();
 
     void on_setCurrent_textEdited(const QString &arg1);
     void on_cutoffVoltage_textEdited(const QString &arg1);
+
+    void on_actionPL_triggered();
+    void on_actionEN_triggered();
+    void on_actionDE_triggered();
 
 private:
     Ui::Electronic_load_app *ui;
@@ -82,8 +81,8 @@ private:
     QTimer *portCheckTimer;
     QStringList currentPorts;
 
-    float setCurrent;
-    float setCutoffVoltage;
+    float setCurrent_A;
+    float setCutoffVoltage_V;
     bool setCurrentEdited_flag = false;
     bool setCutoffVoltageEdited_flag = false;
 
