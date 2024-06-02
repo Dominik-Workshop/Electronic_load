@@ -69,16 +69,23 @@ private slots:
 
     void on_actionAbout_triggered();
 
+    void on_setCurrent_textEdited(const QString &arg1);
+    void on_cutoffVoltage_textEdited(const QString &arg1);
+
 private:
     Ui::Electronic_load_app *ui;
     QSerialPort* serialPort = nullptr;
     QString dataFromSerialPort;
     bool isDataFromSerialPortReceived = false;
-    QString prevCurrent;
-    QString prevCutoff;
+
     QElapsedTimer elapsedTimer;
     QTimer *portCheckTimer;
     QStringList currentPorts;
+
+    float setCurrent;
+    float setCutoffVoltage;
+    bool setCurrentEdited_flag = false;
+    bool setCutoffVoltageEdited_flag = false;
 
     Measurements measurements;
     bool isLoadOn;

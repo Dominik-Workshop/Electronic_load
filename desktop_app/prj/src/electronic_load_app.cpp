@@ -14,11 +14,13 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     translator_PL.load(":/lang/polish.qm");
     translator_DE.load(":/lang/german.qm");
 
-    // Create an integer validator that only accepts values from 0 to the maximum integer value
-    QDoubleValidator *validator = new QDoubleValidator(0.0, 50.0, 3, this);
+    // Max two digits before decimal place, max three digits after decimal place, positive
+    QRegExp rx("^\\d{0,2}(\\.\\d{1,3})?$");
+    QRegExpValidator *rxv = new QRegExpValidator(rx, this);
 
-    //ui->setCurrent->setValidator(validator);
-    //ui->cutoffVoltage->setValidator(validator);
+    // Set the validator on your QLineEdit widgets
+    ui->setCurrent->setValidator(rxv);
+    ui->cutoffVoltage->setValidator(rxv);
 
     updateAvailablePorts();
 
@@ -127,7 +129,6 @@ void Electronic_load_app::readAllDataFromSerialPort() {
 }
 
 void Electronic_load_app::processData() {
-    // Process received data
     //qDebug() << "data from serial: " << dataFromSerialPort;
     processReceivedData();
     measurements.calculateCapacity();
@@ -228,16 +229,16 @@ void Electronic_load_app::processReceivedData(){
         }
 
         // Update the set current and cutoff voltage if changed
-        float setCurrent = parts[SetCurret].toFloat() / 1000;
-        float setCutoffVoltage = parts[SetCutofffVoltage].toFloat() / 1000;
-
-        if (prevCurrent != parts[SetCurret]) {
+        setCurrent = parts[SetCurret].toFloat() / 1000;
+        setCutoffVoltage = parts[SetCutofffVoltage].toFloat() / 1000;
+        //qDebug() << setCurrent << " flag " << setCurrentEdited_flag;
+        if(!setCurrentEdited_flag){
+            setCurrentEdited_flag = false;
             ui->setCurrent->setText(QString::number(setCurrent, 'f', 3));
-            prevCurrent = parts[SetCurret];
         }
-        if (prevCutoff != parts[SetCutofffVoltage]) {
+
+        if (!setCutoffVoltageEdited_flag) {
             ui->cutoffVoltage->setText(QString::number(setCutoffVoltage, 'f', 3));
-            prevCutoff = parts[SetCutofffVoltage];
         }
 
         // Add reading to measurements and update UI
@@ -333,6 +334,7 @@ void Electronic_load_app::on_setCurrent_editingFinished(){
         serialPort->write("a");
         serialPort->write(ui->setCurrent->text().toLatin1()+ char(10));
     }
+    setCurrentEdited_flag = false;
 }
 
 void Electronic_load_app::on_cutoffVoltage_editingFinished(){
@@ -340,6 +342,17 @@ void Electronic_load_app::on_cutoffVoltage_editingFinished(){
         serialPort->write("c");
         serialPort->write(ui->cutoffVoltage->text().toLatin1()+ char(10));
     }
+    setCutoffVoltageEdited_flag = false;
+}
+
+void Electronic_load_app::on_setCurrent_textEdited(const QString &arg1){
+    Q_UNUSED(arg1);
+    setCurrentEdited_flag = true;
+}
+
+void Electronic_load_app::on_cutoffVoltage_textEdited(const QString &arg1){
+    Q_UNUSED(arg1);
+    setCutoffVoltageEdited_flag = true;
 }
 
 void Electronic_load_app::on_NominalCapacity_editingFinished(){
