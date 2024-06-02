@@ -1,7 +1,6 @@
 #include "electronic_load_app.h"
 #include "ui_electronic_load_app.h"
-#include <QDoubleValidator>
-#include <QVector>
+
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -15,7 +14,6 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     translator_PL.load(":/lang/polish.qm");
     translator_DE.load(":/lang/german.qm");
 
-    // Fill combo box with available ports at startup
     updateAvailablePorts();
 
     // Set up timer to periodically check for available ports
@@ -26,18 +24,14 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     ui->cmbSaveAs->addItem("jpg");
     ui->cmbSaveAs->addItem("csv");
 
-    ui->capacity_mAh->setText(QString::number(measurements.capacity_mAh, 'f', 3));
-    ui->capacity_Wh->setText(QString::number(measurements.capacity_Wh, 'f', 3));
+    updateCapacityUI();
 
     ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
     ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
     ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
     ui->VoltageAndCurrentPlot->yAxis2->setVisible(true);
 
-    //ui->VoltagePlot->setInteraction(QCP::iRangeDrag, true);
-    //ui->VoltagePlot->setInteraction(QCP::iRangeZoom, true);
-    timer.start();
-
+    elapsedTimer.start();
 }
 
 Electronic_load_app::~Electronic_load_app(){
@@ -55,6 +49,9 @@ void Electronic_load_app::changeEvent(QEvent *event){
     QWidget::changeEvent(event);
 }
 
+/**
+ * @brief Checks available ports and fills the combo box with them
+ */
 void Electronic_load_app::updateAvailablePorts(){
     QStringList availablePorts;
     foreach (const QSerialPortInfo &port, QSerialPortInfo::availablePorts()) {
@@ -69,14 +66,11 @@ void Electronic_load_app::updateAvailablePorts(){
 }
 
 void Electronic_load_app::plotVoltageAndCurrent(){
-    QVector<double> x(measurements.readings.size()), y(measurements.readings.size());
-    for (unsigned long i = 0; i < measurements.readings.size(); ++i) {
-        x[i] = measurements.readings[i].time_s; // Assuming x-axis is index based
-        y[i] = measurements.readings[i].voltage_V;
-    }
-    QVector<double> x2(measurements.readings.size()), y2(measurements.readings.size());
-    for (unsigned long i = 0; i < measurements.readings.size(); ++i) {
-        x2[i] = measurements.readings[i].time_s; // Assuming x-axis is index based
+    unsigned int lenght = measurements.readings.size();
+    QVector<double> x(lenght), y1(lenght), y2(lenght);
+    for (unsigned long i = 0; i < lenght; ++i) {
+        x[i] = measurements.readings[i].time_s;
+        y1[i] = measurements.readings[i].voltage_V;
         y2[i] = measurements.readings[i].current_A;
     }
 
@@ -85,18 +79,19 @@ void Electronic_load_app::plotVoltageAndCurrent(){
     ui->VoltageAndCurrentPlot->legend->setVisible(true);
     ui->VoltageAndCurrentPlot->addGraph(ui->VoltageAndCurrentPlot->xAxis, ui->VoltageAndCurrentPlot->yAxis);
     ui->VoltageAndCurrentPlot->graph(0)->setPen(QPen(QColor(255, 100, 0)));
-    ui->VoltageAndCurrentPlot->graph(0)->setData(x, y);
+    ui->VoltageAndCurrentPlot->graph(0)->setData(x, y1);
     ui->VoltageAndCurrentPlot->graph(0)->setName(QObject::tr("Voltage"));
     ui->VoltageAndCurrentPlot->addGraph(ui->VoltageAndCurrentPlot->xAxis2, ui->VoltageAndCurrentPlot->yAxis2);
     ui->VoltageAndCurrentPlot->graph(1)->setPen(QPen(QColor(0, 100, 255)));
-    ui->VoltageAndCurrentPlot->graph(1)->setData(x2, y2);
+    ui->VoltageAndCurrentPlot->graph(1)->setData(x, y2);
     ui->VoltageAndCurrentPlot->graph(1)->setName(QObject::tr("Current"));
 
     ui->VoltageAndCurrentPlot->rescaleAxes();
 
-    // Set axis ranges to start from 0
-    //ui->VoltagePlot->yAxis->setRange(0, *std::max_element(y.constBegin(), y.constEnd()));
-    //ui->VoltagePlot->yAxis2->setRange(0, *std::max_element(y2.constBegin(), y2.constEnd()));
+    if(ui->actionPlot_from_zero->isChecked()){    // Set axis ranges to start from 0
+        ui->VoltageAndCurrentPlot->yAxis->setRange(0, *std::max_element(y1.constBegin(), y1.constEnd()) + 0.1);
+        ui->VoltageAndCurrentPlot->yAxis2->setRange(0, *std::max_element(y2.constBegin(), y2.constEnd())+ 0.01);
+    }
 
     ui->VoltageAndCurrentPlot->replot();
     ui->VoltageAndCurrentPlot->update();
@@ -107,25 +102,47 @@ void Electronic_load_app::plotVoltageAndCurrent(){
  */
 void Electronic_load_app::readData(){
     if(serialPort->isOpen()){
-        while(serialPort->bytesAvailable()){
-            dataFromSerialPort += serialPort->readAll();
-            if(dataFromSerialPort.at(dataFromSerialPort.length()-1) == char(10))
-                isDataFromSerialPortReceived = true;
-        }
+        readAllDataFromSerialPort();
         if(isDataFromSerialPortReceived){
-
-            //qDebug() << "data from serial: " << dataFromSerialPort;
-            processReceivedData();
-            measurements.calculateCapacity();
-            ui->capacity_mAh->setText(QString::number(measurements.capacity_mAh, 'f', 3));
-            ui->capacity_Wh->setText(QString::number(measurements.capacity_Wh, 'f', 3));
-            dataFromSerialPort = "";
-            isDataFromSerialPortReceived = false;
-
-            if (!ui->actionStop_when_load_off->isChecked() || ui->load_on_offfButton->text() == "Load ON") {
-                plotVoltageAndCurrent();
-            }
+            processData();
+            updateCapacityUI();
+            clearDataFromSerialPort();
+            checkAndPlotVoltageAndCurrent();
         }
+    }
+}
+
+void Electronic_load_app::readAllDataFromSerialPort() {
+    while(serialPort->bytesAvailable()){
+        dataFromSerialPort += serialPort->readAll();
+        if(dataFromSerialPort.at(dataFromSerialPort.length()-1) == char(10))
+            isDataFromSerialPortReceived = true;
+    }
+}
+
+void Electronic_load_app::processData() {
+    // Process received data
+    // qDebug() << "data from serial: " << dataFromSerialPort;
+    processReceivedData();
+    measurements.calculateCapacity();
+}
+
+void Electronic_load_app::updateCapacityUI() {
+    // Update UI with calculated capacity
+    ui->capacity_mAh->setText(QString::number(measurements.capacity_mAh, 'f', 3));
+    ui->capacity_Wh->setText(QString::number(measurements.capacity_Wh, 'f', 3));
+}
+
+void Electronic_load_app::clearDataFromSerialPort() {
+    // Clear data buffer and reset flag
+    dataFromSerialPort = "";
+    isDataFromSerialPortReceived = false;
+}
+
+void Electronic_load_app::checkAndPlotVoltageAndCurrent() {
+    // Check if plotting is required
+    if (!ui->actionStop_when_load_off->isChecked() || isLoadOn) {
+        plotVoltageAndCurrent();
     }
 }
 
@@ -198,7 +215,7 @@ void Electronic_load_app::processReceivedData(){
         //qDebug() << "Calculated CRC (Decimal):" << calculatedCRC;
 
         if (receivedCRC == calculatedCRC) {
-            qDebug() << "CRC Matched!";
+            // qDebug() << "CRC Matched!";
         } else {
             qDebug() << "!!!!!!!CRC Mismatch!!!!!!!";
             return;
@@ -221,14 +238,15 @@ void Electronic_load_app::processReceivedData(){
         float measuredVoltage = parts[MeasuredVoltage].toFloat() / 1000;
         float measuredCurrent = parts[MeasuredCurrent].toFloat() / 1000;
         int measuredTemperature = parts[MeasuredTemperature].toInt();
-        float elapsedTime = timer.elapsed() / 1000.0;
+        float elapsedTime = elapsedTimer.elapsed() / 1000.0;
 
         measurements.addReading(measuredVoltage, measuredCurrent, elapsedTime, measuredTemperature);
 
         ui->measuredVoltage->setText(QString::number(measuredVoltage, 'f', 3));
         ui->measuredCurrent->setText(QString::number(measuredCurrent, 'f', 3));
 
-        if(parts[IsLoadOn]=="1"){
+        isLoadOn = (parts[IsLoadOn] == "1");
+        if(isLoadOn){
             ui->load_on_offfButton->setText(QObject::tr("Load ON"));
             ui->load_on_offfButton->setStyleSheet("* { background-color: rgb(0,255,0) }");
         }
@@ -256,8 +274,10 @@ void Electronic_load_app::on_resetMeas_clicked(){
         serialPort->write("r");
         serialPort->write(ui->setCurrent->text().toLatin1()+ char(10));
     }
-    plotVoltageAndCurrent();
-    timer.restart();
+    if (ui->actionStop_when_load_off->isChecked() && !isLoadOn){
+        plotVoltageAndCurrent();
+    }
+    elapsedTimer.restart();
 }
 
 void Electronic_load_app::on_SaveButton_clicked(){
@@ -303,25 +323,38 @@ void Electronic_load_app::on_SaveButton_clicked(){
 }
 /*
 void Electronic_load_app::on_setCurrent_editingFinished(){
-    if(COMPORT != nullptr && COMPORT->isOpen()){
-        COMPORT->write("a");
-        COMPORT->write(ui->setCurrent->text().toLatin1()+ char(10));
+    if(serialPort != nullptr && serialPort->isOpen()){
+        serialPort->write("a");
+        serialPort->write(ui->setCurrent->text().toLatin1()+ char(10));
     }
-}*/
-
+}
+*/
 void Electronic_load_app::on_setCurrent_editingFinished(){
     if (serialPort != nullptr && serialPort->isOpen()) {
         QString currentText = ui->setCurrent->text();
         if (!currentText.isEmpty()) {
-            try {
-                QByteArray currentData = currentText.toLatin1() + char(10);
+            // Convert the input text to a double
+            bool conversionOK;
+            double currentValue = currentText.toDouble(&conversionOK);
+
+            if (conversionOK) {
+                // Adjust the value if it's outside the allowed range
+                if (currentValue > 8.4) {
+                    currentValue = 8.4;
+                } else if (currentValue < 0) {
+                    currentValue = 0;
+                }
+                // Proceed with sending the adjusted value to the serial port
+                QByteArray currentData = QByteArray::number(currentValue, 'f', 1) + char(10);
                 serialPort->write("a");
                 serialPort->write(currentData);
-                qDebug() << "Set current value sent: " << currentText;
-            } catch (const std::exception &e) {
-                qDebug() << "Exception occurred while writing to COMPORT: " << e.what();
-            } catch (...) {
-                qDebug() << "Unknown exception occurred while writing to COMPORT.";
+                qDebug() << "Set current value sent: " << currentValue;
+                // Update the input field with the adjusted value
+                ui->setCurrent->setText(QString::number(currentValue, 'f', 3));
+            } else {
+                qDebug() << "Invalid current value.";
+                // Reset the input field to an empty string
+                ui->setCurrent->clear();
             }
         } else {
             qDebug() << "Current text is empty.";
@@ -330,6 +363,8 @@ void Electronic_load_app::on_setCurrent_editingFinished(){
         qDebug() << "COMPORT is not initialized or not open.";
     }
 }
+
+
 /*
 void Electronic_load_app::on_cutoffVoltage_editingFinished(){
     if(COMPORT->isOpen()){

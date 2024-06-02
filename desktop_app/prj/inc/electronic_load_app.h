@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QDebug>
-#include <QMessageBox>
 #include <QString>
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
@@ -44,11 +43,16 @@ public:
     QTranslator translator_DE;
     void processReceivedData();
     void plotVoltageAndCurrent();
+    void readAllDataFromSerialPort();
+    void processData();
+    void updateCapacityUI();
+    void clearDataFromSerialPort();
+    void checkAndPlotVoltageAndCurrent();
+
 
 private slots:
     void readData();
     void updateAvailablePorts();
-
 
     void on_setCurrent_editingFinished();
     void on_cutoffVoltage_editingFinished();
@@ -61,7 +65,6 @@ private slots:
 
     void on_actionPL_triggered();
     void on_actionEN_triggered();
-
     void on_actionDE_triggered();
 
     void on_actionAbout_triggered();
@@ -73,11 +76,12 @@ private:
     bool isDataFromSerialPortReceived = false;
     QString prevCurrent;
     QString prevCutoff;
-    QElapsedTimer timer;
+    QElapsedTimer elapsedTimer;
     QTimer *portCheckTimer;
     QStringList currentPorts;
 
     Measurements measurements;
+    bool isLoadOn;
 
     // QWidget interface
 protected:

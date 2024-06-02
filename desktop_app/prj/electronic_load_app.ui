@@ -870,6 +870,7 @@ border-width: 0</string>
     </widget>
     <addaction name="menuLanguage"/>
     <addaction name="actionStop_when_load_off"/>
+    <addaction name="actionPlot_from_zero"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -906,6 +907,17 @@ border-width: 0</string>
    </property>
    <property name="text">
     <string>Stop when load off</string>
+   </property>
+  </action>
+  <action name="actionPlot_from_zero">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Plot from zero</string>
    </property>
   </action>
  </widget>
