@@ -41,6 +41,7 @@ public:
     Electronic_load_app(QWidget *parent = nullptr);
     ~Electronic_load_app();
     QTranslator translator;
+    QTranslator translatorDE;
     void processReceivedData();
 
 private slots:
@@ -60,6 +61,8 @@ private slots:
 
     void on_actionPL_triggered();
     void on_actionEN_triggered();
+
+    void on_actionDE_triggered();
 
 private:
     Ui::Electronic_load_app *ui;

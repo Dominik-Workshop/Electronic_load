@@ -866,6 +866,7 @@ border-width: 0</string>
      </property>
      <addaction name="actionPL"/>
      <addaction name="actionEN"/>
+     <addaction name="actionDE"/>
     </widget>
     <addaction name="menuLanguage"/>
    </widget>
@@ -879,6 +880,11 @@ border-width: 0</string>
   <action name="actionEN">
    <property name="text">
     <string>EN</string>
+   </property>
+  </action>
+  <action name="actionDE">
+   <property name="text">
+    <string>DE</string>
    </property>
   </action>
  </widget>

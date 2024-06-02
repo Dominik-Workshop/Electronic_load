@@ -13,6 +13,7 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
 
     this->setWindowIcon(QIcon(":/icon.png"));
     translator.load(":/polish.qm");    
+    translatorDE.load(":/german.qm");
 
     // Fill combo box with available ports at startup
     updateAvailablePorts();
@@ -410,6 +411,16 @@ void Electronic_load_app::on_actionPL_triggered(){
 
 void Electronic_load_app::on_actionEN_triggered(){
     qApp->removeTranslator(&translator);
+    qApp->removeTranslator(&translatorDE);
+    ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
+    ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
+    ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
+    ui->VoltageAndCurrentPlot->replot();
+    ui->VoltageAndCurrentPlot->update();
+}
+
+void Electronic_load_app::on_actionDE_triggered(){
+    qApp->installTranslator(&translatorDE);
     ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
     ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
     ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
