@@ -12,8 +12,8 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     ui->setupUi(this);
 
     this->setWindowIcon(QIcon(":/icon.png"));
-    translator_PL.load(":/polish.qm");
-    translator_DE.load(":/german.qm");
+    translator_PL.load(":/lang/polish.qm");
+    translator_DE.load(":/lang/german.qm");
 
     // Fill combo box with available ports at startup
     updateAvailablePorts();
@@ -430,7 +430,13 @@ void Electronic_load_app::on_actionDE_triggered(){
 
 void Electronic_load_app::on_actionAbout_triggered(){
     QMessageBox msgBox;
-    msgBox.setText(QObject::tr("This app, designed for the <a href='https://github.com/Dominik-Workshop/Electronic_load'>Electronic Load (github)</a> project, communicates with electronic loads via serial port, reading time, current, and voltage during battery discharge. It plots discharge curves, calculates battery capacity (mAh and mWh), and allows saving graphs in jpg and csv formats. You can also control discharge parameters within the app."));
+    msgBox.setText("This app, designed for the "
+                   "<a href='https://github.com/Dominik-Workshop/Electronic_load'>Electronic Load (github)</a> "
+                   "project, communicates with the electronic load via serial port, reading time, current, "
+                   "and voltage during battery discharge. It plots discharge curves, calculates "
+                   "battery capacity (mAh and mWh), and allows saving graphs in jpg and csv formats. "
+                   "You can also control discharge parameters within the app.<br><br>"
+                   "Created by: Dominik Workshop");
     msgBox.setStyleSheet("QLabel{color: black;}");
     msgBox.setWindowTitle(QObject::tr("About"));
     msgBox.exec();

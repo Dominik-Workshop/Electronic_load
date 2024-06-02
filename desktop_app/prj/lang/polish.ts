@@ -4,99 +4,114 @@
 <context>
     <name>Electronic_load_app</name>
     <message>
-        <location filename="electronic_load_app.ui" line="20"/>
+        <location filename="../electronic_load_app.ui" line="20"/>
         <source>Electronic_load_app</source>
         <translation>Elektroniczne obciążenie</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="858"/>
+        <location filename="../electronic_load_app.ui" line="858"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="78"/>
+        <location filename="../electronic_load_app.ui" line="78"/>
         <source>Connect</source>
         <translation>Połącz</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="113"/>
+        <location filename="../electronic_load_app.ui" line="113"/>
         <source>Save as</source>
         <translation>Zapisz jako</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="171"/>
+        <location filename="../electronic_load_app.ui" line="171"/>
         <source>Load OFF</source>
         <translation>Obciążenie
 wyłączone</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="198"/>
+        <location filename="../electronic_load_app.ui" line="198"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Set parameters&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Nastawy</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="259"/>
+        <location filename="../electronic_load_app.ui" line="259"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Discharge current&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Prąd rozładowania</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="317"/>
-        <location filename="electronic_load_app.ui" line="576"/>
+        <location filename="../electronic_load_app.ui" line="317"/>
+        <location filename="../electronic_load_app.ui" line="576"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;A&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="342"/>
+        <location filename="../electronic_load_app.ui" line="342"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Cut-off voltage&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Napięcie odcięcia</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="397"/>
-        <location filename="electronic_load_app.ui" line="547"/>
+        <location filename="../electronic_load_app.ui" line="397"/>
+        <location filename="../electronic_load_app.ui" line="547"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;V&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="425"/>
+        <location filename="../electronic_load_app.ui" line="425"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Measurements&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Pomiary</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="650"/>
+        <location filename="../electronic_load_app.ui" line="650"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;mAh&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="681"/>
+        <location filename="../electronic_load_app.ui" line="681"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wh&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="709"/>
+        <location filename="../electronic_load_app.ui" line="709"/>
         <source>Reset measurement</source>
         <translation>Resetuj pomiar</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="794"/>
+        <location filename="../electronic_load_app.ui" line="794"/>
         <source>Nominal 
 capacity</source>
         <translation>Pojemność 
 nominalna</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="865"/>
+        <location filename="../electronic_load_app.ui" line="865"/>
         <source>Language</source>
         <translation>Język</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="876"/>
+        <location filename="../electronic_load_app.ui" line="875"/>
+        <source>Help</source>
+        <translation>Pomoc</translation>
+    </message>
+    <message>
+        <location filename="../electronic_load_app.ui" line="884"/>
         <source>PL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="881"/>
+        <location filename="../electronic_load_app.ui" line="889"/>
         <source>EN</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../electronic_load_app.ui" line="894"/>
+        <source>DE</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../electronic_load_app.ui" line="899"/>
+        <source>About</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -108,12 +123,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Pojemność nominalna</translation>
     </message>
     <message>
-        <location filename="electronic_load_app.ui" line="831"/>
+        <location filename="../electronic_load_app.ui" line="831"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;mAh&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="269"/>
+        <location filename="../src/electronic_load_app.cpp" line="270"/>
         <source>Save file</source>
         <translation>Zapisz plik</translation>
     </message>
@@ -121,57 +136,65 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="31"/>
-        <location filename="src/electronic_load_app.cpp" line="404"/>
-        <location filename="src/electronic_load_app.cpp" line="413"/>
+        <location filename="../src/electronic_load_app.cpp" line="32"/>
+        <location filename="../src/electronic_load_app.cpp" line="405"/>
+        <location filename="../src/electronic_load_app.cpp" line="415"/>
+        <location filename="../src/electronic_load_app.cpp" line="424"/>
         <source>Time [s]</source>
         <translation>Czas [s]</translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="32"/>
-        <location filename="src/electronic_load_app.cpp" line="405"/>
-        <location filename="src/electronic_load_app.cpp" line="414"/>
+        <location filename="../src/electronic_load_app.cpp" line="33"/>
+        <location filename="../src/electronic_load_app.cpp" line="406"/>
+        <location filename="../src/electronic_load_app.cpp" line="416"/>
+        <location filename="../src/electronic_load_app.cpp" line="425"/>
         <source>Voltage [V]</source>
         <translation>Napięcie [V]</translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="33"/>
-        <location filename="src/electronic_load_app.cpp" line="406"/>
-        <location filename="src/electronic_load_app.cpp" line="415"/>
+        <location filename="../src/electronic_load_app.cpp" line="34"/>
+        <location filename="../src/electronic_load_app.cpp" line="407"/>
+        <location filename="../src/electronic_load_app.cpp" line="417"/>
+        <location filename="../src/electronic_load_app.cpp" line="426"/>
         <source>Current [A]</source>
         <translation>Prąd [A]</translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="93"/>
+        <location filename="../src/electronic_load_app.cpp" line="94"/>
         <source>Voltage</source>
         <translation>Napięcie</translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="97"/>
+        <location filename="../src/electronic_load_app.cpp" line="98"/>
         <source>Current</source>
         <translation>Prąd</translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="236"/>
+        <location filename="../src/electronic_load_app.cpp" line="237"/>
         <source>Load ON</source>
         <translation>Obciążenie
 włączone</translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="241"/>
+        <location filename="../src/electronic_load_app.cpp" line="242"/>
         <source>Load OFF</source>
         <translation>Obciążenie
 wyłączone</translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="393"/>
+        <location filename="../src/electronic_load_app.cpp" line="394"/>
         <source>Unable to open specified port</source>
         <translation>Nie udało się otworzyć wybranego portu</translation>
     </message>
     <message>
-        <location filename="src/electronic_load_app.cpp" line="395"/>
+        <location filename="../src/electronic_load_app.cpp" line="396"/>
         <source>Port error</source>
         <translation>Błąd portu</translation>
+    </message>
+    <message>
+        <location filename="../src/electronic_load_app.cpp" line="441"/>
+        <source>About</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

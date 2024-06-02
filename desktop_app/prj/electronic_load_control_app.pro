@@ -25,8 +25,8 @@ HEADERS += \
 FORMS += \
     electronic_load_app.ui
 
-TRANSLATIONS += polish.ts \
-    german.ts
+TRANSLATIONS += lang/polish.ts \
+    lang/german.ts
 CONFIG += lrelease
 CONFIG += embed_translations
 

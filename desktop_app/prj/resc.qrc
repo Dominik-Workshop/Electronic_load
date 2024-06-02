@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>polish.qm</file>
         <file>icon.png</file>
-        <file>german.qm</file>
+        <file>lang/polish.qm</file>
+        <file>lang/german.qm</file>
     </qresource>
 </RCC>
