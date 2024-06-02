@@ -43,12 +43,12 @@ public:
     QTranslator translator_PL;
     QTranslator translator_DE;
     void processReceivedData();
+    void plotVoltageAndCurrent();
 
 private slots:
     void readData();
-    void connectTheFrickingSlots();
     void updateAvailablePorts();
-    void plotVoltageAndCurrent();
+
 
     void on_setCurrent_editingFinished();
     void on_cutoffVoltage_editingFinished();

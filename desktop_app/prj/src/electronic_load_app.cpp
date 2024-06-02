@@ -48,11 +48,6 @@ Electronic_load_app::~Electronic_load_app(){
     }
 }
 
-void Electronic_load_app::connectTheFrickingSlots(){
-    qDebug() << "connextsa?";
-    connect(serialPort, SIGNAL(readyRead()), this, SLOT(readData()));
-}
-
 void Electronic_load_app::changeEvent(QEvent *event){
     if(event->type() == QEvent::LanguageChange){
         ui->retranslateUi(this);
@@ -119,7 +114,7 @@ void Electronic_load_app::readData(){
         }
         if(isDataFromSerialPortReceived){
 
-            //qDebug() << "data from serial: " << Data_From_Serial_Port;
+            //qDebug() << "data from serial: " << dataFromSerialPort;
             processReceivedData();
             measurements.calculateCapacity();
             ui->capacity_mAh->setText(QString::number(measurements.capacity_mAh, 'f', 3));
@@ -127,9 +122,9 @@ void Electronic_load_app::readData(){
             dataFromSerialPort = "";
             isDataFromSerialPortReceived = false;
 
-
-            plotVoltageAndCurrent();
-
+            if (!ui->actionStop_when_load_off->isChecked() || ui->load_on_offfButton->text() == "Load ON") {
+                plotVoltageAndCurrent();
+            }
         }
     }
 }
@@ -261,6 +256,7 @@ void Electronic_load_app::on_resetMeas_clicked(){
         serialPort->write("r");
         serialPort->write(ui->setCurrent->text().toLatin1()+ char(10));
     }
+    plotVoltageAndCurrent();
     timer.restart();
 }
 
