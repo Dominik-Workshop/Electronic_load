@@ -10,9 +10,15 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
 {
     ui->setupUi(this);
 
-    this->setWindowIcon(QIcon(":/icon.png"));
+    this->setWindowIcon(QIcon(":/icon.ico"));
     translator_PL.load(":/lang/polish.qm");
     translator_DE.load(":/lang/german.qm");
+
+    // Create an integer validator that only accepts values from 0 to the maximum integer value
+    QDoubleValidator *validator = new QDoubleValidator(0.0, 50.0, 3, this);
+
+    //ui->setCurrent->setValidator(validator);
+    //ui->cutoffVoltage->setValidator(validator);
 
     updateAvailablePorts();
 
@@ -122,7 +128,7 @@ void Electronic_load_app::readAllDataFromSerialPort() {
 
 void Electronic_load_app::processData() {
     // Process received data
-    // qDebug() << "data from serial: " << dataFromSerialPort;
+    //qDebug() << "data from serial: " << dataFromSerialPort;
     processReceivedData();
     measurements.calculateCapacity();
 }
@@ -178,13 +184,13 @@ void Electronic_load_app::processReceivedData(){
 
     if (parts[Command] == 'm') {
         bool ok;
-        qint16 receivedVoltage = parts[MeasuredVoltage].toInt(&ok);
-        qint16 receivedCurrent = parts[MeasuredCurrent].toInt(&ok);
-        qint16 receivedTemperature = parts[MeasuredTemperature].toInt(&ok);
-        qint16 receivedCutoffVoltage = parts[SetCutofffVoltage].toInt(&ok);
-        qint16 receivedDischargeCurrent = parts[SetCurret].toInt(&ok);
-        qint16 receivedIsLoadOn = parts[IsLoadOn].toInt(&ok);
-        qint32 receivedTime = parts[Time].toInt(&ok);
+        quint16 receivedVoltage = parts[MeasuredVoltage].toUShort(&ok);
+        quint16 receivedCurrent = parts[MeasuredCurrent].toUShort(&ok);
+        quint16 receivedTemperature = parts[MeasuredTemperature].toUShort(&ok);
+        quint16 receivedCutoffVoltage = parts[SetCutofffVoltage].toUShort(&ok);
+        quint16 receivedDischargeCurrent = parts[SetCurret].toUShort(&ok);
+        quint16 receivedIsLoadOn = parts[IsLoadOn].toUShort(&ok);
+        qint32  receivedTime = parts[Time].toLong(&ok);
         uint32_t receivedCRC = parts[CRC].toUInt(&ok);
 
         if (!ok) {
@@ -193,20 +199,20 @@ void Electronic_load_app::processReceivedData(){
         }
 
         // Prepare the data for CRC calculation
-        uint8_t message[6 * sizeof(qint16) + sizeof(qint32)];
+        uint8_t message[6 * sizeof(quint16) + sizeof(qint32)];
         size_t index = 0;
-        memcpy(&message[index], &receivedVoltage, sizeof(qint16));
-        index += sizeof(qint16);
-        memcpy(&message[index], &receivedCurrent, sizeof(qint16));
-        index += sizeof(qint16);
-        memcpy(&message[index], &receivedTemperature, sizeof(qint16));
+        memcpy(&message[index], &receivedVoltage, sizeof(quint16));
         index += sizeof(quint16);
-        memcpy(&message[index], &receivedCutoffVoltage, sizeof(qint16));
-        index += sizeof(qint16);
-        memcpy(&message[index], &receivedDischargeCurrent, sizeof(qint16));
-        index += sizeof(qint16);
-        memcpy(&message[index], &receivedIsLoadOn, sizeof(qint16));
-        index += sizeof(qint16);
+        memcpy(&message[index], &receivedCurrent, sizeof(quint16));
+        index += sizeof(quint16);
+        memcpy(&message[index], &receivedTemperature, sizeof(quint16));
+        index += sizeof(quint16);
+        memcpy(&message[index], &receivedCutoffVoltage, sizeof(quint16));
+        index += sizeof(quint16);
+        memcpy(&message[index], &receivedDischargeCurrent, sizeof(quint16));
+        index += sizeof(quint16);
+        memcpy(&message[index], &receivedIsLoadOn, sizeof(quint16));
+        index += sizeof(quint16);
         memcpy(&message[index], &receivedTime, sizeof(qint32));
 
         uint32_t calculatedCRC = calculateCRC(message, sizeof(message));
@@ -321,77 +327,18 @@ void Electronic_load_app::on_SaveButton_clicked(){
         }
     }
 }
-/*
+
 void Electronic_load_app::on_setCurrent_editingFinished(){
     if(serialPort != nullptr && serialPort->isOpen()){
         serialPort->write("a");
         serialPort->write(ui->setCurrent->text().toLatin1()+ char(10));
     }
 }
-*/
-void Electronic_load_app::on_setCurrent_editingFinished(){
-    if (serialPort != nullptr && serialPort->isOpen()) {
-        QString currentText = ui->setCurrent->text();
-        if (!currentText.isEmpty()) {
-            // Convert the input text to a double
-            bool conversionOK;
-            double currentValue = currentText.toDouble(&conversionOK);
-
-            if (conversionOK) {
-                // Adjust the value if it's outside the allowed range
-                if (currentValue > 8.4) {
-                    currentValue = 8.4;
-                } else if (currentValue < 0) {
-                    currentValue = 0;
-                }
-                // Proceed with sending the adjusted value to the serial port
-                QByteArray currentData = QByteArray::number(currentValue, 'f', 1) + char(10);
-                serialPort->write("a");
-                serialPort->write(currentData);
-                qDebug() << "Set current value sent: " << currentValue;
-                // Update the input field with the adjusted value
-                ui->setCurrent->setText(QString::number(currentValue, 'f', 3));
-            } else {
-                qDebug() << "Invalid current value.";
-                // Reset the input field to an empty string
-                ui->setCurrent->clear();
-            }
-        } else {
-            qDebug() << "Current text is empty.";
-        }
-    } else {
-        qDebug() << "COMPORT is not initialized or not open.";
-    }
-}
-
-
-/*
-void Electronic_load_app::on_cutoffVoltage_editingFinished(){
-    if(COMPORT->isOpen()){
-        COMPORT->write("c");
-        COMPORT->write(ui->cutoffVoltage->text().toLatin1()+ char(10));
-    }
-}*/
 
 void Electronic_load_app::on_cutoffVoltage_editingFinished(){
-    if (serialPort != nullptr && serialPort->isOpen()) {
-        QString voltageText = ui->cutoffVoltage->text();
-        if (!voltageText.isEmpty()) {
-            try {
-                QByteArray voltageData = voltageText.toLatin1() + char(10);
-                serialPort->write("c");
-                serialPort->write(voltageData);
-                qDebug() << "Set cutoff voltage value sent: " << voltageText;
-            } catch (const std::exception &e) {
-                qDebug() << "Exception occurred while writing to COMPORT: " << e.what();
-            } catch (...) {
-                qDebug() << "Unknown exception occurred while writing to COMPORT.";
-            }
-        } else {
-            qDebug() << "Cutoff voltage text is empty.";
-        }
-    } else {
-        qDebug() << "COMPORT is not initialized or not open.";
+    if(serialPort != nullptr && serialPort->isOpen()){
+        serialPort->write("c");
+        serialPort->write(ui->cutoffVoltage->text().toLatin1()+ char(10));
     }
 }
 

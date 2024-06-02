@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>icon.png</file>
+        <file>icon.ico</file>
         <file>lang/polish.qm</file>
         <file>lang/german.qm</file>
     </qresource>
