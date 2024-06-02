@@ -12,8 +12,8 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     ui->setupUi(this);
 
     this->setWindowIcon(QIcon(":/icon.png"));
-    translator.load(":/polish.qm");    
-    translatorDE.load(":/german.qm");
+    translator_PL.load(":/polish.qm");
+    translator_DE.load(":/german.qm");
 
     // Fill combo box with available ports at startup
     updateAvailablePorts();
@@ -401,7 +401,7 @@ void Electronic_load_app::on_portOpenButton_clicked(){
 }
 
 void Electronic_load_app::on_actionPL_triggered(){
-    qApp->installTranslator(&translator);
+    qApp->installTranslator(&translator_PL);
     ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
     ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
     ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
@@ -410,8 +410,8 @@ void Electronic_load_app::on_actionPL_triggered(){
 }
 
 void Electronic_load_app::on_actionEN_triggered(){
-    qApp->removeTranslator(&translator);
-    qApp->removeTranslator(&translatorDE);
+    qApp->removeTranslator(&translator_PL);
+    qApp->removeTranslator(&translator_DE);
     ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
     ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
     ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
@@ -420,7 +420,7 @@ void Electronic_load_app::on_actionEN_triggered(){
 }
 
 void Electronic_load_app::on_actionDE_triggered(){
-    qApp->installTranslator(&translatorDE);
+    qApp->installTranslator(&translator_DE);
     ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
     ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
     ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));

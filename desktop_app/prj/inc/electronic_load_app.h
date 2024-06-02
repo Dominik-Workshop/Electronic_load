@@ -40,8 +40,8 @@ class Electronic_load_app : public QMainWindow{
 public:
     Electronic_load_app(QWidget *parent = nullptr);
     ~Electronic_load_app();
-    QTranslator translator;
-    QTranslator translatorDE;
+    QTranslator translator_PL;
+    QTranslator translator_DE;
     void processReceivedData();
 
 private slots:
