@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['electronic_5fload_5fapp_0',['Electronic_load_app',['../class_electronic__load__app.html#a8c607af66151668d12bd0bb4d64eeb30',1,'Electronic_load_app']]]
+  ['main_0',['main',['../main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main.cpp']]],
+  ['measurements_1',['Measurements',['../class_measurements.html#a3e8a95f8d5968de18e5fd2282b837b1a',1,'Measurements']]]
 ];

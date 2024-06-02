@@ -1,0 +1,4 @@
+<map id="Electronic_load_app::checkAndPlotVoltageAndCurrent" name="Electronic_load_app::checkAndPlotVoltageAndCurrent">
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,247,47"/>
+<area shape="rect" id="node2" href="$class_electronic__load__app.html#a165d3a2db30ce7c48801b4a0f1f49f32" title="Plots voltage and current graphs from measurements class instance." alt="" coords="295,5,473,47"/>
+</map>

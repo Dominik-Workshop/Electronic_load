@@ -129,31 +129,31 @@ uint32_t calculateCRC(const uint8_t* data, size_t length) {
  * @param isLoadOnBool Boolean indicating whether the load is turned on.
  */
 void sendLoadStatisticsOverSerial(Measurements& measurements, Battery& battery, bool isLoadOnBool){
-	int16_t voltage_mV = static_cast<int16_t>(1000 * measurements.voltage);
-	int16_t current_mA = static_cast<int16_t>(1000 * measurements.current);
-	int16_t temperature = measurements.temperature;
-	int16_t cutoffVoltage_mV = static_cast<int16_t>(1000 * battery.cutoffVoltage.value);
-	int16_t dischargeCurrent_mA = static_cast<int16_t>(1000 * battery.dischargeCurrent.value);
-	int16_t isLoadOn = static_cast<int16_t>(isLoadOnBool);
+	uint16_t voltage_mV = static_cast<uint16_t>(1000 * measurements.voltage);
+	uint16_t current_mA = static_cast<uint16_t>(1000 * measurements.current);
+	uint16_t temperature = static_cast<uint16_t>(measurements.temperature);
+	uint16_t cutoffVoltage_mV = static_cast<uint16_t>(1000 * battery.cutoffVoltage.value);
+	uint16_t dischargeCurrent_mA = static_cast<uint16_t>(1000 * battery.dischargeCurrent.value);
+	uint16_t isLoadOn = static_cast<uint16_t>(isLoadOnBool);
 	long totalSeconds = measurements.timer.getTotalSeconds();
 
 	if(!isLoadOn)
 		current_mA = 0;
 
-	uint8_t message[6 * sizeof(int16_t) + sizeof(long)];
+	uint8_t message[6 * sizeof(uint16_t) + sizeof(long)];
 	size_t index = 0;
-	memcpy(&message[index], &voltage_mV, sizeof(int16_t));
-	index += sizeof(int16_t);
-	memcpy(&message[index], &current_mA, sizeof(int16_t));
-	index += sizeof(int16_t);
-	memcpy(&message[index], &temperature, sizeof(int16_t));
-	index += sizeof(int16_t);
-	memcpy(&message[index], &cutoffVoltage_mV, sizeof(int16_t));
-	index += sizeof(int16_t);
-	memcpy(&message[index], &dischargeCurrent_mA, sizeof(int16_t));
-	index += sizeof(int16_t);
-	memcpy(&message[index], &isLoadOn, sizeof(int16_t));
-	index += sizeof(int16_t);
+	memcpy(&message[index], &voltage_mV, sizeof(uint16_t));
+	index += sizeof(uint16_t);
+	memcpy(&message[index], &current_mA, sizeof(uint16_t));
+	index += sizeof(uint16_t);
+	memcpy(&message[index], &temperature, sizeof(uint16_t));
+	index += sizeof(uint16_t);
+	memcpy(&message[index], &cutoffVoltage_mV, sizeof(uint16_t));
+	index += sizeof(uint16_t);
+	memcpy(&message[index], &dischargeCurrent_mA, sizeof(uint16_t));
+	index += sizeof(uint16_t);
+	memcpy(&message[index], &isLoadOn, sizeof(uint16_t));
+	index += sizeof(uint16_t);
 	memcpy(&message[index], &totalSeconds, sizeof(long));
 
 	uint32_t crc = calculateCRC(message, sizeof(message));
@@ -220,6 +220,7 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 
 			if(data == 'a'){
 				userInput.setCurrent.value = Serial.parseFloat();
+				userInput.setCurrent.limit();
 				battery.dischargeCurrent.value = userInput.setCurrent.value;
 				controls.regulateCurrent(userInput.setCurrent.value);
 				lcd.setCursor(2, 2);
@@ -233,6 +234,7 @@ int batteryCapacityMode(LiquidCrystal_I2C& lcd, UserInput& userInput, Keypad& ke
 			}
 			if(data == 'c'){
 				battery.cutoffVoltage.value = Serial.parseFloat();
+				battery.cutoffVoltage.limit();
 				lcd.setCursor(14, 2);
 				battery.cutoffVoltage.display(lcd);
 			}

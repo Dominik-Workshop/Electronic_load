@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resetmeasurements_0',['resetMeasurements',['../class_measurements.html#a84ffe4eea724fb007ef2020b3927bf66',1,'Measurements']]]
+  ['updatecapacityui_0',['updateCapacityUI',['../class_electronic__load__app.html#a38370abd9318c4b1133d1f845a234784',1,'Electronic_load_app']]]
 ];

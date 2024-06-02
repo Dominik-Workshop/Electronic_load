@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['setcurret_0',['SetCurret',['../electronic__load__app_8h.html#af1109f78210c666167afaa8641e14e06a8009215de451d1ec0be25cb55c51155e',1,'electronic_load_app.h']]],
-  ['setcutofffvoltage_1',['SetCutofffVoltage',['../electronic__load__app_8h.html#af1109f78210c666167afaa8641e14e06a2fd21708c8aad31ea03c984e2c1343c7',1,'electronic_load_app.h']]],
-  ['settingswindow_2',['SettingsWindow',['../class_settings_window.html',1,'SettingsWindow'],['../class_settings_window.html#a45a89ce575d8c1792570f5b0d149f5ba',1,'SettingsWindow::SettingsWindow()']]],
-  ['settingswindow_2ecpp_3',['settingswindow.cpp',['../settingswindow_8cpp.html',1,'']]],
-  ['settingswindow_2eh_4',['settingswindow.h',['../settingswindow_8h.html',1,'']]]
+  ['temperature_5fc_0',['temperature_C',['../struct_reading.html#a8db6a28671748a912b3238c25f1101ab',1,'Reading']]],
+  ['time_1',['Time',['../electronic__load__app_8h.html#af1109f78210c666167afaa8641e14e06a3045f33dbb706dfcf7d3467ec6e685af',1,'electronic_load_app.h']]],
+  ['time_5fs_2',['time_s',['../struct_reading.html#ae8ec62ffd4c3394fe6a6236bc1f3eb3e',1,'Reading']]],
+  ['translator_5fde_3',['translator_DE',['../class_electronic__load__app.html#a43cc5acbcc6a0157b559c74d45e0d290',1,'Electronic_load_app']]],
+  ['translator_5fpl_4',['translator_PL',['../class_electronic__load__app.html#a0f2050104a05af1e0a68d6315d7dc163',1,'Electronic_load_app']]]
 ];

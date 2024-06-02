@@ -1,7 +1,0 @@
-<map id="QCPAxisRect" name="QCPAxisRect">
-<area shape="rect" id="node1" title="Holds multiple axes and arranges them in a rectangular shape." alt="" coords="63,229,169,256"/>
-<area shape="rect" id="node5" href="$class_q_c_p_color_scale_axis_rect_private.html" title=" " alt="" coords="5,304,227,331"/>
-<area shape="rect" id="node2" href="$class_q_c_p_layout_element.html" title="The abstract base class for all objects that form the layout system." alt="" coords="43,155,189,181"/>
-<area shape="rect" id="node3" href="$class_q_c_p_layerable.html" title="Base class for all drawable objects." alt="" coords="59,80,173,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="79,5,153,32"/>
-</map>

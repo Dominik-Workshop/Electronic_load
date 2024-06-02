@@ -1,0 +1,4 @@
+<map id="Measurements::calculateCapacity" name="Measurements::calculateCapacity">
+<area shape="rect" id="node1" title="Calculates the battery capacity based on the readings." alt="" coords="205,13,448,39"/>
+<area shape="rect" id="node2" href="$class_electronic__load__app.html#a7c8b4fecf2dcabb0636039e279f4e962" title=" " alt="" coords="5,5,157,47"/>
+</map>

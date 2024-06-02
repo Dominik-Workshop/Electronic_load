@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['datareadytoread_0',['dataReadyToRead',['../class_settings_window.html#a15df4093cdff47fcfe7eb91958a5078c',1,'SettingsWindow']]]
+  ['electronic_5fload_5fapp_0',['Electronic_load_app',['../class_electronic__load__app.html#a8c607af66151668d12bd0bb4d64eeb30',1,'Electronic_load_app']]]
 ];
