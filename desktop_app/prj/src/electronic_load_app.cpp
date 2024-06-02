@@ -273,7 +273,7 @@ void Electronic_load_app::on_load_on_offfButton_clicked(){
  */
 void Electronic_load_app::on_resetMeas_clicked(){
     measurements.resetMeasurements();
-    if(serialPort->isOpen()){
+    if(serialPort != nullptr && serialPort->isOpen()){
         serialPort->write("r");
         serialPort->write(ui->setCurrent->text().toLatin1()+ char(10));
     }
