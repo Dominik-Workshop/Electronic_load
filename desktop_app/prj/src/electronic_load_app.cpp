@@ -11,10 +11,8 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //this->setWindowTitle("Electronic Load");
     this->setWindowIcon(QIcon(":/icon.png"));
     translator.load(":/polish.qm");    
-    settingsWindow = new SettingsWindow(this, serialPort);
 
     // Fill combo box with available ports at startup
     updateAvailablePorts();
@@ -24,14 +22,8 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     connect(portCheckTimer, &QTimer::timeout, this, &Electronic_load_app::updateAvailablePorts);
     portCheckTimer->start(1000); // Check every second
 
-    //connect (settingsWindow, SIGNAL (dataReadyToRead()), this, SLOT(connectTheFrickingSlots()));
-    //connect(settingsWindow, &SettingsWindow::dataReadyToRead, this, &Electronic_load_app::connectTheFrickingSlots, Qt::AutoConnection);
-    //connect(COMPORT, SIGNAL(readyRead()), this, SLOT(readData()));
-
     ui->cmbSaveAs->addItem("jpg");
     ui->cmbSaveAs->addItem("csv");
-    ui->cmbLanguage->addItem("ENG");
-    ui->cmbLanguage->addItem("PL");
 
     ui->capacity_mAh->setText(QString::number(measurements.capacity_mAh, 'f', 3));
     ui->capacity_Wh->setText(QString::number(measurements.capacity_Wh, 'f', 3));
@@ -395,7 +387,7 @@ void Electronic_load_app::on_portOpenButton_clicked(){
         msgBox.setText("Port opened successfully");
         msgBox.setStyleSheet("QLabel{color: green;}"); // Change text color to green
         msgBox.setWindowTitle("Result");
-        //msgBox.exec();
+        msgBox.exec();
     } else {
         QMessageBox msgBox;
         msgBox.setText(QObject::tr("Unable to open specified port"));
@@ -407,27 +399,20 @@ void Electronic_load_app::on_portOpenButton_clicked(){
     connect(serialPort, SIGNAL(readyRead()), this, SLOT(readData()));
 }
 
-void Electronic_load_app::on_Settings_clicked(){
-    settingsWindow = new SettingsWindow(this);
-    settingsWindow->show();
+void Electronic_load_app::on_actionPL_triggered(){
+    qApp->installTranslator(&translator);
+    ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
+    ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
+    ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
+    ui->VoltageAndCurrentPlot->replot();
+    ui->VoltageAndCurrentPlot->update();
 }
 
-void Electronic_load_app::on_cmbLanguage_currentIndexChanged(int index)
-{
-    if(index == 0){
-        qApp->removeTranslator(&translator);
-        ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
-        ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
-        ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
-        ui->VoltageAndCurrentPlot->replot();
-        ui->VoltageAndCurrentPlot->update();
-    }
-    else {
-        qApp->installTranslator(&translator);
-        ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
-        ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
-        ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
-        ui->VoltageAndCurrentPlot->replot();
-        ui->VoltageAndCurrentPlot->update();
-    }
+void Electronic_load_app::on_actionEN_triggered(){
+    qApp->removeTranslator(&translator);
+    ui->VoltageAndCurrentPlot->xAxis->setLabel(QObject::tr("Time [s]"));
+    ui->VoltageAndCurrentPlot->yAxis->setLabel(QObject::tr("Voltage [V]"));
+    ui->VoltageAndCurrentPlot->yAxis2->setLabel(QObject::tr("Current [A]"));
+    ui->VoltageAndCurrentPlot->replot();
+    ui->VoltageAndCurrentPlot->update();
 }

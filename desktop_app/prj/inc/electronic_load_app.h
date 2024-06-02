@@ -11,7 +11,6 @@
 #include <QTimer>
 #include <QTranslator>
 
-#include "settingswindow.h"
 #include "measurements.h"
 
 QT_BEGIN_NAMESPACE
@@ -58,9 +57,9 @@ private slots:
     void on_resetMeas_clicked();
     void on_SaveButton_clicked();
     void on_portOpenButton_clicked();
-    void on_Settings_clicked();
 
-    void on_cmbLanguage_currentIndexChanged(int index);
+    void on_actionPL_triggered();
+    void on_actionEN_triggered();
 
 private:
     Ui::Electronic_load_app *ui;
@@ -74,8 +73,6 @@ private:
     QStringList currentPorts;
 
     Measurements measurements;
-
-    SettingsWindow *settingsWindow;
 
     // QWidget interface
 protected:
