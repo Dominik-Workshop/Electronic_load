@@ -64,6 +64,8 @@ private slots:
 
     void on_actionDE_triggered();
 
+    void on_actionAbout_triggered();
+
 private:
     Ui::Electronic_load_app *ui;
     QSerialPort* serialPort = nullptr;

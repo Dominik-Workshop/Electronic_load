@@ -870,7 +870,14 @@ border-width: 0</string>
     </widget>
     <addaction name="menuLanguage"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
    <addaction name="menuSettings"/>
+   <addaction name="menuHelp"/>
   </widget>
   <action name="actionPL">
    <property name="text">
@@ -885,6 +892,11 @@ border-width: 0</string>
   <action name="actionDE">
    <property name="text">
     <string>DE</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>

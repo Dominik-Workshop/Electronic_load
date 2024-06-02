@@ -427,3 +427,11 @@ void Electronic_load_app::on_actionDE_triggered(){
     ui->VoltageAndCurrentPlot->replot();
     ui->VoltageAndCurrentPlot->update();
 }
+
+void Electronic_load_app::on_actionAbout_triggered(){
+    QMessageBox msgBox;
+    msgBox.setText(QObject::tr("This app, designed for the <a href='https://github.com/Dominik-Workshop/Electronic_load'>Electronic Load (github)</a> project, communicates with electronic loads via serial port, reading time, current, and voltage during battery discharge. It plots discharge curves, calculates battery capacity (mAh and mWh), and allows saving graphs in jpg and csv formats. You can also control discharge parameters within the app."));
+    msgBox.setStyleSheet("QLabel{color: black;}");
+    msgBox.setWindowTitle(QObject::tr("About"));
+    msgBox.exec();
+}
