@@ -1,0 +1,7 @@
+<map id="Electronic_load_app::processData" name="Electronic_load_app::processData">
+<area shape="rect" id="node1" title=" " alt="" coords="5,27,157,69"/>
+<area shape="rect" id="node2" href="$class_measurements.html#a889edc92429139d23e0cb8f58a5d955d" title="Calculates the battery capacity based on the readings." alt="" coords="205,5,448,32"/>
+<area shape="rect" id="node3" href="$class_electronic__load__app.html#abab14b1b97b2364851bead78755a7ced" title="Check CRC and process receided data." alt="" coords="241,57,412,98"/>
+<area shape="rect" id="node4" href="$class_measurements.html#abce2374d97873e2c75a6260c4992acd0" title="Adds a new reading to the readings vector." alt="" coords="496,39,700,65"/>
+<area shape="rect" id="node5" href="$electronic__load__app_8cpp.html#a81e44efba216f1a0a981219616eeb8f3" title="calculateCRC" alt="" coords="536,89,660,116"/>
+</map>
