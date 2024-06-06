@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1069</width>
-    <height>744</height>
+    <width>1131</width>
+    <height>836</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -173,6 +173,22 @@ background-color: rgb(39, 39, 39);</string>
        </widget>
       </item>
       <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>10</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QLabel" name="label">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -221,7 +237,7 @@ background-color: rgb(39, 39, 39);</string>
         </property>
         <property name="styleSheet">
          <string notr="true">QFrame {
-	background-color: rgb(39, 39, 39);
+	background-color: rgb(50, 50, 50);
 	border-width: 3;
     border-radius: 5;
     border-style: solid;
@@ -430,6 +446,22 @@ background-color: rgb(39, 39, 39);</string>
        </widget>
       </item>
       <item>
+       <spacer name="verticalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>10</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QLabel" name="label_2">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -478,7 +510,7 @@ background-color: rgb(39, 39, 39);</string>
         </property>
         <property name="styleSheet">
          <string notr="true">QFrame {
-	background-color: rgb(39, 39, 39);
+	background-color: rgb(50, 50, 50);
 	border-width: 3;
     border-radius: 5;
     border-style: solid;
@@ -950,7 +982,7 @@ border-width: 0</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1069</width>
+     <width>1131</width>
      <height>22</height>
     </rect>
    </property>
