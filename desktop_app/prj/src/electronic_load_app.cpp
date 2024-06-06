@@ -54,14 +54,28 @@ Electronic_load_app::~Electronic_load_app(){
  */
 void Electronic_load_app::updateAvailablePorts(){
     QStringList availablePorts;
+    bool portIsConnected = 0;
     foreach (const QSerialPortInfo &port, QSerialPortInfo::availablePorts()) {
         availablePorts << port.portName();
-    }
+        if(serialPort != nullptr && serialPort->isOpen()){
+            if(serialPort->portName() == port.portName()){
+                portIsConnected = 1;
+            }
+        }
 
+    }
     if (availablePorts != currentPorts) {
         currentPorts = availablePorts;
         ui->cmbPorts->clear();
         ui->cmbPorts->addItems(currentPorts);
+    }
+
+    if(portIsConnected){
+        ui->portOpenButton->setStyleSheet("* { background-color: rgb(0,255,0); color : rgb(0,0,0);}");
+        ui->portOpenButton->setText("Connected");
+    }else{
+        ui->portOpenButton->setStyleSheet("* { background-color: rgb(39, 39, 39); color : rgb(255,255,255);}");
+        ui->portOpenButton->setText("Connect");
     }
 }
 
@@ -85,7 +99,7 @@ void Electronic_load_app::on_portOpenButton_clicked(){
         msgBox.setText("Port opened successfully");
         msgBox.setStyleSheet("QLabel{color: green;}"); // Change text color to green
         msgBox.setWindowTitle("Result");
-        msgBox.exec();
+        //msgBox.exec();
     } else {
         QMessageBox msgBox;
         msgBox.setText(QObject::tr("Unable to open specified port"));
