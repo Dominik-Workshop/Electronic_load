@@ -1,4 +1,6 @@
 <map id="Measurements::calculateCapacity" name="Measurements::calculateCapacity">
-<area shape="rect" id="node1" title="Calculates the battery capacity based on the readings." alt="" coords="205,13,448,39"/>
-<area shape="rect" id="node2" href="$class_electronic__load__app.html#a7c8b4fecf2dcabb0636039e279f4e962" title=" " alt="" coords="5,5,157,47"/>
+<area shape="rect" id="node1" title="Calculates the battery capacity based on the readings." alt="" coords="609,20,852,47"/>
+<area shape="rect" id="node2" href="$class_electronic__load__app.html#a7c8b4fecf2dcabb0636039e279f4e962" title=" " alt="" coords="409,13,561,54"/>
+<area shape="rect" id="node3" href="$class_electronic__load__app.html#a9539f558719b2edaba668095b3a171cb" title="Read data from serial port." alt="" coords="209,13,361,54"/>
+<area shape="rect" id="node4" href="$class_electronic__load__app.html#afe7a07bc97dab9acf673cdcb3675695e" title=" " alt="" coords="5,5,161,61"/>
 </map>

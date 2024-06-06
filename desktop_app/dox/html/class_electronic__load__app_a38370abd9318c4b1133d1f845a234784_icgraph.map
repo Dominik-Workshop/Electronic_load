@@ -1,4 +1,6 @@
 <map id="Electronic_load_app::updateCapacityUI" name="Electronic_load_app::updateCapacityUI">
-<area shape="rect" id="node1" title=" " alt="" coords="213,5,365,47"/>
-<area shape="rect" id="node2" href="$class_electronic__load__app.html#a8c607af66151668d12bd0bb4d64eeb30" title=" " alt="" coords="5,5,165,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="417,39,569,80"/>
+<area shape="rect" id="node2" href="$class_electronic__load__app.html#a8c607af66151668d12bd0bb4d64eeb30" title=" " alt="" coords="209,5,369,47"/>
+<area shape="rect" id="node3" href="$class_electronic__load__app.html#a9539f558719b2edaba668095b3a171cb" title="Read data from serial port." alt="" coords="213,71,365,112"/>
+<area shape="rect" id="node4" href="$class_electronic__load__app.html#afe7a07bc97dab9acf673cdcb3675695e" title=" " alt="" coords="5,63,161,119"/>
 </map>

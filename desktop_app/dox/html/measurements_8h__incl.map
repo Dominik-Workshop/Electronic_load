@@ -1,4 +1,5 @@
-<map id="/home/dominik/my_projects/Electronic_load/desktop_app/prj/inc/measurements.h" name="/home/dominik/my_projects/Electronic_load/desktop_app/prj/inc/measurements.h">
-<area shape="rect" id="node1" title="Declaration of the Measurements class and the Reading struct for storing and managing measurement dat..." alt="" coords="5,5,216,61"/>
-<area shape="rect" id="node2" title=" " alt="" coords="79,109,142,136"/>
+<map id="measurements.h" name="measurements.h">
+<area shape="rect" id="node1" title="Declaration of the Measurements class and the Reading struct for storing and managing measurement dat..." alt="" coords="9,5,141,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,80,68,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="93,80,135,107"/>
 </map>

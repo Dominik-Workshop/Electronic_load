@@ -1,4 +1,6 @@
 <map id="Electronic_load_app::processReceivedData" name="Electronic_load_app::processReceivedData">
-<area shape="rect" id="node1" title="Check CRC and process receided data." alt="" coords="205,5,376,47"/>
-<area shape="rect" id="node2" href="$class_electronic__load__app.html#a7c8b4fecf2dcabb0636039e279f4e962" title=" " alt="" coords="5,5,157,47"/>
+<area shape="rect" id="node1" title="Check CRC and process receided data." alt="" coords="609,13,780,54"/>
+<area shape="rect" id="node2" href="$class_electronic__load__app.html#a7c8b4fecf2dcabb0636039e279f4e962" title=" " alt="" coords="409,13,561,54"/>
+<area shape="rect" id="node3" href="$class_electronic__load__app.html#a9539f558719b2edaba668095b3a171cb" title="Read data from serial port." alt="" coords="209,13,361,54"/>
+<area shape="rect" id="node4" href="$class_electronic__load__app.html#afe7a07bc97dab9acf673cdcb3675695e" title=" " alt="" coords="5,5,161,61"/>
 </map>

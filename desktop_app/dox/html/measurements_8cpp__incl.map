@@ -1,6 +1,7 @@
-<map id="/home/dominik/my_projects/Electronic_load/desktop_app/prj/src/measurements.cpp" name="/home/dominik/my_projects/Electronic_load/desktop_app/prj/src/measurements.cpp">
-<area shape="rect" id="node1" title="Implementation of the Measurements class methods for storing and managing measurement data." alt="" coords="5,5,232,61"/>
-<area shape="rect" id="node2" title=" " alt="" coords="21,109,91,136"/>
-<area shape="rect" id="node3" href="$measurements_8h.html" title="Declaration of the Measurements class and the Reading struct for storing and managing measurement dat..." alt="" coords="115,109,247,136"/>
-<area shape="rect" id="node4" title=" " alt="" coords="150,184,213,211"/>
+<map id="measurements.cpp" name="measurements.cpp">
+<area shape="rect" id="node1" title="Implementation of the Measurements class methods for storing and managing measurement data." alt="" coords="30,5,177,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,80,76,107"/>
+<area shape="rect" id="node3" href="$measurements_8h.html" title="Declaration of the Measurements class and the Reading struct for storing and managing measurement dat..." alt="" coords="100,80,232,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="96,155,159,181"/>
+<area shape="rect" id="node5" title=" " alt="" coords="183,155,226,181"/>
 </map>

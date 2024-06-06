@@ -1,0 +1,4 @@
+<map id="Measurements::resetMeasurements" name="Measurements::resetMeasurements">
+<area shape="rect" id="node1" title="Resets the measurement data vector and capacity values." alt="" coords="227,13,484,39"/>
+<area shape="rect" id="node2" href="$class_electronic__load__app.html#a50720a392ae52f81942c4f0eda1bb529" title="Clears measurements." alt="" coords="5,5,179,47"/>
+</map>

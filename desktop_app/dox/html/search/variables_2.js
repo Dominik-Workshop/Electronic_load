@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['readings_0',['readings',['../class_measurements.html#afa57b609469e631bce358323acdb94c4',1,'Measurements']]]
+  ['readings_0',['readings',['../class_measurements.html#a777805e49342534c4d8552fddac4f058',1,'Measurements']]]
 ];
