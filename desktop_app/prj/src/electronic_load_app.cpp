@@ -269,10 +269,29 @@ void Electronic_load_app::processReceivedData(){
         }
     }
 
-    if(measurements.nominalCapacity_mAh != 0){
+    if(measurements.nominalCapacity_mAh != 0) {
         int capacityPercentage = 100 * measurements.capacity_mAh / measurements.nominalCapacity_mAh;
         ui->batteryPercentageLabel->setText(QString::number(capacityPercentage) + "%");
-        ui->BatCapacityBar->setValue(capacityPercentage);
+
+        // Calculate the color from red to green based on percentage, capping at 100 for the color calculation
+        int displayPercentage = std::min(capacityPercentage, 100);
+        ui->BatCapacityBar->setValue(displayPercentage);
+        int red = 255 * (100 - displayPercentage) / 100;
+        int green = 255 * displayPercentage / 100;
+        QString progressBarStyle = QString(
+            "QProgressBar {"
+            "    background-color: rgb(136, 138, 133);"
+            "    border: 1px solid grey;"
+            "    border-radius: 5px;"
+            "    text-align: center;"
+            "}"
+            "QProgressBar::chunk {"
+            "    background-color: rgb(%1, %2, 0);"
+            "    border-radius: 5px;"
+            "}"
+        ).arg(red).arg(green);
+
+        ui->BatCapacityBar->setStyleSheet(progressBarStyle);
         ui->BatCapacityBar->update();
     }
 }
