@@ -15,6 +15,7 @@
 #define MEASUREMENTS_H
 
 #include <vector>
+#include <list>
 
 /**
  * @brief Struct for storing measured voltage, current,
@@ -40,7 +41,7 @@ public:
     void resetMeasurements();
     void calculateCapacity();
 
-    std::vector<Reading> readings;
+    std::list<Reading> readings;
 
     float capacity_mAh;
     float capacity_Wh;

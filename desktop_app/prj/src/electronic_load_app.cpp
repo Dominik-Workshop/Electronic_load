@@ -367,10 +367,12 @@ void Electronic_load_app::on_NominalCapacity_editingFinished(){
 void Electronic_load_app::plotVoltageAndCurrent(){
     unsigned int lenght = measurements.readings.size();
     QVector<double> x(lenght), y1(lenght), y2(lenght);
-    for (unsigned long i = 0; i < lenght; ++i) {
-        x[i] = measurements.readings[i].time_s;
-        y1[i] = measurements.readings[i].voltage_V;
-        y2[i] = measurements.readings[i].current_A;
+    unsigned long i = 0;
+    for (const auto& reading : measurements.readings) {
+        x[i] = reading.time_s;
+        y1[i] = reading.voltage_V;
+        y2[i] = reading.current_A;
+        ++i;
     }
 
     // Clear existing graph and update with new data

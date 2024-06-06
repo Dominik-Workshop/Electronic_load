@@ -55,9 +55,9 @@ void Measurements::calculateCapacity() {
         return; // Not enough data to calculate capacity
     }
 
-    int numberOfReadings = readings.size();
-    const Reading& lastReading = readings[numberOfReadings - 1];
-    const Reading& secondLastReading = readings[numberOfReadings - 2];
+    auto it = readings.end();
+   const Reading& lastReading = *(--it);
+   const Reading& secondLastReading = *(--it);
 
     float deltaTime_h = (lastReading.time_s - secondLastReading.time_s) / 3600.0;
     float averageCurrent_A = (lastReading.current_A + secondLastReading.current_A) / 2.0;
