@@ -1028,6 +1028,7 @@ border-width: 0</string>
      <addaction name="actionDE"/>
     </widget>
     <addaction name="menuLanguage"/>
+    <addaction name="separator"/>
     <addaction name="actionStopPlottingWhenLoadIsOff"/>
     <addaction name="actionPlotFromZero"/>
    </widget>
