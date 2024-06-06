@@ -72,10 +72,10 @@ void Electronic_load_app::updateAvailablePorts(){
 
     if(portIsConnected){
         ui->portOpenButton->setStyleSheet("* { background-color: rgb(0,255,0); color : rgb(0,0,0);}");
-        ui->portOpenButton->setText("Connected");
+        ui->portOpenButton->setText(QObject::tr("Connected"));
     }else{
         ui->portOpenButton->setStyleSheet("* { background-color: rgb(39, 39, 39); color : rgb(255,255,255);}");
-        ui->portOpenButton->setText("Connect");
+        ui->portOpenButton->setText(QObject::tr("Connect"));
     }
 }
 
