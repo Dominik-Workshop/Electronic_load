@@ -39,6 +39,8 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     ui->VoltageAndCurrentPlot->yAxis2->setVisible(true);
 
     elapsedTimer.start();
+
+    setWindowState(Qt::WindowMaximized);
 }
 
 Electronic_load_app::~Electronic_load_app(){

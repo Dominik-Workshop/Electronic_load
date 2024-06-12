@@ -5,10 +5,8 @@
 #include <QTranslator>
 #include <qstylefactory.h>
 
-int main(int argc, char *argv[])
-{
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    //QApplication::setStyle(QStyleFactory::create("Fusion")); // these lines before the next
+int main(int argc, char *argv[]){
+    QApplication::setStyle(QStyleFactory::create("Fusion"));
     QApplication a(argc, argv);
 
     QTranslator translator;

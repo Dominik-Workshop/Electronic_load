@@ -37,3 +37,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resc.qrc \
+
+RC_ICONS = icon.ico
+
+QMAKE_CXXFLAGS += -Wa,-mbig-obj
