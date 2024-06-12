@@ -1,0 +1,14 @@
+<map id="Electronic_load_app::on_portOpenButton_clicked" name="Electronic_load_app::on_portOpenButton_clicked">
+<area shape="rect" id="node1" title=" " alt="" coords="5,129,161,185"/>
+<area shape="rect" id="node2" href="$class_electronic__load__app.html#a9539f558719b2edaba668095b3a171cb" title="Read data from serial port." alt="" coords="209,136,361,177"/>
+<area shape="rect" id="node3" href="$class_electronic__load__app.html#a84cb040e1358e86805f9219c607daa9e" title=" " alt="" coords="409,5,651,47"/>
+<area shape="rect" id="node5" href="$class_electronic__load__app.html#a5c9a4f647a70a75c72056c836e74ab17" title=" " alt="" coords="435,71,625,112"/>
+<area shape="rect" id="node6" href="$class_electronic__load__app.html#a7c8b4fecf2dcabb0636039e279f4e962" title=" " alt="" coords="454,136,606,177"/>
+<area shape="rect" id="node11" href="$class_electronic__load__app.html#ad555cd2c081ce28234fddaef4519a96b" title=" " alt="" coords="429,201,631,243"/>
+<area shape="rect" id="node12" href="$class_electronic__load__app.html#a38370abd9318c4b1133d1f845a234784" title=" " alt="" coords="454,267,606,308"/>
+<area shape="rect" id="node4" href="$class_electronic__load__app.html#a165d3a2db30ce7c48801b4a0f1f49f32" title="Plots voltage and current graphs from measurements class instance." alt="" coords="731,5,909,47"/>
+<area shape="rect" id="node7" href="$class_measurements.html#a889edc92429139d23e0cb8f58a5d955d" title="Calculates the battery capacity based on the readings." alt="" coords="699,114,941,141"/>
+<area shape="rect" id="node8" href="$class_electronic__load__app.html#abab14b1b97b2364851bead78755a7ced" title="Check CRC and process receided data." alt="" coords="735,165,905,207"/>
+<area shape="rect" id="node9" href="$class_measurements.html#abce2374d97873e2c75a6260c4992acd0" title="Adds a new reading to the readings vector." alt="" coords="989,147,1193,174"/>
+<area shape="rect" id="node10" href="$electronic__load__app_8cpp.html#a81e44efba216f1a0a981219616eeb8f3" title="calculateCRC" alt="" coords="1029,198,1153,225"/>
+</map>

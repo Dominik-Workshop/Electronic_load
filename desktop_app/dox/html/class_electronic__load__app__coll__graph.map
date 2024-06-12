@@ -1,4 +1,5 @@
 <map id="Electronic_load_app" name="Electronic_load_app">
-<area shape="rect" id="node1" title=" " alt="" coords="5,80,157,107"/>
-<area shape="rect" id="node2" title=" " alt="" coords="23,5,139,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="58,95,210,121"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,5,121,32"/>
+<area shape="rect" id="node3" href="$class_measurements.html" title="Class for storing measurement data." alt="" coords="145,5,264,32"/>
 </map>

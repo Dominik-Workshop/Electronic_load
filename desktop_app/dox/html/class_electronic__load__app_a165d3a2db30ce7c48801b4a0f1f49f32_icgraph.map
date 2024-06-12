@@ -1,4 +1,6 @@
 <map id="Electronic_load_app::plotVoltageAndCurrent" name="Electronic_load_app::plotVoltageAndCurrent">
-<area shape="rect" id="node1" title="Plots voltage and current graphs from measurements class instance." alt="" coords="295,5,473,47"/>
-<area shape="rect" id="node2" href="$class_electronic__load__app.html#a84cb040e1358e86805f9219c607daa9e" title=" " alt="" coords="5,5,247,47"/>
+<area shape="rect" id="node1" title="Plots voltage and current graphs from measurements class instance." alt="" coords="699,13,877,54"/>
+<area shape="rect" id="node2" href="$class_electronic__load__app.html#a84cb040e1358e86805f9219c607daa9e" title=" " alt="" coords="409,13,651,54"/>
+<area shape="rect" id="node3" href="$class_electronic__load__app.html#a9539f558719b2edaba668095b3a171cb" title="Read data from serial port." alt="" coords="209,13,361,54"/>
+<area shape="rect" id="node4" href="$class_electronic__load__app.html#afe7a07bc97dab9acf673cdcb3675695e" title=" " alt="" coords="5,5,161,61"/>
 </map>

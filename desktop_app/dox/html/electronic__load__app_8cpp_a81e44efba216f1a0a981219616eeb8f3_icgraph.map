@@ -1,5 +1,7 @@
 <map id="calculateCRC32" name="calculateCRC32">
-<area shape="rect" id="node1" title="calculateCRC" alt="" coords="424,13,548,39"/>
-<area shape="rect" id="node2" href="$class_electronic__load__app.html#abab14b1b97b2364851bead78755a7ced" title="Check CRC and process receided data." alt="" coords="205,5,376,47"/>
-<area shape="rect" id="node3" href="$class_electronic__load__app.html#a7c8b4fecf2dcabb0636039e279f4e962" title=" " alt="" coords="5,5,157,47"/>
+<area shape="rect" id="node1" title="calculateCRC" alt="" coords="828,20,952,47"/>
+<area shape="rect" id="node2" href="$class_electronic__load__app.html#abab14b1b97b2364851bead78755a7ced" title="Check CRC and process receided data." alt="" coords="609,13,780,54"/>
+<area shape="rect" id="node3" href="$class_electronic__load__app.html#a7c8b4fecf2dcabb0636039e279f4e962" title=" " alt="" coords="409,13,561,54"/>
+<area shape="rect" id="node4" href="$class_electronic__load__app.html#a9539f558719b2edaba668095b3a171cb" title="Read data from serial port." alt="" coords="209,13,361,54"/>
+<area shape="rect" id="node5" href="$class_electronic__load__app.html#afe7a07bc97dab9acf673cdcb3675695e" title=" " alt="" coords="5,5,161,61"/>
 </map>

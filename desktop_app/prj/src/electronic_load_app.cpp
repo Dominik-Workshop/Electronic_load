@@ -1,6 +1,7 @@
 #include "electronic_load_app.h"
 #include "ui_electronic_load_app.h"
 
+#include <QRegularExpressionValidator>
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -15,8 +16,8 @@ Electronic_load_app::Electronic_load_app(QWidget *parent)
     translator_DE.load(":/lang/german.qm");
 
     // Max two digits before decimal place, max three digits after decimal place, positive
-    QRegExp rx("^\\d{0,2}(\\.\\d{1,3})?$");
-    QRegExpValidator *rxv = new QRegExpValidator(rx, this);
+    QRegularExpression rx("^\\d{0,2}(\\.\\d{1,3})?$");
+    QRegularExpressionValidator *rxv = new QRegularExpressionValidator(rx, this);
     ui->setCurrent->setValidator(rxv);
     ui->cutoffVoltage->setValidator(rxv);
 
@@ -53,14 +54,28 @@ Electronic_load_app::~Electronic_load_app(){
  */
 void Electronic_load_app::updateAvailablePorts(){
     QStringList availablePorts;
+    bool portIsConnected = 0;
     foreach (const QSerialPortInfo &port, QSerialPortInfo::availablePorts()) {
         availablePorts << port.portName();
-    }
+        if(serialPort != nullptr && serialPort->isOpen()){
+            if(serialPort->portName() == port.portName()){
+                portIsConnected = 1;
+            }
+        }
 
+    }
     if (availablePorts != currentPorts) {
         currentPorts = availablePorts;
         ui->cmbPorts->clear();
         ui->cmbPorts->addItems(currentPorts);
+    }
+
+    if(portIsConnected){
+        ui->portOpenButton->setStyleSheet("* { background-color: rgb(0,255,0); color : rgb(0,0,0);}");
+        ui->portOpenButton->setText(QObject::tr("Connected"));
+    }else{
+        ui->portOpenButton->setStyleSheet("* { background-color: rgb(39, 39, 39); color : rgb(255,255,255);}");
+        ui->portOpenButton->setText(QObject::tr("Connect"));
     }
 }
 
@@ -84,7 +99,7 @@ void Electronic_load_app::on_portOpenButton_clicked(){
         msgBox.setText("Port opened successfully");
         msgBox.setStyleSheet("QLabel{color: green;}"); // Change text color to green
         msgBox.setWindowTitle("Result");
-        msgBox.exec();
+        //msgBox.exec();
     } else {
         QMessageBox msgBox;
         msgBox.setText(QObject::tr("Unable to open specified port"));
@@ -139,7 +154,7 @@ void Electronic_load_app::clearDataFromSerialPort() {
 
 void Electronic_load_app::checkAndPlotVoltageAndCurrent() {
     // Check if plotting is required
-    if (!ui->actionStop_when_load_off->isChecked() || isLoadOn) {
+    if (!ui->actionStopPlottingWhenLoadIsOff->isChecked() || isLoadOn) {
         plotVoltageAndCurrent();
     }
 }
@@ -254,10 +269,29 @@ void Electronic_load_app::processReceivedData(){
         }
     }
 
-    if(measurements.nominalCapacity_mAh != 0){
+    if(measurements.nominalCapacity_mAh != 0) {
         int capacityPercentage = 100 * measurements.capacity_mAh / measurements.nominalCapacity_mAh;
         ui->batteryPercentageLabel->setText(QString::number(capacityPercentage) + "%");
-        ui->BatCapacityBar->setValue(capacityPercentage);
+
+        // Calculate the color from red to green based on percentage, capping at 100 for the color calculation
+        int displayPercentage = std::min(capacityPercentage, 100);
+        ui->BatCapacityBar->setValue(displayPercentage);
+        int red = 255 * (100 - displayPercentage) / 100;
+        int green = 255 * displayPercentage / 100;
+        QString progressBarStyle = QString(
+            "QProgressBar {"
+            "    background-color: rgb(136, 138, 133);"
+            "    border: 1px solid grey;"
+            "    border-radius: 5px;"
+            "    text-align: center;"
+            "}"
+            "QProgressBar::chunk {"
+            "    background-color: rgb(%1, %2, 0);"
+            "    border-radius: 5px;"
+            "}"
+        ).arg(red).arg(green);
+
+        ui->BatCapacityBar->setStyleSheet(progressBarStyle);
         ui->BatCapacityBar->update();
     }
 }
@@ -273,11 +307,11 @@ void Electronic_load_app::on_load_on_offfButton_clicked(){
  */
 void Electronic_load_app::on_resetMeas_clicked(){
     measurements.resetMeasurements();
-    if(serialPort->isOpen()){
+    if(serialPort != nullptr && serialPort->isOpen()){
         serialPort->write("r");
         serialPort->write(ui->setCurrent->text().toLatin1()+ char(10));
     }
-    if (ui->actionStop_when_load_off->isChecked() && !isLoadOn){
+    if (ui->actionStopPlottingWhenLoadIsOff->isChecked() && !isLoadOn){
         ui->VoltageAndCurrentPlot->clearGraphs();
         ui->VoltageAndCurrentPlot->replot();
         ui->VoltageAndCurrentPlot->update();
@@ -366,10 +400,12 @@ void Electronic_load_app::on_NominalCapacity_editingFinished(){
 void Electronic_load_app::plotVoltageAndCurrent(){
     unsigned int lenght = measurements.readings.size();
     QVector<double> x(lenght), y1(lenght), y2(lenght);
-    for (unsigned long i = 0; i < lenght; ++i) {
-        x[i] = measurements.readings[i].time_s;
-        y1[i] = measurements.readings[i].voltage_V;
-        y2[i] = measurements.readings[i].current_A;
+    unsigned long i = 0;
+    for (const auto& reading : measurements.readings) {
+        x[i] = reading.time_s;
+        y1[i] = reading.voltage_V;
+        y2[i] = reading.current_A;
+        ++i;
     }
 
     // Clear existing graph and update with new data
@@ -386,7 +422,7 @@ void Electronic_load_app::plotVoltageAndCurrent(){
 
     ui->VoltageAndCurrentPlot->rescaleAxes();
 
-    if(ui->actionPlot_from_zero->isChecked()){    // Set axis ranges to start from 0
+    if(ui->actionPlotFromZero->isChecked()){    // Set axis ranges to start from 0
         ui->VoltageAndCurrentPlot->yAxis->setRange(0, *std::max_element(y1.constBegin(), y1.constEnd()) + 0.1);
         ui->VoltageAndCurrentPlot->yAxis2->setRange(0, *std::max_element(y2.constBegin(), y2.constEnd())+ 0.01);
     }
