@@ -6,7 +6,8 @@
 ## Used tools:
 <img align="center" height="64" src="images/logos/Eagle.png"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
 <img align="center"  height="64" src="images/logos/Fusion-360.png"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
-<img align="center" height="64" src="images/logos/Platformio_vscode.png">
+<img align="center" height="64" src="images/logos/Platformio_vscode.png"> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
+<img align="center" height="88" src="images/logos/Qt.png">
 
 
 ## Project status: :heavy_check_mark: ready for construction!
@@ -58,6 +59,11 @@ The case for this project is made with 1mm thick bent sheet metal, with a 3D pri
 <img align="center" width=90% src="images/renders/Electronic_load_angle_top_off.png"> 
 <img align="center" width=90% src="images/renders/Electronic_load_back.png"> 
 
+## PC remote controll battery mode app
+<img align="center" src="images/screenshots/desktop_app_battery_discharge.png"> 
+The app is currently available for Windows only. To run it, simply double-click on
+
+`\desktop_app\release\windows-64bit\electronic_load_control_app.exe`
 
 ### Uploading the code using USBASP
 add following code to the platformio.ini file
