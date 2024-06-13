@@ -142,10 +142,40 @@ void Electronic_load_app::processData() {
     measurements.calculateCapacity();
 }
 
+int countDigitsBeforeDecimal(double num) {
+    // Handle negative numbers by taking the absolute value
+    num = std::fabs(num);
+
+    if (num < 1) {
+        return 1;  // For numbers less than 1, return 1 to handle single-digit numbers including 0
+    }
+
+    // Use logarithm to calculate the number of digits before the decimal point
+    int digits = static_cast<int>(std::log10(num)) + 1;
+
+    return digits;
+}
+
 void Electronic_load_app::updateCapacityUI() {
-    // Update UI with calculated capacity
-    ui->capacity_mAh->setText(QString::number(measurements.capacity_mAh, 'f', 3));
-    ui->capacity_Wh->setText(QString::number(measurements.capacity_Wh, 'f', 3));
+    const int maxDigits = 6;
+
+    // Calculate digits for capacity_mAh
+    int digitsBeforeDecimal_mAh = countDigitsBeforeDecimal(measurements.capacity_mAh);
+    int digitsAfterDecimal_mAh = maxDigits - digitsBeforeDecimal_mAh;
+    if (digitsAfterDecimal_mAh < 0) {
+        digitsAfterDecimal_mAh = 0;  // Ensure no negative values for digits after decimal
+    }
+
+    // Calculate digits for capacity_Wh
+    int digitsBeforeDecimal_Wh = countDigitsBeforeDecimal(measurements.capacity_Wh);
+    int digitsAfterDecimal_Wh = maxDigits - digitsBeforeDecimal_Wh;
+    if (digitsAfterDecimal_Wh < 0) {
+        digitsAfterDecimal_Wh = 0;  // Ensure no negative values for digits after decimal
+    }
+
+    // Update UI with formatted capacity values
+    ui->capacity_mAh->setText(QString::number(measurements.capacity_mAh, 'f', digitsAfterDecimal_mAh));
+    ui->capacity_Wh->setText(QString::number(measurements.capacity_Wh, 'f', digitsAfterDecimal_Wh));
 }
 
 void Electronic_load_app::clearDataFromSerialPort() {
