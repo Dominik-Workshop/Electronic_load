@@ -3148,7 +3148,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="34.925" y="16.2052" size="1.27" layer="25" ratio="10" rot="R180"/>
 <attribute name="VALUE" x="34.29" y="17.78" size="1.27" layer="27" ratio="10" rot="R180"/>
 </element>
-<element name="VR1" library="tl431" package="TO92-CLP" package3d_urn="urn:adsk.eagle:package:30363/1" override_package3d_urn="urn:adsk.eagle:package:36629198/2" override_package_urn="urn:adsk.eagle:footprint:30307/1" value="" x="29.21" y="19.05" smashed="yes">
+<element name="VR1" library="tl431" package="TO92-CLP" package3d_urn="urn:adsk.eagle:package:30363/1" override_package3d_urn="urn:adsk.eagle:package:36629198/2" override_package_urn="urn:adsk.eagle:footprint:30307/1" value="TL431" x="29.21" y="19.05" smashed="yes">
 <attribute name="NAME" x="32.385" y="19.685" size="1.27" layer="25" ratio="10"/>
 <attribute name="POPULARITY" value="1" x="29.21" y="19.05" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="32.385" y="17.78" size="1.27" layer="27" ratio="10"/>
@@ -3171,7 +3171,7 @@ design rules under a new name.</description>
 <attribute name="SPICEPREFIX" value="R" x="25.4" y="20.32" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="27.305" y="19.685" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="IC7" library="lm1117" package="SOT223" override_package3d_urn="urn:adsk.eagle:package:34042167/2" override_package_urn="urn:adsk.eagle:footprint:34042172/1" value="LM1117IMPX-5.0" x="46.99" y="10.16" smashed="yes" rot="R180">
+<element name="IC7" library="lm1117" package="SOT223" override_package3d_urn="urn:adsk.eagle:package:34042167/2" override_package_urn="urn:adsk.eagle:footprint:34042172/1" value="LM1117-5.0" x="46.99" y="10.16" smashed="yes" rot="R180">
 <attribute name="NAME" x="50.8508" y="11.43" size="1.27" layer="25" rot="R270"/>
 <attribute name="VALUE" x="41.8592" y="11.43" size="1.27" layer="27" rot="R270"/>
 </element>
@@ -3227,8 +3227,8 @@ design rules under a new name.</description>
 <attribute name="DESCRIPTION" value=" Optoisolator Transistor Output 5000Vrms 1 Channel 4-SMD " x="83.82" y="6.985" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="Sharp Microelectronics" x="83.82" y="6.985" size="1.778" layer="27" display="off"/>
 <attribute name="MP" value="PC817X2NIP0F" x="83.82" y="6.985" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="81.014759375" y="10.0908" size="1.27238125" layer="25"/>
 <attribute name="NAME" x="81.01816875" y="10.08701875" size="1.27083125" layer="25"/>
+<attribute name="NAME" x="81.014759375" y="10.0908" size="1.27238125" layer="25"/>
 <attribute name="PACKAGE" value="SMD-4 Sharp" x="83.82" y="6.985" size="1.778" layer="27" display="off"/>
 <attribute name="PRICE" value="None" x="83.82" y="6.985" size="1.778" layer="27" display="off"/>
 <attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/PC817X2NIP0F/?ref=eda" x="83.82" y="6.985" size="1.778" layer="27" display="off"/>
@@ -3387,7 +3387,7 @@ design rules under a new name.</description>
 <attribute name="POPULARITY" value="13" x="103.632" y="2.794" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="92.202" y="-0.381" size="1.27" layer="27"/>
 </element>
-<element name="U$2" library="CRYSTAL_SMD_3,4x2.7mm" package="CRYSTAL_3,4X2,7" value="CRYSTAL_3,4X2,7" x="101.6" y="11.43" smashed="yes" rot="MR270"/>
+<element name="U$2" library="CRYSTAL_SMD_3,4x2.7mm" package="CRYSTAL_3,4X2,7" value="16MHz" x="101.6" y="11.43" smashed="yes" rot="MR270"/>
 <element name="C10" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="1u" x="32.385" y="20.32" smashed="yes" rot="MR90">
 <attribute name="NAME" x="33.401" y="19.05" size="1.016" layer="26" rot="MR90"/>
 <attribute name="POPULARITY" value="73" x="32.385" y="20.32" size="1.778" layer="28" rot="MR90" display="off"/>
