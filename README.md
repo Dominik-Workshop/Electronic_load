@@ -13,8 +13,9 @@
 ## Project status: :heavy_check_mark: ready for construction!
 The project is poised for construction and operational use. However, ongoing development persists, addressing minor bug fixes and introducing new features. Stay tuned for updates!
 
-## Project overwiev
-Commercially available electronic loads often come with a hefty price tag, so I decided to build my own.
+## Project Overview
+Commercially available electronic loads often come with a hefty price tag, so I decided to build my own. 
+This project was inspired by many electronic loads, with the primary inspiration being Scullcom's Electronic DC Load. You can view it [here](https://www.youtube.com/watch?v=9fsf1CgnTRk&list=PLUMG8JNssPPzbr4LydbTcBrhoPlemu5Dt&ab_channel=ScullcomHobbyElectronics).
 
 <img align="center" src="images/pictures/front.jpg"> 
 <img align="center" src="images/pictures/insides.jpg"> 
