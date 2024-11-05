@@ -57,8 +57,8 @@ There are two PCBs:
 ## Mechanical construction:
 The case for this project is made with 1mm thick bent sheet metal, with a 3D printed front panel.
 
-<img align="center" width=90% src="images/renders/Electronic_load_angle_top_off.png"> 
-<img align="center" width=90% src="images/renders/Electronic_load_back.png"> 
+<img align="center" width=90% src="images/renders/electronic_load_angle_top_off.png"> 
+<img align="center" width=90% src="images/renders/electronic_load_back.png"> 
 
 ## PC remote controll battery mode app
 <img align="center" src="images/screenshots/desktop_app_battery_discharge.png"> 
