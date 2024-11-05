@@ -51,7 +51,9 @@ There are two PCBs:
 
 - Front board: responsible for user input with the rotary encoder and switching the voltage measurement circuitry between the main and sense terminals
 
-<img align="center" width=50% src="images/renders/front_PCB_front_angle.png"> 
+<p align="center">
+  <img align="center" width=40% src="images/renders/front_PCB_front_angle.png"> 
+</p>
 
 
 ## Mechanical construction:
