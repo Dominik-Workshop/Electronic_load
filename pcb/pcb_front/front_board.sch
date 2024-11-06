@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.05" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -8588,16 +8588,16 @@ DIN A5, landscape with doc field</description>
 <sheets>
 <sheet>
 <plain>
-<wire x1="55.88" y1="119.38" x2="129.54" y2="119.38" width="0.1524" layer="90"/>
-<wire x1="129.54" y1="119.38" x2="129.54" y2="66.04" width="0.1524" layer="90"/>
-<wire x1="129.54" y1="66.04" x2="55.88" y2="66.04" width="0.1524" layer="90"/>
-<wire x1="55.88" y1="66.04" x2="55.88" y2="119.38" width="0.1524" layer="90"/>
-<wire x1="55.88" y1="58.42" x2="129.54" y2="58.42" width="0.1524" layer="90"/>
-<wire x1="129.54" y1="58.42" x2="129.54" y2="27.94" width="0.1524" layer="90"/>
-<wire x1="129.54" y1="27.94" x2="55.88" y2="27.94" width="0.1524" layer="90"/>
-<wire x1="55.88" y1="27.94" x2="55.88" y2="58.42" width="0.1524" layer="90"/>
+<wire x1="53.34" y1="127" x2="132.08" y2="127" width="0.1524" layer="90" style="longdash"/>
+<wire x1="132.08" y1="127" x2="132.08" y2="66.04" width="0.1524" layer="90" style="longdash"/>
+<wire x1="132.08" y1="66.04" x2="53.34" y2="66.04" width="0.1524" layer="90" style="longdash"/>
+<wire x1="53.34" y1="66.04" x2="53.34" y2="127" width="0.1524" layer="90" style="longdash"/>
+<wire x1="53.34" y1="63.5" x2="132.08" y2="63.5" width="0.1524" layer="90" style="longdash"/>
+<wire x1="132.08" y1="63.5" x2="132.08" y2="27.94" width="0.1524" layer="90" style="longdash"/>
+<wire x1="132.08" y1="27.94" x2="53.34" y2="27.94" width="0.1524" layer="90" style="longdash"/>
+<wire x1="53.34" y1="27.94" x2="53.34" y2="63.5" width="0.1524" layer="90" style="longdash"/>
 <text x="55.88" y="120.65" size="3.81" layer="90">Rotary encoder</text>
-<text x="55.88" y="59.69" size="3.81" layer="90">V measurement source selector</text>
+<text x="55.88" y="57.15" size="3.81" layer="90">V measurement source selector</text>
 <text x="60.96" y="34.29" size="1.778" layer="97">Remote
 sense</text>
 <text x="60.96" y="46.99" size="1.778" layer="97">Main
@@ -8610,12 +8610,11 @@ front board</text>
 </plain>
 <instances>
 <instance part="SW1" gate="G$1" x="106.68" y="81.28" smashed="yes">
-<attribute name="PART" x="102.87" y="81.28" size="1.27" layer="95" rot="R90"/>
-<attribute name="VALUE" x="113.03" y="78.74" size="1.27" layer="96" rot="R90"/>
+<attribute name="PART" x="111.76" y="85.09" size="1.778" layer="95"/>
+<attribute name="VALUE" x="107.95" y="77.47" size="1.778" layer="96"/>
 </instance>
 <instance part="SW1" gate="G$2" x="121.92" y="83.82" smashed="yes" rot="R90">
-<attribute name="PART" x="116.84" y="81.28" size="1.27" layer="95" rot="R90"/>
-<attribute name="VALUE" x="124.46" y="78.74" size="1.27" layer="96" rot="R90"/>
+<attribute name="PART" x="123.19" y="85.09" size="1.778" layer="95"/>
 </instance>
 <instance part="P+2" gate="VCC" x="106.68" y="114.3" smashed="yes"/>
 <instance part="P+3" gate="VCC" x="121.92" y="114.3" smashed="yes"/>
@@ -8627,17 +8626,17 @@ front board</text>
 <attribute name="VALUE" x="68.58" y="68.58" size="1.778" layer="96"/>
 </instance>
 <instance part="P+1" gate="VCC" x="71.12" y="114.3" smashed="yes"/>
-<instance part="R1" gate="G$1" x="101.6" y="104.14" smashed="yes" rot="R90">
-<attribute name="NAME" x="100.1014" y="100.33" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="104.902" y="100.33" size="1.778" layer="96" rot="R90"/>
+<instance part="R1" gate="G$1" x="104.14" y="104.14" smashed="yes" rot="R90">
+<attribute name="NAME" x="102.87" y="106.4514" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="102.87" y="103.632" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="R2" gate="G$1" x="111.76" y="104.14" smashed="yes" rot="R90">
-<attribute name="NAME" x="110.2614" y="100.33" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="115.062" y="100.33" size="1.778" layer="96" rot="R90"/>
+<instance part="R2" gate="G$1" x="109.22" y="104.14" smashed="yes" rot="R90">
+<attribute name="NAME" x="110.49" y="104.3686" size="1.778" layer="95"/>
+<attribute name="VALUE" x="110.49" y="102.108" size="1.778" layer="96"/>
 </instance>
 <instance part="R3" gate="G$1" x="121.92" y="104.14" smashed="yes" rot="R90">
-<attribute name="NAME" x="120.4214" y="100.33" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="125.222" y="100.33" size="1.778" layer="96" rot="R90"/>
+<attribute name="NAME" x="123.19" y="104.3686" size="1.778" layer="95"/>
+<attribute name="VALUE" x="123.19" y="102.108" size="1.778" layer="96"/>
 </instance>
 <instance part="S1" gate="BEF1" x="93.98" y="38.1" smashed="yes" rot="R90">
 <attribute name="NAME" x="96.52" y="53.34" size="1.778" layer="95" rot="R180"/>
@@ -8710,9 +8709,9 @@ front board</text>
 <wire x1="106.68" y1="111.76" x2="106.68" y2="109.22" width="0.1524" layer="91"/>
 <label x="109.22" y="116.84" size="1.778" layer="95" rot="R180"/>
 <pinref part="R1" gate="G$1" pin="2"/>
-<wire x1="101.6" y1="109.22" x2="106.68" y2="109.22" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="109.22" x2="106.68" y2="109.22" width="0.1524" layer="91"/>
 <pinref part="R2" gate="G$1" pin="2"/>
-<wire x1="106.68" y1="109.22" x2="111.76" y2="109.22" width="0.1524" layer="91"/>
+<wire x1="106.68" y1="109.22" x2="109.22" y2="109.22" width="0.1524" layer="91"/>
 <junction x="106.68" y="109.22"/>
 </segment>
 <segment>
@@ -8749,7 +8748,6 @@ front board</text>
 <segment>
 <pinref part="JP1" gate="A" pin="3"/>
 <pinref part="R2" gate="G$1" pin="1"/>
-<wire x1="111.76" y1="99.06" x2="109.22" y2="99.06" width="0.1524" layer="91"/>
 <pinref part="SW1" gate="G$1" pin="B"/>
 <wire x1="109.22" y1="99.06" x2="109.22" y2="93.98" width="0.1524" layer="91"/>
 <wire x1="109.22" y1="93.98" x2="109.22" y2="88.9" width="0.1524" layer="91"/>
@@ -8766,7 +8764,6 @@ front board</text>
 <segment>
 <pinref part="JP1" gate="A" pin="4"/>
 <pinref part="R1" gate="G$1" pin="1"/>
-<wire x1="101.6" y1="99.06" x2="104.14" y2="99.06" width="0.1524" layer="91"/>
 <pinref part="SW1" gate="G$1" pin="A"/>
 <wire x1="104.14" y1="99.06" x2="104.14" y2="96.52" width="0.1524" layer="91"/>
 <wire x1="104.14" y1="96.52" x2="104.14" y2="88.9" width="0.1524" layer="91"/>
