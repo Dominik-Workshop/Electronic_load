@@ -44,7 +44,11 @@ This project was inspired by many electronic loads, with the primary inspiration
 
 
 ## Electronics:
-There are two PCBs:
+### Block diagram
+
+![Alt text](./pcb/block_diagram.drawio.svg)
+
+### PCBs:
 - Main board: responsible for main funcionalities of the load
 
 <img align="center" width=90% src="images/renders/main_PCB_front_angle.png"> 
