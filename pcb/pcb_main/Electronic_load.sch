@@ -22777,7 +22777,7 @@ converter module.</text>
 <pinref part="J4" gate="G$1" pin="1"/>
 </segment>
 </net>
-<net name="CURRENT1" class="0">
+<net name="V_SHUNT_1" class="0">
 <segment>
 <pinref part="Q1" gate="G$1" pin="S"/>
 <wire x1="58.42" y1="50.8" x2="58.42" y2="27.94" width="0.1524" layer="91"/>
@@ -22801,7 +22801,7 @@ converter module.</text>
 <pinref part="R44" gate="G$1" pin="2"/>
 </segment>
 </net>
-<net name="CURRENT2" class="0">
+<net name="V_SHUNT_2" class="0">
 <segment>
 <pinref part="Q2" gate="G$1" pin="S"/>
 <wire x1="119.38" y1="50.8" x2="119.38" y2="27.94" width="0.1524" layer="91"/>
@@ -22825,7 +22825,7 @@ converter module.</text>
 <pinref part="R43" gate="G$1" pin="2"/>
 </segment>
 </net>
-<net name="CURRENT3" class="0">
+<net name="V_SHUNT_3" class="0">
 <segment>
 <pinref part="Q3" gate="G$1" pin="S"/>
 <wire x1="180.34" y1="50.8" x2="180.34" y2="27.94" width="0.1524" layer="91"/>
@@ -22849,7 +22849,7 @@ converter module.</text>
 <pinref part="R42" gate="G$1" pin="2"/>
 </segment>
 </net>
-<net name="CURRENT4" class="0">
+<net name="V_SHUNT_4" class="0">
 <segment>
 <pinref part="Q4" gate="G$1" pin="S"/>
 <wire x1="241.3" y1="50.8" x2="241.3" y2="27.94" width="0.1524" layer="91"/>
@@ -23167,7 +23167,7 @@ converter module.</text>
 <wire x1="25.4" y1="68.58" x2="27.94" y2="68.58" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="OFF" class="0">
+<net name="!OFF" class="0">
 <segment>
 <pinref part="R37" gate="G$1" pin="1"/>
 <wire x1="15.24" y1="68.58" x2="10.16" y2="68.58" width="0.1524" layer="91"/>
